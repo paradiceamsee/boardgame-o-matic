@@ -1,0 +1,527 @@
+/* merriweather-sans-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Merriweather Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/merriweather-sans-v26-latin-regular.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      url("../fonts/merriweather-sans-v26-latin-regular.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+}
+
+/* merriweather-sans-italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Merriweather Sans";
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/merriweather-sans-v26-latin-italic.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      url("../fonts/merriweather-sans-v26-latin-italic.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+}
+
+/* merriweather-sans-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Merriweather Sans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/merriweather-sans-v26-latin-700.woff2") format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      url("../fonts/merriweather-sans-v26-latin-700.ttf") format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+}
+
+/* merriweather-sans-700italic - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Merriweather Sans";
+  font-style: italic;
+  font-weight: 700;
+  src: url("../fonts/merriweather-sans-v26-latin-700italic.woff2")
+      format("woff2"),
+    /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      url("../fonts/merriweather-sans-v26-latin-700italic.ttf")
+      format("truetype"); /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+}
+
+/* General hint: If you have only one color from the website where Mitwirk-O-Mat will be embedded,
+   go to https://mycolor.space/ or https://coolors.co and look for fitting colors
+! check the contrast between the background colors and the color of the text on it for accessibility (WCAG AA is enough)
+   https://webaim.org/resources/contrastchecker/ */
+
+:root {
+  --body-font: "Merriweather Sans";
+  --heading-font: "Merriweather Sans";
+  --primary-color: #0d2c54; /* Color of the card and some buttons. Should be rather dark. Main color of the website fits well. */
+  --text-on-primary: #fff;
+  --link-color: #0d2c54; /* Usually same as main-color. Must be dark enough to be readable on white background. */
+  --secondary-color: #00a6ed; /* Color of the start button, the "agree to statistics" and resultsByThesis/Parties buttons. Good contrast to main color. Maybe a green tone? */
+  --text-on-secondary: #000;
+  --success: #7fb800; /* For ranking bar and answer buttons. Ideally dark enough to read white text on it */
+  --text-on-success: #000;
+  --warning: #ffb400;
+  --text-on-warning: #000;
+  --danger: #f6511d;
+  --text-on-danger: #000;
+  --passive-button-color: #eee; /* Could be grey */
+  --border-radius: 5px;
+  --display-made-with-love: none; /* "block" (label shown) or "none" (label hidden)  */
+  --display-imprint: none; /* "block" (button shown) or "none" (button hidden)  */
+  --display-privacy: block; /* "block" (button shown) or "none" (button hidden)  */
+  --striped-results-short-table: transparent; /* "transparent" (no stripes) or "#e1e7e9" (grey stripes). Stripes conflict with the addon_results_textfilter*/
+  --display-internet-above-description: none; /* "inline" (show) or "none" (hide) */
+  --display-internet-below-description: inline; /* "inline" (show) or "none" (hide) */
+  --text-your-answer: "Your answer:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
+  --text-party-answer: "Answer of the game:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
+}
+
+main {
+  padding-top: 100px; /* To leave room for logo in top left corner */
+}
+
+#mainLogo {
+  height: 3rem;
+}
+
+/* Default is primary-color; yellow text on white background would have to little contrast*/
+#resultsIntro {
+  color: var(--warning);
+  border-color: var(--warning);
+}
+
+i.bx-sm {
+  font-size: 1.25rem !important;
+}
+
+.container-checkbox-list input {
+  display: none;
+}
+
+.color-success {
+  color: var(--success);
+}
+
+.color-danger {
+  color: var(--danger);
+}
+
+.bg-color-danger {
+  background-color: var(--danger);
+  color: var(--text-on-danger);
+}
+
+.bg-color-success {
+  background-color: var(--success);
+  color: var(--text-on-success);
+}
+.line-through {
+  text-decoration: line-through;
+}
+
+#navigationBar {
+  height: 70px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 500;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-color);
+  border-top: 2px solid #fff;
+}
+#navigationBar div {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  background-color: var(--primary-color);
+  height: 100%;
+  font-size: 30px;
+}
+
+#sectionResults {
+  overflow: hidden;
+}
+
+#navigationBar button {
+  width: min(70px, 100%);
+  margin: 8px 5px;
+  background-color: transparent;
+  border: none;
+  border-radius: 10px;
+  padding-bottom: 100px;
+}
+
+#navigationBar i {
+  color: var(--text-on-primary);
+}
+
+#navigationBar .activeTabBtn i {
+  color: #000;
+}
+
+.highlightedTabBtn {
+  height: 100px !important;
+  font-size: 45px !important;
+  border-radius: 10px;
+  position: relative;
+}
+
+.highlightedTabBtn::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: 0;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+  pointer-events: none;
+  clip-path: inset(0 0 84px 0);
+}
+
+.activeTabBtn {
+  background-color: #fff !important;
+}
+
+.fullscreen-on-mobile-overlay {
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 1000;
+  width: 100%;
+}
+.fullscreen-on-mobile-content {
+  max-height: calc(100vh - 50px); /* Restricts content height to viewport */
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+.fullscreen-on-mobile-btn-close {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  font-size: 1.1rem;
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  transition: transform 3s;
+  transform: translateY(0);
+}
+.fullscreen-on-mobile-btn-close-out-of-screen {
+  transform: translateY(50px) !important;
+}
+
+.fullscreen-on-mobile-header {
+  position: fixed;
+  background: #fff;
+  z-index: 5;
+  padding: 15px;
+  top: 0;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.fullscreen-on-mobile-header + div {
+  width: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  [id^="resultsByThesisAnswersToQuestion"] {
+    border: none !important;
+  }
+}
+
+.tabHeading {
+  padding: 10px;
+  width: min(100%, 600px);
+  margin: 0 auto;
+}
+
+#filtersContainer {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#filtersContainer div {
+  height: 40px;
+}
+
+.btn-open-filter-modal {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
+.filter-dropdown-select {
+  border: none;
+  background: transparent;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  margin-left: 10px;
+  border: 1px solid var(--primary-color);
+  padding: 5px 10px;
+}
+
+#container-reset-all-filters {
+  margin-top: 50px;
+}
+
+#reset-all-filters {
+  background-color: transparent;
+  border: 1px solid;
+  padding: 3px 6px;
+  color: var(--danger);
+  border-radius: var(--border-radius);
+  margin-left: -7px;
+}
+
+.checkbox-list-label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.container-checkbox-list i {
+  padding: 0.1em;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-on-secondary);
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: var(--text-on-success);
+}
+
+.btn-warning {
+  background-color: var(--warning);
+  color: var(--text-on-warning);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: var(--text-on-danger);
+}
+
+#permalink-button {
+  margin: 30px auto;
+}
+
+.fadeOutTop {
+  animation: fadeOutTop 0.4s ease-in-out;
+}
+
+@keyframes fadeOutTop {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+
+.fadeInTop {
+  animation: fadeInTop 0.4s ease-in-out;
+}
+
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fadeOutBottom {
+  animation: fadeOutBottom 0.4s ease-in-out;
+}
+
+@keyframes fadeOutBottom {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+.fadeInBottom {
+  animation: fadeInBottom 0.4s ease-in-out;
+}
+
+@keyframes fadeInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#btn-see-updated-results {
+  border: none;
+  position: fixed;
+  bottom: 70px;
+  left: 0;
+  height: 60px;
+  width: 100%;
+  padding-bottom: 10px;
+  transform: translateY(0);
+  margin: 0;
+  border-radius: 0 !important;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: max-content;
+}
+
+#navigationBar i {
+  vertical-align: middle;
+}
+
+.off-screen {
+  transform: translateY(50px) !important;
+}
+
+#error-message-no-filter-results p {
+  padding: 15px;
+  background-color: var(--danger);
+  color: var(--text-on-danger);
+  border-radius: var(--border-radius);
+  margin: 5px;
+}
+
+#no-filter-results-change-filters {
+  margin: 30px auto;
+}
+
+#sectionFooter {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 70px;
+}
+
+.fullscreen-result-details-overlay {
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+.fullscreen-result-details-content {
+  max-height: calc(100vh - 50px); /* Restricts content height to viewport */
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+.fullscreen-result-details-close {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  font-size: 1.1rem;
+  background: var(--primary-color);
+  color: var(--text-on-primary);
+  transition: transform 3s;
+  transform: translateY(0);
+}
+
+[id^="resultsByThesisQuestion"][id$="Container"] {
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 768px) {
+  #navigationBar div:last-child {
+    border-radius: 0 10px 0 0;
+  }
+  #navigationBar div:first-child {
+    border-radius: 10px 0 0 0;
+  }
+
+  #navigationBar {
+    width: 600px;
+    margin: auto;
+    text-align: center;
+    left: calc(50% - 300px);
+    border-radius: 10px 10px 0 0;
+    border: solid #fff;
+    border-width: 2px 2px 0 2px;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .highlightedTabBtn button {
+    width: 100px !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  #btn-see-updated-results {
+    width: 600px;
+    left: calc(50% - 300px);
+    border-radius: 10px 10px 0 0 !important;
+    bottom: 60px;
+    padding-bottom: 20px;
+    height: 75px;
+    border: 2px solid #fff;
+  }
+}
+
+#resultsByThesis button[data-value="99"] + button[id^="doubleIcon"] {
+  display: none;
+}
+
+[id$="collapse"]:active,
+.expanded,
+.expanded:hover {
+  background: var(--primary-color) !important;
+  color: var(--text-on-primary) !important;
+}
+
+.card-header i.bx {
+  font-size: 120%;
+}
+
+.list-answers-and-filter-values-in-result-details {
+  padding-left: 0;
+  list-style: none;
+  margin-top: 20px;
+}
+
+.list-answers-and-filter-values-in-result-details > li {
+  margin-top: 10px;
+}
+
+.card-header h2 {
+  width: 100%;
+}
