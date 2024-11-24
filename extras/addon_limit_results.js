@@ -102,12 +102,9 @@ function mow_addon_limit_results_create_buttons() {
 
     // A. obere Tabelle / upper list - resultsShortTable
     // 1. ROW
-    var element_resultsShortTable_col = document
-      .getElementById("resultsShortTable")
-      .getElementsByClassName("col")[0];
+    var nodeResultsShort = document.getElementById("resultsShort");
     var div_element = document.createElement("div");
-    resultsShortTable_col_row =
-      element_resultsShortTable_col.appendChild(div_element);
+    resultsShortTable_col_row = nodeResultsShort.appendChild(div_element);
     resultsShortTable_col_row.className = "row showAlwaysIsTrue"; // "showAlwaysIsTrue" ist eine Pseudo-CSS-Klasse. -> nur für andere Addons als Warnung, z.B. "addon_results_textfilter.js"
 
     // 2a COL left
@@ -131,9 +128,9 @@ function mow_addon_limit_results_create_buttons() {
     // var element_resultsByThesisTable_col = document.getElementById("resultsByThesisTable").getElementsByClassName("col")[0]
     // NEU: ab August 2021: Buttons unter jede Frage schreiben "resultsByThesisAnswersToQuestionX"
     for (i = 0; i <= intQuestions - 1; i++) {
-      var element_resultsByThesisTable_col = document
-        .getElementById("resultsByThesisAnswersToQuestion" + i)
-        .getElementsByClassName("col")[0];
+      var element_resultsByThesisTable_col = document.getElementById(
+        "resultsByThesisAnswersToQuestion" + i
+      );
       var div_element = document.createElement("div");
       element_resultsByThesisTable_col_row =
         element_resultsByThesisTable_col.appendChild(div_element);

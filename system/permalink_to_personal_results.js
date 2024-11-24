@@ -151,85 +151,6 @@ function generateLinkWithCurrentUserAnswers() {
   return link;
 }
 
-function checkIfResultsChange() {
-  function showOrHighlightBtnRefresh() {
-    document.querySelector("#resultsTabBtn").addEventListener("click", () => {
-      window.open(generateLinkWithCurrentUserAnswers(), "_self");
-    });
-    if (document.querySelector("#btn-see-updated-results")) return;
-    const btnRefresh = document.createElement("button");
-    btnRefresh.setAttribute("id", "btn-see-updated-results");
-    btnRefresh.classList.add(
-      "btn",
-      "btn-secondary",
-      "flex-center",
-      "off-screen",
-      "btn-above-navbar"
-    );
-    btnRefresh.innerHTML =
-      REFRESH_BUTTON_TEXT !== undefined
-        ? REFRESH_BUTTON_TEXT
-        : "&#8634; Ranking aktualisieren";
-    btnRefresh.addEventListener("click", () => {
-      document.querySelector("#resultsTabBtn").click();
-    });
-
-    document.querySelector("#sectionResults").appendChild(btnRefresh);
-    setTimeout(() => {
-      btnRefresh.classList.remove("off-screen");
-    }, 0);
-    if (
-      addons.some((item) =>
-        item.includes("addon_check_iframe_resize_client.js")
-      )
-    ) {
-      // In iframe, the button is (re-)positioned whenever the parent window scrolls
-      // This must happen as soon as the button is created
-      // Message is listened to by addon_check_iframe_resize_host.js, sends scroll event with position values back
-      parent.postMessage(["triggerScrollEvent", null], "*");
-    }
-  }
-
-  setTimeout(
-    () => {
-      const nodelistResultChangingButtons = document.querySelectorAll(
-        "[class*='selfPosition'], [id^='doubleIcon']"
-      );
-      nodelistResultChangingButtons.forEach((btn) => {
-        btn.addEventListener("click", showOrHighlightBtnRefresh);
-      });
-    },
-    isActivated("addon_custom_voting_buttons.js") ? 500 : 0 // If there are custom buttons, wait for the addon file to exchange the selfPosition buttons before assigning the event listener
-  );
-
-  // In iframe, position:fixed does not work, because from the viewpoint of the iframe page, the window is much larger than the actual users' screen
-  // This workaround positions the button at the actual button of the users' screen
-  if (
-    addons.some((item) => item.includes("addon_check_iframe_resize_client.js"))
-  ) {
-    // The addon_check_iframe_resize_host.js sends message with all required values from parent window whenever it's scrolled
-    window.addEventListener("message", (event) => {
-      if (
-        !(btnRefresh = document.querySelector("#btn-see-updated-results")) ||
-        event.data.type !== "scroll"
-      )
-        return;
-      btnRefresh.style.bottom = "unset"; // Without iframe, the button is positioned with "bottom"; here, we use "top"
-      const scrollYRelativeToIframe =
-        event.data.scrollY - event.data.distanceDocTopToIframe;
-      const viewportBottomRelativeToIframe =
-        scrollYRelativeToIframe + event.data.viewportHeight;
-      let valueOfCssPropertyTop = viewportBottomRelativeToIframe - 60;
-      valueOfCssPropertyTop = Math.max(300, valueOfCssPropertyTop);
-      valueOfCssPropertyTop = Math.min(
-        window.innerHeight - 150,
-        valueOfCssPropertyTop
-      );
-      btnRefresh.style.top = valueOfCssPropertyTop + "px";
-    });
-  }
-}
-
 window.addEventListener("load", () => {
   checkIfUrlIsPermalink();
 
@@ -248,10 +169,6 @@ window.addEventListener("load", () => {
     ).innerHTML = `<h1>${TEXT_SHARE_AND_SAVE_HEADING}</h1><h2>${TEXT_SHARE_AND_SAVE_SUBHEADING}</h2>`;
     // Without disconnecting, the mutation would for some reason be triggered twice, leading to 2 buttons
     observerResults.disconnect();
-
-    if (window.SHOW_REFRESH_BUTTON === undefined || SHOW_REFRESH_BUTTON)
-      checkIfResultsChange();
-
     const permalinkButton = document.createElement("button");
     permalinkButton.setAttribute("id", "permalink-button");
     permalinkButton.classList.add("btn", "btn-secondary", "flex-center");

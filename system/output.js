@@ -424,443 +424,554 @@ function fnJumpToQuestionNumber(questionNumber) {
 
 // Anzeige der Ergebnisse - zusammengefasst (Prozentwerte) - nur Parteien
 // Array arResults kommt von fnEvaluation
-function generateSectionResults(arResults) {
-  function addContentToResultsTab() {
+function addContentToResultsTab() {
+  if (!document.querySelector("#resultsHeading").textContent)
     document.querySelector(
       "#resultsHeading"
     ).innerHTML = `<h1>${TEXT_RESULTS_HEADING}</h1><h2>${TEXT_RESULTS_SUBHEADING}</h2>`;
 
-    //Anzahl der Maximalpunkte ermitteln
-    const maxPoints = calculateMaxPoints();
+  //Anzahl der Maximalpunkte ermitteln
+  const maxPoints = calculateMaxPoints();
 
-    let tableContentResultsShort = `<div class='row' id='resultsShortTable' role='table'>
-    <div class='col'>`;
+  let tableContentResultsShort = `<div class='row' id='resultsShortTable' role='table'>
+  <div class='col'>`;
 
-    for (i = 0; i <= intParties - 1; i++) {
-      let partyNum = arSortParties[i];
-      let percent = fnPercentage(arResults[partyNum], maxPoints);
+  for (i = 0; i <= intParties - 1; i++) {
+    let partyNum = arSortParties[i];
+    let percent = fnPercentage(arResults[partyNum], maxPoints);
 
-      // "Klammer" um den Inhalt.
-      // Wenn ein Addon (z.B. addon_contacts_in_results.js) eine neue Zeile unter die Zeile #resultsShortParty einfügt,
-      // bleiben die Zebrastreifen aus der Klasse ".mow-row-striped" in der richtigen Reihenfolge.
-      tableContentResultsShort += `<div class='border rounded mow-row-striped row-with-one-result' id='resultsShortPartyClamp${partyNum}' role='row'>
- <div class='row' id='resultsShortParty${partyNum}' role='row'>
-    <div class='col col-2 col-md-1' role='cell'>
-      <img src='${
-        arPartyLogosImg[partyNum]
-      }' class='rounded img-fluid' alt='Logo ${arPartyNamesLong[partyNum]}' />
-    </div>
-    <div class='col col-10 col-md-7' role='cell'>
-        <strong>${arPartyNamesLong[partyNum]}</strong>
-        <br />
-        <span class="tagline">${arPartyInternet[partyNum]}</span>
-        <br /> 
-        <button type="button" class="btn btn-sm btn-outline-secondary flex-center" 
-          id="resultsShortPartyDescriptionButton${partyNum}">
-          ${TEXT_SHOW_PARTY_DESCRIPTION}</button>
-    </div> 
-    <div class='col col-12 col-md-4' role='cell'>
-        <div class='progress'>
-            <div class='progress-bar' role='progressbar' id='partyBar${partyNum}' style='width:${percent}%;'
-                  aria-valuenow='${percent}' aria-valuemin='0' aria-valuemax='100'>JUST_A_PLACEHOLDER_TEXT - SEE FUNCTION fnReEvaluate()
-            </div>
-        </div>
-    </div>
+    // "Klammer" um den Inhalt.
+    // Wenn ein Addon (z.B. addon_contacts_in_results.js) eine neue Zeile unter die Zeile #resultsShortParty einfügt,
+    // bleiben die Zebrastreifen aus der Klasse ".mow-row-striped" in der richtigen Reihenfolge.
+    tableContentResultsShort += `<div class='border rounded mow-row-striped row-with-one-result' id='resultsShortPartyClamp${partyNum}' role='row'>
+<div class='row' id='resultsShortParty${partyNum}' role='row'>
+  <div class='col col-2 col-md-1' role='cell'>
+    <img src="${
+      arPartyLogosImg[partyNum]
+    }" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />
   </div>
-  <div id="resultsShortPartyDetails${partyNum}">
-    <div id='resultsShortPartyDescription${partyNum}'>
-    <br /> 
-    <span id="internet-above-description"><a href='https://boardgamegeek.com/boardgame/${
-      arPartyNamesShort[partyNum]
-    }' target='_blank' class='flex-center' alt='Link: ${
-        arPartyNamesLong[partyNum]
-      }'
-              title='Link: ${arPartyNamesLong[partyNum]}'>
-              ${TEXT_LINK_TO_EXTERNAL_PAGE}</a>
-    <br / ></span>
-        ${arPartyDescription[partyNum] ? arPartyDescription[partyNum] : null}
-    <br /> 
-    <span id="internet-below-description"><a href='https://boardgamegeek.com/boardgame/${
-      arPartyNamesShort[partyNum]
-    }' target='_blank'  class='flex-center' alt='Link: ${
-        arPartyNamesLong[partyNum]
-      }'
-              title='Link: ${arPartyNamesLong[partyNum]}'>
-              ${TEXT_LINK_TO_EXTERNAL_PAGE}</a>
-    <br / ></span>
-    </div>
-    <div id="containerForAddonGeneratedElements"></div>`;
-      if (!HIDE_TABLE_resultsByPartyAnswers) {
-        tableContentResultsShort += `<div style='text-align: center; width: 100%;'>
-    <button id='resultsByPartyAnswers${partyNum}collapse' class='nonexpanded btn btn-sm btn-outline-secondary' type='button'>
-        ${TEXT_SHOW_PARTY_ANSWERS}
-    </button>
-    <span id='resultsByPartyAnswersToQuestion${partyNum}'> <!-- Hilfs-SPAN für Textfilter -->
-        <div class='row border rounded'>
-          <div class='col'>`;
+  <div class='col col-10 col-md-7' role='cell'>
+      <strong>${arPartyNamesLong[partyNum]}</strong>
+      <br />
+      <span class="tagline">${arPartyInternet[partyNum]}</span>
+      <br /> 
+      <button type="button" class="btn btn-sm btn-outline-secondary flex-center" 
+        id="resultsShortPartyDescriptionButton${partyNum}">
+        ${TEXT_SHOW_PARTY_DESCRIPTION}</button>
+  </div> 
+  <div class='col col-12 col-md-4' role='cell'>
+      <div class='progress'>
+          <div class='progress-bar' role='progressbar' id='partyBar${partyNum}' style='width:${percent}%;'
+                aria-valuenow='${percent}' aria-valuemin='0' aria-valuemax='100'>JUST_A_PLACEHOLDER_TEXT - SEE FUNCTION fnReEvaluate()
+          </div>
+      </div>
+  </div>
+</div>
+<div id="resultsShortPartyDetails${partyNum}">
+  <div id="resultsShortPartyDescription${partyNum}">
+  <br /> 
+  <span id="internet-above-description"><a href='https://boardgamegeek.com/boardgame/${
+    arPartyNamesShort[partyNum]
+  }' target='_blank' class='flex-center' alt="Link: ${
+      arPartyNamesLong[partyNum]
+    }"
+            title="Link: ${arPartyNamesLong[partyNum]}">
+            ${TEXT_LINK_TO_EXTERNAL_PAGE}</a>
+  <br / ></span>
+      ${arPartyDescription[partyNum] ? arPartyDescription[partyNum] : null}
+  <br /> 
+  <span id="internet-below-description"><a href='https://boardgamegeek.com/boardgame/${
+    arPartyNamesShort[partyNum]
+  }' target='_blank'  class='flex-center' alt="Link: ${
+      arPartyNamesLong[partyNum]
+    }"
+            title="Link: ${arPartyNamesLong[partyNum]}">
+            ${TEXT_LINK_TO_EXTERNAL_PAGE}</a>
+  <br / ></span>
+  </div>
+  <div id="containerForAddonGeneratedElements"></div>`;
+    if (!HIDE_TABLE_resultsByPartyAnswers) {
+      tableContentResultsShort += `<div style='text-align: center; width: 100%;'>
+  <button id='resultsByPartyAnswers${partyNum}collapse' class='nonexpanded btn btn-sm btn-outline-secondary' type='button'>
+      ${TEXT_SHOW_PARTY_ANSWERS}
+  </button>
+  <span id='resultsByPartyAnswersToQuestion${partyNum}'> <!-- Hilfs-SPAN für Textfilter -->
+      <div class='row border rounded'>
+        <div class='col'>`;
 
-        jStart = partyNum * intQuestions; // z.B. Citronen Partei = 3. Partei im Array[2] = 2 * 5 Fragen = 10
-        jEnd = jStart + intQuestions - 1; // 10 + 5 Fragen -1 = 14
+      jStart = partyNum * intQuestions; // z.B. Citronen Partei = 3. Partei im Array[2] = 2 * 5 Fragen = 10
+      jEnd = jStart + intQuestions - 1; // 10 + 5 Fragen -1 = 14
 
-        // Anzeige der Partei-Antworten
-        for (j = jStart; j <= jEnd; j++) {
-          // 1./4 Zellen - Frage
-          modulo = j % intQuestions; // z.B. arPartyPositions[11] % 5 Fragen = 1 -> arQuestionsShort[1] = 2. Frage
+      // Anzeige der Partei-Antworten
+      for (j = jStart; j <= jEnd; j++) {
+        // 1./4 Zellen - Frage
+        modulo = j % intQuestions; // z.B. arPartyPositions[11] % 5 Fragen = 1 -> arQuestionsShort[1] = 2. Frage
 
-          tableContentResultsShort += `
-                <div class='row mow-row-striped' role='row'>
-                    <div class='col col-10 col-md-5' role='cell'>
-                        ${modulo + 1}. <strong>${
-            arQuestionsShort[modulo]
-          }</strong> - ${arQuestionsLong[modulo]}
-                    </div>`;
-          // 2./4 Zellen - Icon für eigene Meinung [+] [0] [-]
-          var positionButton = fnTransformPositionToButton(
-            arPersonalPositions[modulo]
-          );
-          var positionIcon = fnTransformPositionToIcon(
-            arPersonalPositions[modulo]
-          );
-          var positionText = fnTransformPositionToText(
-            arPersonalPositions[modulo]
-          );
-
-          tableContentResultsShort += `<div class='col col-4 col-md-2' id='selfPositionContainer${modulo}' role='cell'>
-                      <button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${modulo}' 
-                              onclick='fnToggleSelfPosition(${modulo})' alt='${TEXT_ANSWER_USER} : ${positionText}'
-                              title='${TEXT_ANSWER_USER} : ${positionText}' data-value='${arPersonalPositions[modulo]}'>
-                          ${positionIcon}
-                      </button>
+        tableContentResultsShort += `
+              <div class='row mow-row-striped' role='row'>
+                  <div class='col col-10 col-md-5' role='cell'>
+                      ${modulo + 1}. <strong>${
+          arQuestionsShort[modulo]
+        }</strong> - ${arQuestionsLong[modulo]}
                   </div>`;
+        // 2./4 Zellen - Icon für eigene Meinung [+] [0] [-]
+        var positionButton = fnTransformPositionToButton(
+          arPersonalPositions[modulo]
+        );
+        var positionIcon = fnTransformPositionToIcon(
+          arPersonalPositions[modulo]
+        );
+        var positionText = fnTransformPositionToText(
+          arPersonalPositions[modulo]
+        );
 
-          // 3./4 Zellen - Icons für Postion der Parteien [+] [0] [-]
-          var positionIcon = fnTransformPositionToIcon(arPartyPositions[j]);
-          var positionButton = fnTransformPositionToButton(arPartyPositions[j]);
-          var positionText = fnTransformPositionToText(arPartyPositions[j]);
+        tableContentResultsShort += `<div class='col col-4 col-md-2' id='selfPositionContainer${modulo}' role='cell'>
+                    <button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${modulo}' 
+                            onclick='fnToggleSelfPosition(${modulo})' alt='${TEXT_ANSWER_USER} : ${positionText}'
+                            title='${TEXT_ANSWER_USER} : ${positionText}' data-value='${arPersonalPositions[modulo]}'>
+                        ${positionIcon}
+                    </button>
+                </div>`;
 
-          tableContentResultsShort += `<div class='col col-4 col-md-2' id='partyPositionContainer${modulo}' role='cell'>
-                      <button type='button' class='btn ${positionButton} partyPositionToQuestion${modulo} btn-sm' disabled data-value="${arPartyPositions[j]}"
-                              alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
-                          ${positionIcon}
-                      </button>
-                  </div>
-                  <div class='col col-6 col-md-3' role='cell' headers='resultsByPartyHeading${i}'>
-                      ${arPartyOpinions[j]}
-                      <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
-                  </div>
-              </div> <!-- end: row Anzeige der Partei-Antworten -->`;
-        } // end: for-j
-        tableContentResultsShort += `</div> <!-- end col -->
-            </div> <!-- end row resultsByPartyAnswersToQuestion -->
-          </span> <!-- end span resultsByPartyAnswersToQuestion -->
-          </div> <!-- end span resultsShortPartyDetails -->`;
-      }
-      tableContentResultsShort += `</div> <!-- end: row .mow-row-striped + #resultsShortPartyClampX -->
-    </div> <!-- row #resultsShortPartyX -->`;
-    } // end for
-    tableContentResultsShort += `</div>
-  </div> <!-- end: col (resultsShortTable) -->
+        // 3./4 Zellen - Icons für Postion der Parteien [+] [0] [-]
+        var positionIcon = fnTransformPositionToIcon(arPartyPositions[j]);
+        var positionButton = fnTransformPositionToButton(arPartyPositions[j]);
+        var positionText = fnTransformPositionToText(arPartyPositions[j]);
+
+        tableContentResultsShort += `<div class='col col-4 col-md-2' id='partyPositionContainer${modulo}' role='cell'>
+                    <button type='button' class='btn ${positionButton} partyPositionToQuestion${modulo} btn-sm' disabled data-value="${arPartyPositions[j]}"
+                            alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
+                        ${positionIcon}
+                    </button>
+                </div>
+                <div class='col col-6 col-md-3' role='cell' headers='resultsByPartyHeading${i}'>
+                    ${arPartyOpinions[j]}
+                    <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
+                </div>
+            </div> <!-- end: row Anzeige der Partei-Antworten -->`;
+      } // end: for-j
+      tableContentResultsShort += `</div> <!-- end col -->
+          </div> <!-- end row resultsByPartyAnswersToQuestion -->
+        </span> <!-- end span resultsByPartyAnswersToQuestion -->
+        </div> <!-- end span resultsShortPartyDetails -->`;
+    }
+    tableContentResultsShort += `</div> <!-- end: row .mow-row-striped + #resultsShortPartyClampX -->
+  </div> <!-- row #resultsShortPartyX -->`;
+  } // end for
+  tableContentResultsShort += `</div>
+</div> <!-- end: col (resultsShortTable) -->
 </div> <!-- end: row (resultsShortTable) -->`;
 
-    // Daten in Browser schreiben
-    document.querySelector("#resultsShort").innerHTML =
-      tableContentResultsShort;
+  // Daten in Browser schreiben
+  document.querySelector("#resultsShort").innerHTML = tableContentResultsShort;
 
-    if (!HIDE_TABLE_resultsByPartyAnswers) {
-      for (let i = 0; i < intParties; i++) {
-        const btnShowAnswersOfThisParty = document.querySelector(
-          `#resultsShortPartyClamp${i} .nonexpanded`
-        );
-        btnShowAnswersOfThisParty.addEventListener("click", () => {
-          $(`#resultsByPartyAnswersToQuestion${i}`).toggle(500);
-          btnShowAnswersOfThisParty.classList.toggle("expanded");
-          btnShowAnswersOfThisParty.classList.toggle("nonexpanded");
-          if (btnShowAnswersOfThisParty.classList.contains("expanded")) {
-            btnShowAnswersOfThisParty.innerHTML = TEXT_HIDE_PARTY_ANSWERS;
-          } else {
-            btnShowAnswersOfThisParty.innerHTML = TEXT_SHOW_PARTY_ANSWERS;
-          }
-        });
-      }
-    }
-
-    // Funktion zur Berechnung der "Doppelten Wertung" aufrufen
-    // -> enthält Aufruf für farbliche Progressbar (muss hier ja nicht extra wiederholt werden)
-    fnReEvaluate();
-
+  if (!HIDE_TABLE_resultsByPartyAnswers) {
     for (let i = 0; i < intParties; i++) {
-      const btnExpandDetails = document.querySelector(
-        `#resultsShortPartyDescriptionButton${i}`
+      const btnShowAnswersOfThisParty = document.querySelector(
+        `#resultsShortPartyClamp${i} .nonexpanded`
       );
-      btnExpandDetails.addEventListener("click", () => {
-        function handleFullscreenEventDetails() {
-          const clampResult = document.querySelector(
-            `#resultsShortPartyClamp${i}`
-          );
-          if (btnExpandDetails.classList.contains("expanded")) {
-            clampResult.scrollIntoView({ behavior: "smooth" });
-            const wrapperDiv = document.createElement("div");
-            wrapperDiv.classList.add("fullscreen-result-details-overlay");
-            clampResult.classList.add("fullscreen-result-details-content");
+      btnShowAnswersOfThisParty.addEventListener("click", () => {
+        $(`#resultsByPartyAnswersToQuestion${i}`).toggle(500);
+        btnShowAnswersOfThisParty.classList.toggle("expanded");
+        btnShowAnswersOfThisParty.classList.toggle("nonexpanded");
+        if (btnShowAnswersOfThisParty.classList.contains("expanded")) {
+          btnShowAnswersOfThisParty.innerHTML = TEXT_HIDE_PARTY_ANSWERS;
+        } else {
+          btnShowAnswersOfThisParty.innerHTML = TEXT_SHOW_PARTY_ANSWERS;
+        }
+      });
+    }
+  }
+
+  // Funktion zur Berechnung der "Doppelten Wertung" aufrufen
+  // -> enthält Aufruf für farbliche Progressbar (muss hier ja nicht extra wiederholt werden)
+  fnReEvaluate();
+
+  for (let i = 0; i < intParties; i++) {
+    const btnExpandDetails = document.querySelector(
+      `#resultsShortPartyDescriptionButton${i}`
+    );
+    btnExpandDetails.addEventListener("click", () => {
+      function handleFullscreenEventDetails() {
+        const clampResult = document.querySelector(
+          `#resultsShortPartyClamp${i}`
+        );
+        if (btnExpandDetails.classList.contains("expanded")) {
+          clampResult.scrollIntoView({ behavior: "smooth" });
+          const wrapperDiv = document.createElement("div");
+          wrapperDiv.classList.add("fullscreen-result-details-overlay");
+          clampResult.classList.add("fullscreen-result-details-content");
+          setTimeout(() => {
+            clampResult.parentNode.insertBefore(wrapperDiv, clampResult);
+            wrapperDiv.appendChild(clampResult);
+            document.body.style.overflow = "hidden";
+            const btnClose = document.createElement("button");
+            btnClose.innerHTML = TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS;
+            btnClose.addEventListener("click", () => {
+              btnExpandDetails.click();
+            });
+            clampResult.parentNode.appendChild(btnClose);
+            btnClose.classList.add(
+              "fullscreen-result-details-close",
+              "off-screen"
+            );
             setTimeout(() => {
-              clampResult.parentNode.insertBefore(wrapperDiv, clampResult);
-              wrapperDiv.appendChild(clampResult);
+              btnClose.classList.remove("off-screen");
+            }, 0);
+          }, 500); // Wait for the toggle animation to be finished
+        } else {
+          const wrapperDiv = clampResult.parentNode;
+          wrapperDiv.parentNode.insertBefore(clampResult, wrapperDiv);
+          wrapperDiv.remove();
+          clampResult.classList.remove("fullscreen-result-details-content");
+          document.body.style.overflow = "unset";
+          clampResult.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+      if (window.innerWidth > 768) {
+        // Close result details that are currently open
+        document
+          .querySelector(
+            `[id^="resultsShortPartyDescriptionButton"]:not(#resultsShortPartyDescriptionButton${i}).expanded`
+          )
+          ?.click();
+      }
+      $(`#resultsShortPartyDetails${i}`).toggle(450);
+      btnExpandDetails.classList.toggle("expanded");
+      if (btnExpandDetails.classList.contains("expanded")) {
+        btnExpandDetails.innerHTML = TEXT_HIDE_PARTY_DESCRIPTION; // MINUS
+      } else {
+        btnExpandDetails.innerHTML = TEXT_SHOW_PARTY_DESCRIPTION; // PLUS
+        // If the details are closed and the answers were expanded, collapse the answers
+        const btnExpandAnswers = document.querySelector(
+          `#resultsByPartyAnswers${i}collapse`
+        );
+        if (btnExpandAnswers?.classList.contains("expanded"))
+          btnExpandAnswers.click();
+      }
+      if (window.innerWidth <= 768) handleFullscreenEventDetails();
+    });
+
+    $(`#resultsByPartyAnswersToQuestion${i}`).hide(500);
+
+    // am Anfang die Antworten ausblenden
+    $(`#resultsShortPartyDetails${i}`).fadeOut(0);
+  }
+}
+
+function addContentToFinetuningTab() {
+  document.querySelector(
+    "#finetuningHeading"
+  ).innerHTML = `<h1>${TEXT_FINETUNING_HEADING}</h1><h2>${TEXT_FINETUNING_SUBHEADING}</h2>`;
+
+  let tableContentResultsByThesis = `
+      <div class='row' id='resultsByThesisTable' role='table'>
+        <div class='col'>`;
+  for (i = 0; i < intQuestions; i++) {
+    var positionButton = fnTransformPositionToButton(arPersonalPositions[i]);
+    var positionIcon = fnTransformPositionToIcon(arPersonalPositions[i]);
+    var positionText = fnTransformPositionToText(arPersonalPositions[i]);
+
+    tableContentResultsByThesis += `<div class='row border' id='resultsByThesisQuestion${i}Container' role='row'>
+                <div class='col' id='resultsByThesisQuestion${i}' role='cell'>
+                
+                    <div id='resultsByThesisQuestion${i}Text'>
+                        <strong><i class="bx bx-fw ${
+                          arQuestionsIcon[i]
+                        }"></i> ${arQuestionsShort[i]}</strong>: ${
+      arQuestionsLong[i]
+    }
+                    </div>
+
+                    <div id='resultsByThesisQuestion${i}PersonalPosition'>
+                    <small>${TEXT_ANSWER_USER}: </small><button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${i}' onclick='fnToggleSelfPosition(${i})' 
+                            alt='${TEXT_ANSWER_USER} : ${positionText}' title='${TEXT_ANSWER_USER} : ${positionText}' data-value="${
+      arPersonalPositions[i]
+    }">
+                        ${positionIcon}
+                    </button>
+                    <button type='button'  id='doubleIcon${i}'
+                          onclick='fnToggleDouble(${i})' 
+   ${
+     arVotingDouble[i]
+       ? `class='btn btn-sm btn-dark' title='${TEXT_ANSWER_DOUBLE}'>x2`
+       : `class='btn btn-sm btn-outline-dark' title='${TEXT_ANSWER_NORMAL}'>x1`
+   }
+                  
+                    </button>
+                </div>
+
+                    <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>
+                        ${TEXT_SHOW_THESIS_ANSWERS}
+                    </button>
+                </div>
+               
+
+            <!-- darunterliegende Zeile - Parteipositionen anzeigen -->
+            <div class='border rounded' id='resultsByThesisAnswersToQuestion${i}'>
+                <div class='col'>`;
+
+    // darunterliegende Zeile - Parteipositionen anzeigen
+    for (j = 0; j < intParties; j++) {
+      var partyNum = arSortParties[j];
+      var partyPositionsRow = partyNum * intQuestions + i;
+      var positionButton = fnTransformPositionToButton(
+        arPartyPositions[partyPositionsRow]
+      );
+      var positionIcon = fnTransformPositionToIcon(
+        arPartyPositions[partyPositionsRow]
+      );
+      var positionText = fnTransformPositionToText(
+        arPartyPositions[partyPositionsRow]
+      );
+
+      // Inhalt der Zelle
+      tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
+
+                        <div class='w-50 d-flex align-items-center' role='cell'>
+                            <small><strong>${arPartyNamesLong[partyNum].replace(
+                              / <small>.*?<\/small>/,
+                              ""
+                            )}: </strong></small>${
+        arPartyOpinions[partyPositionsRow] ? ":" : ""
+      } ${arPartyOpinions[partyPositionsRow]}
+                        <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
+                            <span style='visibility:hidden; display:none;' aria-hidden='true'>${
+                              arPartyDescription[partyNum]
+                            }</span>
+                        </div>
+                        <div class='w-50 d-flex align-items-center' role='cell'>
+                            <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
+        arPartyPositions[partyPositionsRow]
+      }"
+                                    alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
+                                ${positionIcon}
+                            </button>
+                        </div>
+                    </div>`;
+    }
+    tableContentResultsByThesis += `</div> <!-- col (Partei-Antworten) -->
+            </div> <!-- row (Partei-Antworten) -->
+            </div> <!-- row Fragen -->
+            `;
+  } // end if
+
+  tableContentResultsByThesis += `</div> <!-- col -->
+    </div> <!-- row -->`;
+
+  // Daten in Browser schreiben
+  $("#resultsByThesis").append(tableContentResultsByThesis);
+
+  for (let i = 0; i < intQuestions; i++) {
+    document
+      .querySelector(`#resultsByThesisQuestion${i} .nonexpanded`)
+      .addEventListener("click", () => {
+        function handleFullscreenPartyAnswerList() {
+          const containerQuestion = document.querySelector(
+            `#resultsByThesisQuestion${i}Container`
+          );
+          const questionTextContainer = document.querySelector(
+            `#resultsByThesisQuestion${i}`
+          );
+          if (btnExpand.classList.contains("expanded")) {
+            containerQuestion.scrollIntoView({ behavior: "smooth" });
+            const wrapperDiv = document.createElement("div");
+            wrapperDiv.classList.add("fullscreen-on-mobile-overlay");
+            containerQuestion.classList.add("fullscreen-on-mobile-content");
+            questionTextContainer.classList.add("fullscreen-on-mobile-header");
+
+            setTimeout(() => {
+              // Wait for toggle animation to be finished
+              containerQuestion.parentNode.insertBefore(
+                wrapperDiv,
+                containerQuestion
+              );
+              wrapperDiv.appendChild(containerQuestion);
               document.body.style.overflow = "hidden";
+              // The questionTextContainer is fixed at the top; the answers list must be pushed down accordingly
+              const heightOfQuestionTextContainer = window.getComputedStyle(
+                questionTextContainer
+              ).height;
+              questionTextContainer.nextElementSibling.style.marginTop = `${
+                +heightOfQuestionTextContainer.replace("px", "") + 10
+              }px`;
               const btnClose = document.createElement("button");
               btnClose.innerHTML = TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS;
               btnClose.addEventListener("click", () => {
-                btnExpandDetails.click();
+                btnExpand.click();
               });
-              clampResult.parentNode.appendChild(btnClose);
+              containerQuestion.parentNode.appendChild(btnClose);
               btnClose.classList.add(
-                "fullscreen-result-details-close",
+                "fullscreen-on-mobile-btn-close",
                 "off-screen"
               );
               setTimeout(() => {
                 btnClose.classList.remove("off-screen");
               }, 0);
-            }, 500); // Wait for the toggle animation to be finished
+            }, 450);
           } else {
-            const wrapperDiv = clampResult.parentNode;
-            wrapperDiv.parentNode.insertBefore(clampResult, wrapperDiv);
+            const wrapperDiv = containerQuestion.parentNode;
+            wrapperDiv.parentNode.insertBefore(containerQuestion, wrapperDiv);
             wrapperDiv.remove();
-            clampResult.classList.remove("fullscreen-result-details-content");
+            containerQuestion.classList.remove("fullscreen-on-mobile-content");
+            questionTextContainer.classList.remove(
+              "fullscreen-on-mobile-header"
+            );
+            questionTextContainer.nextElementSibling.style.marginTop = "0";
             document.body.style.overflow = "unset";
-            clampResult.scrollIntoView({ behavior: "smooth" });
+            containerQuestion.scrollIntoView({ behavior: "smooth" });
           }
         }
         if (window.innerWidth > 768) {
-          // Close result details that are currently open
+          // Close answer list that is currently open
           document
             .querySelector(
-              `[id^="resultsShortPartyDescriptionButton"]:not(#resultsShortPartyDescriptionButton${i}).expanded`
+              `#resultsByThesisTable .expanded:not(#resultsByThesisQuestion${i}collapse)`
             )
             ?.click();
         }
-        $(`#resultsShortPartyDetails${i}`).toggle(450);
-        btnExpandDetails.classList.toggle("expanded");
-        if (btnExpandDetails.classList.contains("expanded")) {
-          btnExpandDetails.innerHTML = TEXT_HIDE_PARTY_DESCRIPTION; // MINUS
+        const btnExpand = document.querySelector(
+          `#resultsByThesisQuestion${i} .nonexpanded`
+        );
+        $(`#resultsByThesisAnswersToQuestion${i}`).toggle(400);
+        btnExpand.classList.toggle("expanded");
+        if (btnExpand.classList.contains("expanded")) {
+          btnExpand.innerHTML = TEXT_HIDE_THESIS_ANSWERS; // MINUS
         } else {
-          btnExpandDetails.innerHTML = TEXT_SHOW_PARTY_DESCRIPTION; // PLUS
-          // If the details are closed and the answers were expanded, collapse the answers
-          const btnExpandAnswers = document.querySelector(
-            `#resultsByPartyAnswers${i}collapse`
-          );
-          if (btnExpandAnswers?.classList.contains("expanded"))
-            btnExpandAnswers.click();
+          btnExpand.innerHTML = TEXT_SHOW_THESIS_ANSWERS; // PLUS
         }
-        if (window.innerWidth <= 768) handleFullscreenEventDetails();
+        if (window.innerWidth <= 768) handleFullscreenPartyAnswerList();
       });
 
-      $(`#resultsByPartyAnswersToQuestion${i}`).hide(500);
-
-      // am Anfang die Antworten ausblenden
-      $(`#resultsShortPartyDetails${i}`).fadeOut(0);
-    }
+    // am Anfang die Antworten ausblenden
+    //		$("#resultsByThesisAnswersToQuestion"+i).fadeOut(500);	// irgendwie verrutschen die Zeilen bei fadeOut() -> deshalb die css()-Lösung
+    $(`#resultsByThesisAnswersToQuestion${i}`).css("display", "none");
   }
-  function addContentToFinetuningTab() {
-    document.querySelector(
-      "#finetuningHeading"
-    ).innerHTML = `<h1>${TEXT_FINETUNING_HEADING}</h1><h2>${TEXT_FINETUNING_SUBHEADING}</h2>`;
 
-    let tableContentResultsByThesis = `
-        <div class='row' id='resultsByThesisTable' role='table'>
-          <div class='col'>`;
-    for (i = 0; i < intQuestions; i++) {
-      var positionButton = fnTransformPositionToButton(arPersonalPositions[i]);
-      var positionIcon = fnTransformPositionToIcon(arPersonalPositions[i]);
-      var positionText = fnTransformPositionToText(arPersonalPositions[i]);
-
-      tableContentResultsByThesis += `<div class='row border' id='resultsByThesisQuestion${i}Container' role='row'>
-                  <div class='col' id='resultsByThesisQuestion${i}' role='cell'>
-                  
-                      <div id='resultsByThesisQuestion${i}Text'>
-                          <strong><i class="bx bx-fw ${
-                            arQuestionsIcon[i]
-                          }"></i> ${arQuestionsShort[i]}</strong>: ${
-        arQuestionsLong[i]
-      }
-                      </div>
-
-                      <div id='resultsByThesisQuestion${i}PersonalPosition'>
-                      <small>${TEXT_ANSWER_USER}: </small><button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${i}' onclick='fnToggleSelfPosition(${i})' 
-                              alt='${TEXT_ANSWER_USER} : ${positionText}' title='${TEXT_ANSWER_USER} : ${positionText}' data-value="${
-        arPersonalPositions[i]
-      }">
-                          ${positionIcon}
-                      </button>
-                      <button type='button'  id='doubleIcon${i}'
-                            onclick='fnToggleDouble(${i})' 
-     ${
-       arVotingDouble[i]
-         ? `class='btn btn-sm btn-dark' title='${TEXT_ANSWER_DOUBLE}'>x2`
-         : `class='btn btn-sm btn-outline-dark' title='${TEXT_ANSWER_NORMAL}'>x1`
-     }
-                    
-                      </button>
-                  </div>
-
-                      <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>
-                          ${TEXT_SHOW_THESIS_ANSWERS}
-                      </button>
-                  </div>
-                 
-
-              <!-- darunterliegende Zeile - Parteipositionen anzeigen -->
-              <div class='row border rounded' id='resultsByThesisAnswersToQuestion${i}'>
-                  <div class='col'>`;
-
-      // darunterliegende Zeile - Parteipositionen anzeigen
-      for (j = 0; j < intParties; j++) {
-        var partyNum = arSortParties[j];
-        var partyPositionsRow = partyNum * intQuestions + i;
-        var positionButton = fnTransformPositionToButton(
-          arPartyPositions[partyPositionsRow]
-        );
-        var positionIcon = fnTransformPositionToIcon(
-          arPartyPositions[partyPositionsRow]
-        );
-        var positionText = fnTransformPositionToText(
-          arPartyPositions[partyPositionsRow]
-        );
-
-        // Inhalt der Zelle
-        tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result' role='row'>
-  
-                          <div class='w-50 d-flex align-items-center' role='cell'>
-                              <small><strong>${arPartyNamesLong[
-                                partyNum
-                              ].replace(
-                                / <small>.*?<\/small>/,
-                                ""
-                              )}: </strong></small>${
-          arPartyOpinions[partyPositionsRow] ? ":" : ""
-        } ${arPartyOpinions[partyPositionsRow]}
-                          <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
-                              <span style='visibility:hidden; display:none;' aria-hidden='true'>${
-                                arPartyDescription[partyNum]
-                              }</span>
-                          </div>
-                          <div class='w-50 d-flex align-items-center' role='cell'>
-                              <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
-          arPartyPositions[partyPositionsRow]
-        }"
-                                      alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
-                                  ${positionIcon}
-                              </button>
-                          </div>
-                      </div>`;
-      }
-      tableContentResultsByThesis += `</div> <!-- col (Partei-Antworten) -->
-              </div> <!-- row (Partei-Antworten) -->
-              </div> <!-- row Fragen -->
-              `;
-    } // end if
-
-    tableContentResultsByThesis += `</div> <!-- col -->
-      </div> <!-- row -->`;
-
-    // Daten in Browser schreiben
-    $("#resultsByThesis").append(tableContentResultsByThesis);
-
-    for (let i = 0; i < intQuestions; i++) {
-      document
-        .querySelector(`#resultsByThesisQuestion${i} .nonexpanded`)
-        .addEventListener("click", () => {
-          function handleFullscreenPartyAnswerList() {
-            const containerQuestion = document.querySelector(
-              `#resultsByThesisQuestion${i}Container`
-            );
-            const questionTextContainer = document.querySelector(
-              `#resultsByThesisQuestion${i}`
-            );
-            if (btnExpand.classList.contains("expanded")) {
-              containerQuestion.scrollIntoView({ behavior: "smooth" });
-              const wrapperDiv = document.createElement("div");
-              wrapperDiv.classList.add("fullscreen-on-mobile-overlay");
-              containerQuestion.classList.add("fullscreen-on-mobile-content");
-              questionTextContainer.classList.add(
-                "fullscreen-on-mobile-header"
-              );
-
-              setTimeout(() => {
-                // Wait for toggle animation to be finished
-                containerQuestion.parentNode.insertBefore(
-                  wrapperDiv,
-                  containerQuestion
-                );
-                wrapperDiv.appendChild(containerQuestion);
-                document.body.style.overflow = "hidden";
-                // The questionTextContainer is fixed at the top; the answers list must be pushed down accordingly
-                const heightOfQuestionTextContainer = window.getComputedStyle(
-                  questionTextContainer
-                ).height;
-                questionTextContainer.nextElementSibling.style.marginTop = `${
-                  +heightOfQuestionTextContainer.replace("px", "") + 10
-                }px`;
-                const btnClose = document.createElement("button");
-                btnClose.innerHTML = TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS;
-                btnClose.addEventListener("click", () => {
-                  btnExpand.click();
-                });
-                containerQuestion.parentNode.appendChild(btnClose);
-                btnClose.classList.add(
-                  "fullscreen-on-mobile-btn-close",
-                  "off-screen"
-                );
-                setTimeout(() => {
-                  btnClose.classList.remove("off-screen");
-                }, 0);
-              }, 450);
-            } else {
-              const wrapperDiv = containerQuestion.parentNode;
-              wrapperDiv.parentNode.insertBefore(containerQuestion, wrapperDiv);
-              wrapperDiv.remove();
-              containerQuestion.classList.remove(
-                "fullscreen-on-mobile-content"
-              );
-              questionTextContainer.classList.remove(
-                "fullscreen-on-mobile-header"
-              );
-              questionTextContainer.nextElementSibling.style.marginTop = "0";
-              document.body.style.overflow = "unset";
-              containerQuestion.scrollIntoView({ behavior: "smooth" });
-            }
-          }
-          if (window.innerWidth > 768) {
-            // Close answer list that is currently open
-            document
-              .querySelector(
-                `#resultsByThesisTable .expanded:not(#resultsByThesisQuestion${i}collapse)`
-              )
-              ?.click();
-          }
-          const btnExpand = document.querySelector(
-            `#resultsByThesisQuestion${i} .nonexpanded`
-          );
-          $(`#resultsByThesisAnswersToQuestion${i}`).toggle(400);
-          btnExpand.classList.toggle("expanded");
-          if (btnExpand.classList.contains("expanded")) {
-            btnExpand.innerHTML = TEXT_HIDE_THESIS_ANSWERS; // MINUS
-          } else {
-            btnExpand.innerHTML = TEXT_SHOW_THESIS_ANSWERS; // PLUS
-          }
-          if (window.innerWidth <= 768) handleFullscreenPartyAnswerList();
-        });
-
-      // am Anfang die Antworten ausblenden
-      //		$("#resultsByThesisAnswersToQuestion"+i).fadeOut(500);	// irgendwie verrutschen die Zeilen bei fadeOut() -> deshalb die css()-Lösung
-      $(`#resultsByThesisAnswersToQuestion${i}`).css("display", "none");
-    }
-
-    // Nach jedem Klick auf einen Button den Fokus wieder entfernen, um bleibende Hervorhebungen (Unterstreichungen) zu vermeiden
-    document.querySelectorAll("button").forEach((button) => {
-      button.addEventListener("click", () => {
-        document.activeElement.blur();
-      });
+  // Nach jedem Klick auf einen Button den Fokus wieder entfernen, um bleibende Hervorhebungen (Unterstreichungen) zu vermeiden
+  document.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.activeElement.blur();
     });
-  }
+  });
+
+  (function checkIfResultsChange() {
+    function showOrHighlightBtnRefresh() {
+      if (
+        document
+          .querySelector("#resultsTabBtn")
+          .classList.contains("reload-results")
+      )
+        return;
+
+      document.querySelector("#resultsTabBtn").addEventListener("click", () => {
+        for (i = 0; i < intParties; i++) {
+          arSortParties[i] = i;
+        }
+        arSortParties.sort((a, b) => arResults[b] - arResults[a]);
+        arSortParties.forEach((num) => {
+          document
+            .querySelector("#resultsShortTable .col")
+            .appendChild(
+              document.querySelector(`#resultsShortPartyClamp${num}`)
+            );
+        });
+        document
+          .querySelectorAll("[id^='resultsByThesisAnswersToQuestion']")
+          .forEach((table) => {
+            arSortParties.forEach((num) => {
+              table
+                .querySelector(".col")
+                .appendChild(table.querySelector(`.result${num}`));
+            });
+          });
+        sendMessageToLimitResultsAddon();
+        // addContentToFinetuningTab();
+        document
+          .querySelector("#resultsTabBtn")
+          .classList.remove("reload-results");
+      });
+      document.querySelector("#resultsTabBtn").classList.add("reload-results");
+
+      if (document.querySelector("#btn-see-updated-results")) return;
+      const btnRefresh = document.createElement("button");
+      btnRefresh.setAttribute("id", "btn-see-updated-results");
+      btnRefresh.classList.add(
+        "btn",
+        "btn-secondary",
+        "flex-center",
+        "off-screen",
+        "btn-above-navbar"
+      );
+      btnRefresh.innerHTML =
+        REFRESH_BUTTON_TEXT !== undefined
+          ? REFRESH_BUTTON_TEXT
+          : "&#8634; Ranking aktualisieren";
+      btnRefresh.addEventListener("click", () => {
+        document.querySelector("#resultsTabBtn").click();
+      });
+      document.querySelector("#resultsTabBtn").addEventListener("click", () => {
+        btnRefresh.remove();
+      });
+
+      document.querySelector("#sectionResults").appendChild(btnRefresh);
+      setTimeout(() => {
+        btnRefresh.classList.remove("off-screen");
+      }, 0);
+      if (
+        addons.some((item) =>
+          item.includes("addon_check_iframe_resize_client.js")
+        )
+      ) {
+        // In iframe, the button is (re-)positioned whenever the parent window scrolls
+        // This must happen as soon as the button is created
+        // Message is listened to by addon_check_iframe_resize_host.js, sends scroll event with position values back
+        parent.postMessage(["triggerScrollEvent", null], "*");
+      }
+    }
+
+    setTimeout(
+      () => {
+        const nodelistResultChangingButtons = document.querySelectorAll(
+          "[class*='selfPosition'], [id^='doubleIcon']"
+        );
+        nodelistResultChangingButtons.forEach((btn) => {
+          btn.addEventListener("click", showOrHighlightBtnRefresh);
+        });
+      },
+      isActivated("addon_custom_voting_buttons.js") ? 500 : 0 // If there are custom buttons, wait for the addon file to exchange the selfPosition buttons before assigning the event listener
+    );
+
+    // In iframe, position:fixed does not work, because from the viewpoint of the iframe page, the window is much larger than the actual users' screen
+    // This workaround positions the button at the actual button of the users' screen
+    // if (
+    //   addons.some((item) => item.includes("addon_check_iframe_resize_client.js"))
+    // ) {
+    //   // The addon_check_iframe_resize_host.js sends message with all required values from parent window whenever it's scrolled
+    //   window.addEventListener("message", (event) => {
+    //     if (
+    //       !(btnRefresh = document.querySelector("#btn-see-updated-results")) ||
+    //       event.data.type !== "scroll"
+    //     )
+    //       return;
+    //     btnRefresh.style.bottom = "unset"; // Without iframe, the button is positioned with "bottom"; here, we use "top"
+    //     const scrollYRelativeToIframe =
+    //       event.data.scrollY - event.data.distanceDocTopToIframe;
+    //     const viewportBottomRelativeToIframe =
+    //       scrollYRelativeToIframe + event.data.viewportHeight;
+    //     let valueOfCssPropertyTop = viewportBottomRelativeToIframe - 60;
+    //     valueOfCssPropertyTop = Math.max(300, valueOfCssPropertyTop);
+    //     valueOfCssPropertyTop = Math.min(
+    //       window.innerHeight - 150,
+    //       valueOfCssPropertyTop
+    //     );
+    //     btnRefresh.style.top = valueOfCssPropertyTop + "px";
+    //   });
+    // }
+  })();
+}
+
+function generateSectionResults(arResults) {
   function addContentToInfoTab() {
     function showLegalBtnsOnlyInInfoTab() {
       const legalBtns = document.querySelectorAll("#privacy, #imprint");
