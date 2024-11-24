@@ -359,8 +359,8 @@ td[style*="background: var(--warning);"] a {
 
 /* STATISTICS MODAL */
 
-.modal-backdrop {
-  opacity: 0.65 !important;
+.modal-backdrop.show {
+  opacity: 0.65;
 }
 
 /* Needed for iframe in order to show the modal at the very top and not in the middle */

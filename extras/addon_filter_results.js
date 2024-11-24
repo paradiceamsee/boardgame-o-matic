@@ -19,8 +19,7 @@ Other functions:
 window.addEventListener("load", setupFilters);
 
 function setupFilters() {
-  if (FILTERS.some((filter) => filter.setAtStart?.isWanted))
-    setFiltersAtStart();
+  setFiltersAtStart();
   const filtersTab = document.createElement("div");
   filtersTab.setAttribute("id", "filters");
   filtersTab.classList.add("col", "d-none");
@@ -32,18 +31,25 @@ function setupFilters() {
   document
     .querySelector("#sectionResults")
     .insertBefore(filtersTab, document.querySelector("#results"));
-  FILTERS.forEach((filter) => {
-    const nodeFilter = createFilterHtml(filter);
-    // Start mutation observer to recognize when the results page is displayed
-    const target = document.querySelector("#resultsHeading");
-    const observer = new MutationObserver(() => {
+
+  // Start mutation observer to recognize when the results page is displayed
+  const target = document.querySelector("#resultsHeading");
+  const observer = new MutationObserver(() => {
+    FILTERS.forEach((filter) => {
+      const nodeFilter = createFilterHtml(filter);
       addFilterNodeToDOM(nodeFilter, filter);
     });
-    var config = {
-      childList: true,
-    };
-    observer.observe(target, config);
+    if (
+      FILTERS.some(
+        (filter) => filter.displayFilterValuesInResultDetails?.isWanted
+      )
+    )
+      displayFilterValuesInResultDetails();
   });
+  var config = {
+    childList: true,
+  };
+  observer.observe(target, config);
   if (BUTTON_RESET_ALL_FILTERS?.showButton) setupButtonResetAllFilters();
 }
 
@@ -134,12 +140,14 @@ function createFilterHtml(filter) {
       const isActive =
         (isChecked && !filter.checkedMeansExcluded) ||
         (!isChecked && filter.checkedMeansExcluded);
-      divContent += `
+      divContent += `<div class="checkbox-container flex-center">
       <input type="checkbox" id="filter-checkbox-list-${
         filter.internalName
       }-option${i}" ${isChecked ? "checked" : ""} value="${
         filter.options[i].value
-      }">
+      }" onchange="toggleStylesOfLabel(this, ${
+        filter.strikethroughOptionsThatGetHidden
+      })">
       <label class="checkbox-list-label" for="filter-checkbox-list-${
         filter.internalName
       }-option${i}">
@@ -152,6 +160,12 @@ function createFilterHtml(filter) {
             : ""
         }>${filter.options[i].label}</span>
       </label>`;
+      if (filter.options[i].help) {
+        divContent += `<button class="bx bx-help-circle icon-help" id="icon-help-${filter.internalName}-option${i}" onclick='showHelpModalExplainingFilterOption("${filter.internalName}","${i}",
+          "${filter.options[i].label}",
+          "${filter.options[i].help}")'></button>`;
+      }
+      divContent += `</div>`;
     }
     divContent += "</div>";
     divContent += `<p class="error-message" id='error-message-filter-${filter.type}-${filter.internalName}'></p>`;
@@ -173,24 +187,6 @@ function createFilterHtml(filter) {
     }</label>`;
   }
   containerOfFilter.innerHTML = divContent;
-
-  if (filter.type === "checkbox-list") {
-    containerOfFilter
-      .querySelectorAll("[type='checkbox']")
-      .forEach((checkbox) => {
-        checkbox.addEventListener("change", () => {
-          const icon = checkbox.nextElementSibling.querySelector("i");
-          ["bx-check", "bx-x", "bg-color-success", "bg-color-danger"].forEach(
-            (cls) => icon.classList.toggle(cls)
-          );
-          if (filter.strikethroughOptionsThatGetHidden) {
-            checkbox.nextElementSibling
-              .querySelector("span")
-              .classList.toggle("line-through");
-          }
-        });
-      });
-  }
   return containerOfFilter;
 }
 
@@ -207,6 +203,187 @@ function addFilterNodeToDOM(nodeFilter, filter) {
   addEventListenerToFilter(filter);
   if (FILTERS.some((filter) => filter.setAtStart?.isWanted))
     setPreselectedFilter();
+}
+
+function toggleStylesOfLabel(element, strikethroughOptionsThatGetHidden) {
+  const icon = element.nextElementSibling.querySelector("i");
+  ["bx-check", "bx-x", "bg-color-success", "bg-color-danger"].forEach((cls) =>
+    icon.classList.toggle(cls)
+  );
+  if (strikethroughOptionsThatGetHidden) {
+    element.nextElementSibling
+      .querySelector("span")
+      .classList.toggle("line-through");
+  }
+}
+
+function displayFilterValuesInResultDetails() {
+  function createLookupTableForAnswersToCustomQuestionsResultDetails() {
+    window.lookupTableForCustomQuestions = {};
+    DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS.questionsToBeDisplayed.forEach(
+      (question) => {
+        if (!question.isCustomQuestion) return;
+        const lookupTableEntry = {};
+        objCustomQuestion = CUSTOM_POSITION_BUTTONS.find(
+          (obj) => obj.questionNr === question.questionNr
+        );
+        objCustomQuestion.arPositionValues.forEach((value, index) => {
+          lookupTableEntry[value] = objCustomQuestion.arButtonLabels[index];
+        });
+        window.lookupTableForCustomQuestions[question.questionNr] =
+          lookupTableEntry;
+      }
+    );
+  }
+  function addAnswersToDivContent(divContent, description) {
+    const resultNr = +description
+      .getAttribute("id")
+      .replace("resultsShortPartyDescription", "");
+
+    DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS.questionsToBeDisplayed.forEach(
+      (question) => {
+        const answerIndex = resultNr * intQuestions + (question.questionNr - 1);
+        const answerValue = arPartyPositions[answerIndex];
+        let answerText = "";
+        if (question.isCustomQuestion)
+          answerText =
+            window.lookupTableForCustomQuestions[question.questionNr][
+              answerValue
+            ];
+        else
+          answerText =
+            arIcons[answerValue === 1 ? "0" : answerValue === 0 ? "1" : "2"];
+        divContent += `<li class="flex-center"><i class="bx ${
+          arQuestionsIcon[question.questionNr - 1]
+        }"></i>`;
+        if (question.displayQuestionHeading)
+          divContent += `${arQuestionsShort[question.questionNr - 1]}: `;
+        divContent += answerText;
+        divContent += "</li>";
+      }
+    );
+    return divContent;
+  }
+  function addFilterValuesToDivContent(divContent, description) {
+    FILTERS.forEach((filter) => {
+      if (!filter.displayFilterValuesInResultDetails?.isWanted) return;
+      const presentFilterValueStrings = description
+        .querySelector(".filter-values")
+        .getAttribute(`data-${filter.internalName}`)
+        .split(" ");
+      if (
+        presentFilterValueStrings.length === 1 &&
+        presentFilterValueStrings[0] === ""
+      )
+        return;
+      const presentFilterOptions = presentFilterValueStrings.map(
+        (presentValue) =>
+          filter.options.find((option) => option.value === presentValue)
+      );
+      divContent += `<li>`;
+      divContent += `<span class="flex-center" style="display: inline-flex"><i class="bx ${filter.icon}"></i> ${filter.displayFilterValuesInResultDetails.label}:</span> `;
+      if (filter.displayFilterValuesInResultDetails.bulletList) {
+        divContent += "<ul>";
+        presentFilterOptions.forEach((option) => {
+          divContent += `<li>${
+            option[filter.type === "dropdown" ? "text" : "label"]
+          }`;
+          if (option.help) {
+            divContent += `<button class="bx bx-help-circle icon-help icon-help-result-details-${
+              filter.internalName
+            }-option${filter.options.indexOf(
+              option
+            )}" onclick='showHelpModalExplainingFilterOption("${
+              filter.internalName
+            }","${filter.options.indexOf(option)}",
+              "${option[filter.type === "dropdown" ? "text" : "label"]}",
+              "${option.help}")'></button>`;
+          }
+          divContent += `</li>`;
+        });
+        divContent += "</ul>";
+      } else
+        divContent += presentFilterOptions
+          .map(
+            (option) => option[filter.type === "dropdown" ? "text" : "label"]
+          )
+          .join("; ");
+    });
+    return divContent;
+  }
+  if (!document.querySelector("#resultsHeading").textContent) return;
+  if (DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS?.isWanted)
+    createLookupTableForAnswersToCustomQuestionsResultDetails();
+  document
+    .querySelectorAll("div[id^='resultsShortPartyDescription']")
+    .forEach((description) => {
+      const nodeAnswersAndFilterValues = document.createElement("div");
+      let divContent =
+        "<ul class='list-answers-and-filter-values-in-result-details'>";
+      divContent = addAnswersToDivContent(divContent, description);
+      divContent = addFilterValuesToDivContent(divContent, description);
+      divContent += "</ul>";
+      nodeAnswersAndFilterValues.innerHTML = divContent;
+      description.insertBefore(
+        nodeAnswersAndFilterValues,
+        description.querySelector("#internet-below-description")
+      );
+    });
+}
+
+function showHelpModalExplainingFilterOption(filterName, index, heading, body) {
+  const isAnotherModalAlreadyOpen = document.querySelector(".modal-backdrop");
+  let helpModal = document.querySelector(
+    `#help-modal-${filterName}-option${index}`
+  );
+  if (helpModal) {
+    // const updatedModal = new bootstrap.Modal(helpModal, {
+    //   backdrop: origin === "result-details" ? "true" : "false",
+    // });
+    // updatedModal.show();
+    $(`#help-modal-${filterName}-option${index}`).modal("show");
+  } else {
+    helpModal = document.createElement("div");
+    helpModal.classList.add("modal", "fade");
+    helpModal.setAttribute("id", `help-modal-${filterName}-option${index}`);
+    helpModal.setAttribute("role", "dialog");
+    helpModal.setAttribute("aria-modal", "true");
+    let divContent = `<div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>${heading}</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">${body}</div>
+            </div>
+        </div>`;
+    helpModal.innerHTML = divContent;
+    document.body.append(helpModal);
+    setTimeout(() => {
+      // Timeout required so that ...on(show.bs.modal) registers the first showong
+      $(`#help-modal-${filterName}-option${index}`).modal("show");
+    }, 0);
+    ["show", "hide"].forEach((eventType) => {
+      $(`#help-modal-${filterName}-option${index}`).on(
+        `${eventType}.bs.modal`,
+        () => {
+          const otherOpenModal = document.querySelector(
+            `.modal.show:not(#help-modal-${filterName}-option${index})`
+          );
+          if (!otherOpenModal) return;
+          otherOpenModal.style.zIndex = eventType === "show" ? "1040" : "1050";
+        }
+      );
+    });
+  }
+  if (isAnotherModalAlreadyOpen) {
+    // To overlapping backdrops are not too much; one backdrop covering everything but the top most modal is sufficient
+    setTimeout(() => {
+      document.querySelectorAll(".modal-backdrop")[1].style.opacity = "0";
+    }, 0);
+  }
 }
 
 function addEventListenerToFilter(filter) {
@@ -514,8 +691,12 @@ function createAndAppendSharedFilterModal() {
     .appendChild(containerBtnOpenSharedFilterModal);
 
   const sharedFilterModal = document.createElement("div");
+  sharedFilterModal.setAttribute("data-backdrop", "static");
+  sharedFilterModal.classList.add("modal", "fade");
+  sharedFilterModal.setAttribute("id", "sharedFilterModal");
+  sharedFilterModal.setAttribute("role", "dialog");
+  sharedFilterModal.setAttribute("aria-modal", "true");
   let divContent = `
-    <div data-backdrop="static" class="modal fade show" id="sharedFilterModal" tabindex="-1" role="dialog" aria-labelledby="sharedFilterModalLabel" aria-modal="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -531,8 +712,7 @@ function createAndAppendSharedFilterModal() {
                     </button>
                 </div>
             </div>
-        </div>
-    </div>`;
+        </div>`;
   sharedFilterModal.innerHTML = divContent;
   document.body.append(sharedFilterModal);
   document
@@ -568,8 +748,15 @@ function createAndAppendIndividualFilterModal(nodeFilter, filter) {
     .appendChild(containerBtnOpenIndividualFilterModal);
 
   const individualFilterModal = document.createElement("div");
+  individualFilterModal.setAttribute("data-backdrop", "static");
+  individualFilterModal.classList.add("modal", "fade");
+  individualFilterModal.setAttribute(
+    "id",
+    `individualFilterModal-${filter.internalName}`
+  );
+  individualFilterModal.setAttribute("role", "dialog");
+  individualFilterModal.setAttribute("aria-modal", "true");
   let divContent = `
-      <div data-backdrop="static" class="modal fade show" id="individualFilterModal-${filter.internalName}" tabindex="-1" role="dialog" aria-labelledby="individualFilterModalLabel-${filter.internalName}" aria-modal="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                   <div class="modal-header">
@@ -585,8 +772,7 @@ function createAndAppendIndividualFilterModal(nodeFilter, filter) {
                       </button>
                   </div>
               </div>
-          </div>
-      </div>`;
+          </div>`;
   individualFilterModal.innerHTML = divContent;
   individualFilterModal
     .querySelector(`#individualFilterModalBody-${filter.internalName}`)
@@ -610,6 +796,7 @@ function setFiltersAtStart() {
   const arFiltersToSetAtStart = FILTERS.filter(
     (filter) => filter.setAtStart?.isWanted
   );
+  if (arFiltersToSetAtStart.length === 0) return;
   const elementsToHide = document.querySelectorAll(
     "#sectionShowQuestions, #sectionNavigation, #restart"
   );

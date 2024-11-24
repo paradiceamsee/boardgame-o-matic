@@ -525,3 +525,22 @@ i.bx-sm {
 .card-header h2 {
   width: 100%;
 }
+
+/* Assign margin-bottom to container in order to align help icon centered to label */
+.checkbox-container label {
+  margin-bottom: 0;
+}
+.checkbox-container {
+  margin-bottom: 0.5rem;
+}
+
+.icon-help {
+  color: #666;
+  border: none;
+  background-color: transparent;
+}
+
+[id^="help-modal"] .modal-content {
+  width: 90%;
+  margin: 0 auto;
+}

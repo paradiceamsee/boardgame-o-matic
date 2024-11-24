@@ -72,7 +72,7 @@ const language = "en";
 // If active, users see a modal before they get their results, asking them for permission (opt-in)
 // If they agree, their data is sent to a database
 // Defined in extras/statistics/db_settings.php
-const statsRecord = false;
+const statsRecord = true;
 const statsServer = "extras/statistics/vote_db.php";
 
 // URL of imprint
@@ -113,7 +113,7 @@ const addons = [
   "extras/addon_custom_voting_buttons.js",
   // "extras/addon_show_first_results.js",
   // "extras/addon_make_questions_optional.js",
-  "extras/addon_display_answers_and_filter_values_in_result_details.js",
+  // "extras/addon_display_answers_and_filter_values_in_result_details.js",
 ];
 
 // Addon-specific variables are set in this configuration file as well
@@ -405,6 +405,11 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       ],
       textOfOptionToShowAll: "Show all",
       displayInSharedModal: false,
+      displayFilterValuesInResultDetails: {
+        isWanted: true,
+        label: "Player number",
+        bulletList: false,
+      },
       setAtStart: {
         isWanted: true,
         cardHeading: "Player number",
@@ -418,20 +423,36 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       heading:
         "All board games, which have at least one of the mechanics you disallow, are exluced from your results.",
       options: [
-        { label: "Area control", value: "areaControl" },
-        { label: "Worker Placement", value: "workerPlacement" },
-        { label: "Roll & Write / Flip & Write", value: "rollAndWrite" },
-        { label: "Deck Building", value: "deckBuilding" },
-        { label: "Drafting", value: "drafting" },
-        { label: "Deduction", value: "deduction" },
-        { label: "Push your luck", value: "pushYourLuck" },
-        { label: "Tile Placement", value: "tilePlacement" },
-        { label: "Action / Speed / Dexterity", value: "action" },
-        { label: "Drawing / Acting", value: "drawing" },
-        { label: "Party Game", value: "party" },
-        { label: "Auction / Bidding", value: "auction" },
-        { label: "Trading / Negotiating", value: "trading" },
-        { label: "Trick-taking", value: "trickTaking" },
+        { label: "Area control", value: "areaControl", help: "Dummy text" },
+        {
+          label: "Worker Placement",
+          value: "workerPlacement",
+          help: "Dummy text",
+        },
+        {
+          label: "Roll & Write / Flip & Write",
+          value: "rollAndWrite",
+          help: "Dummy text",
+        },
+        { label: "Deck Building", value: "deckBuilding", help: "Dummy text" },
+        { label: "Drafting", value: "drafting", help: "Dummy text" },
+        { label: "Deduction", value: "deduction", help: "Dummy text" },
+        { label: "Push your luck", value: "pushYourLuck", help: "Dummy text" },
+        { label: "Tile Placement", value: "tilePlacement", help: "Dummy text" },
+        {
+          label: "Action / Speed / Dexterity",
+          value: "action",
+          help: "Dummy text",
+        },
+        { label: "Drawing / Acting", value: "drawing", help: "Dummy text" },
+        { label: "Party Game", value: "party", help: "Dummy text" },
+        { label: "Auction / Bidding", value: "auction", help: "Dummy text" },
+        {
+          label: "Trading / Negotiating",
+          value: "trading",
+          help: "Dummy text",
+        },
+        { label: "Trick-taking", value: "trickTaking", help: "Dummy text" },
       ],
       allCheckedByDefault: false,
       checkedMeansExcluded: true,
@@ -443,6 +464,11 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         textButtonOpenModal: "Filter by Mechanics",
         heading: "Filter by Mechanics",
         buttonShowResults: "Apply filter",
+      },
+      displayFilterValuesInResultDetails: {
+        isWanted: true,
+        label: "Mechanics",
+        bulletList: true,
       },
       errorMessage: "You must allow at least one mechanic.",
     },
@@ -478,6 +504,11 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         heading: "Filter by Themes / Settings",
         buttonShowResults: "Apply filter",
       },
+      displayFilterValuesInResultDetails: {
+        isWanted: true,
+        label: "Themes",
+        bulletList: true,
+      },
       errorMessage: "You must allow at least one theme.",
     },
   ];
@@ -504,6 +535,16 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
   };
   ERROR_MESSAGE_NO_FILTER_RESULTS =
     "None of our board games matches all your filters. Please change your filters and try again.";
+  DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS = {
+    isWanted: true,
+    questionsToBeDisplayed: [
+      { questionNr: 1, displayQuestionHeading: true, isCustomQuestion: true },
+      { questionNr: 2, displayQuestionHeading: true, isCustomQuestion: true },
+      { questionNr: 3, displayQuestionHeading: false, isCustomQuestion: true },
+      { questionNr: 4, displayQuestionHeading: false, isCustomQuestion: true },
+      { questionNr: 5, displayQuestionHeading: false, isCustomQuestion: true },
+    ],
+  };
 }
 
 if (
@@ -516,14 +557,6 @@ if (
     { questionNr: 4, displayQuestionHeading: false, isCustomQuestion: true },
     { questionNr: 5, displayQuestionHeading: false, isCustomQuestion: true },
   ];
-  FILTERS_TO_BE_DISPLAYED = [
-    {
-      internalName: "player-number",
-      label: "Player number",
-      bulletList: false,
-    },
-    { internalName: "mechanisms", label: "Mechanics", bulletList: true },
-    { internalName: "themes", label: "Themes", bulletList: true },
-  ];
-  HIDE_TABLE_resultsByPartyAnswers = true;
 }
+
+const HIDE_TABLE_resultsByPartyAnswers = true;
