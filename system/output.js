@@ -1026,6 +1026,13 @@ function generateSectionResults(arResults) {
         newActiveTab.classList.remove(goRight ? "flyInRight" : "flyInLeft");
       }, 700);
     }
+    function highlightFilterIcon() {
+      const filterIcon = navigationBar.querySelector("#filtersTabBtn i");
+      filterIcon.classList.add("bx-tada");
+      setTimeout(() => {
+        filterIcon.classList.remove("bx-tada");
+      }, 1500);
+    }
 
     const navigationBar = document.createElement("div");
     navigationBar.setAttribute("id", "navigationBar");
@@ -1074,6 +1081,16 @@ function generateSectionResults(arResults) {
       });
       navigationBar.appendChild(tabBtnContainer);
     });
+
+    if (isActivated("addon_filter_results.js") && HIGHLIGHT_FILTER_ICON) {
+      const intervalId = setInterval(highlightFilterIcon, 10000);
+      navigationBar
+        .querySelector("#filtersTabBtn")
+        .addEventListener("click", () => {
+          clearInterval(intervalId);
+        });
+    }
+
     if (
       highlightResultsTabBtnOfNavigationBar &&
       arTabsNavigationBar.length % 2 === 1

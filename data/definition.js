@@ -72,7 +72,7 @@ const language = "en";
 // If active, users see a modal before they get their results, asking them for permission (opt-in)
 // If they agree, their data is sent to a database
 // Defined in extras/statistics/db_settings.php
-const statsRecord = true;
+const statsRecord = false;
 const statsServer = "extras/statistics/vote_db.php";
 
 // URL of imprint
@@ -333,6 +333,7 @@ if (isActivated("addon_make_questions_optional.js")) {
 if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
   TEXT_FILTERS_HEADING = "Filters";
   TEXT_FILTERS_SUBHEADING = "Set filters to get more accurate suggestions";
+  HIGHLIGHT_FILTER_ICON = true;
   FILTERS = [
     /* 
   Global keys:
