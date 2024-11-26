@@ -158,7 +158,7 @@ function mow_addon_limit_results_create_buttons() {
       addons.some((item) => item.includes("extras/addon_filter_results.js"))
     ) {
       window.addEventListener("message", (event) => {
-        if ((event.data = "filter changed")) {
+        if (event.data === "filter changed") {
           fnCalculate_Buttons(
             0,
             intPartiesCurrentlyShowing >= 5 ? intPartiesCurrentlyShowing : 5
@@ -326,6 +326,7 @@ function fnShowOnlyIntPartiesAtEnd(rowStart, rowEnd) {
       }
     } // // end: for-intParties
   } // end: for-intQuestions
+  window.postMessage("limit results changed", "*");
 }
 
 // Start

@@ -445,10 +445,12 @@ function addContentToResultsTab() {
     // bleiben die Zebrastreifen aus der Klasse ".mow-row-striped" in der richtigen Reihenfolge.
     tableContentResultsShort += `<div class='border rounded mow-row-striped row-with-one-result' id='resultsShortPartyClamp${partyNum}' role='row'>
 <div class='row' id='resultsShortParty${partyNum}' role='row'>
-  <div class='col col-2 col-md-1' role='cell'>
-    <img src="${
-      arPartyLogosImg[partyNum]
-    }" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />
+  <div class='col col-2 col-md-1 logo-container' role='cell'>
+    ${
+      !isActivated("addon_limit_results.js") || i < intPartiesShowAtEnd
+        ? `<img src="${arPartyLogosImg[partyNum]}" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`
+        : ""
+    }
   </div>
   <div class='col col-10 col-md-7' role='cell'>
       <strong>${arPartyNamesLong[partyNum]}</strong>
@@ -656,6 +658,31 @@ function addContentToResultsTab() {
 
     // am Anfang die Antworten ausblenden
     $(`#resultsShortPartyDetails${i}`).fadeOut(0);
+  }
+
+  if (isActivated("addon_filter_results.js")) {
+    window.addEventListener("message", (event) => {
+      if (
+        event.data !== "filter changed" &&
+        event.data !== "limit results changed"
+      )
+        return;
+      setTimeout(() => {
+        document
+          .querySelectorAll(
+            "#resultsShortTable .row-with-one-result:not([class*='hidden-by'])"
+          )
+          .forEach((row) => {
+            if (row.querySelector("img")) return;
+            const partyNum = +row
+              .getAttribute("id")
+              .replace("resultsShortPartyClamp", "");
+            row.querySelector(
+              ".logo-container"
+            ).innerHTML = `<img src="${arPartyLogosImg[partyNum]}" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`;
+          });
+      }, 0);
+    });
   }
 }
 
