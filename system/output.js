@@ -28,7 +28,7 @@ function fnStart() {
   $("#votingContra").html(TEXT_VOTING_CONTRA);
   $("#votingBack").html(TEXT_VOTING_BACK);
   $("#votingSkip").html(TEXT_VOTING_SKIP);
-  $("#votingDouble").html(TEXT_VOTING_DOUBLE);
+  document.querySelector("#votingDouble label").innerHTML = TEXT_VOTING_DOUBLE;
 
   // 4. Navigation
   $("#sectionNavigation").hide();
@@ -90,13 +90,6 @@ function fnStart() {
 
   // (b) Antworten der Parteien und Partei-Informationen
   fnReadCsv(`data/${fileAnswers}`, fnReadPositions);
-
-  // arVotingDouble initialisieren
-  /* for (let i = 0; i < intQuestions; i++) {
-    arVotingDouble[i] = false;
-    arPersonalPositions[i] = 99;
-  } */
-  $("#votingDouble").attr("checked", false);
 
   // Wenn "descriptionShowOnStart = 0" in DEFINITION.JS, dann gleich die Fragen anzeigen
   if (!descriptionShowOnStart) {
@@ -244,12 +237,8 @@ function fnShowQuestionNumber(questionNumber) {
     });
 
     // Checkbox für doppelte Bewertung
-    $("#votingDouble").attr("checked", arVotingDouble[questionNumber]);
-    // Button nur zuruecksetzen, wenn Frage nicht doppelt gewertet (relevant fürs Zurückspringen)
-    if (!arVotingDouble[questionNumber])
-      $("#votingDouble").removeClass("btn-dark").addClass("btn-outline-dark");
-    else
-      $("#votingDouble").addClass("btn-dark").removeClass("btn-outline-dark");
+    document.querySelector("#checkbox-voting-double").checked =
+      arVotingDouble[questionNumber];
   }
 
   // Alle Fragen durchgelaufen -> Auswertung
@@ -313,18 +302,12 @@ function fnShowQuestionNumber(questionNumber) {
 // 02/2015 BenKob
 function fnChangeVotingDouble() {
   arVotingDouble[activeQuestion] = !arVotingDouble[activeQuestion];
-  strBtnSrc = $("#votingDouble").hasClass("btn-outline-dark");
-
-  if (strBtnSrc) {
-    // wenn vorher unwichtig -> jetzt doppelt werten
-    $("#votingDouble").removeClass("btn-outline-dark").addClass("btn-dark");
-    $(`#jumpToQuestionNr${activeQuestion + 1}`).css("font-weight", "bold");
-  }
-  // wenn vorher wichtig -> jetzt wieder auf normal setzen
-  else {
-    $("#votingDouble").removeClass("btn-dark").addClass("btn-outline-dark");
-    $(`#jumpToQuestionNr${activeQuestion + 1}`).css("font-weight", "normal");
-  }
+  const isNowDoubled = document.querySelector(
+    "#checkbox-voting-double"
+  ).checked;
+  document.querySelector(
+    `#jumpToQuestionNr${activeQuestion + 1}`
+  ).style.fontWeight = isNowDoubled ? "bold" : "normal";
 }
 
 // Springe zu Frage Nummer XY (wird in fnShowQuestionNumber() aufgerufen)
@@ -417,7 +400,7 @@ function fnJumpToQuestionNumber(questionNumber) {
         .classList.remove("currentQuestion");
 
     if (arVotingDouble[i - 1]) {
-      $(`#jumpToQuestionNr${i}`).css("font-weight", "bold");
+      document.querySelector(`#jumpToQuestionNr${i}`).style.fontWeight = "bold";
     }
   }
 }
@@ -711,13 +694,19 @@ function addContentToFinetuningTab() {
                     </div>
 
                     <div id='resultsByThesisQuestion${i}PersonalPosition'>
+                    <div id="voting-double-container${i}">
+                      <input type="checkbox" id="checkbox-voting-double${i}" onchange="fnToggleDouble(${i})">
+                      <label for="checkbox-voting-double${i}">${TEXT_VOTING_DOUBLE}</label>
+                    </div>
+
                     <small>${TEXT_ANSWER_USER}: </small><button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${i}' onclick='fnToggleSelfPosition(${i})' 
                             alt='${TEXT_ANSWER_USER} : ${positionText}' title='${TEXT_ANSWER_USER} : ${positionText}' data-value="${
       arPersonalPositions[i]
     }">
                         ${positionIcon}
                     </button>
-                    <button type='button'  id='doubleIcon${i}'
+
+                    <!-- <button type='button'  id='doubleIcon${i}'
                           onclick='fnToggleDouble(${i})' 
    ${
      arVotingDouble[i]
@@ -725,7 +714,7 @@ function addContentToFinetuningTab() {
        : `class='btn btn-sm btn-outline-dark' title='${TEXT_ANSWER_NORMAL}'>x1`
    }
                   
-                    </button>
+                    </button> -->
                 </div>
 
                     <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>
@@ -960,7 +949,7 @@ function addContentToFinetuningTab() {
     setTimeout(
       () => {
         const nodelistResultChangingButtons = document.querySelectorAll(
-          "[class*='selfPosition'], [id^='doubleIcon']"
+          "[class*='selfPosition'], [id^='checkbox-voting-double']"
         );
         nodelistResultChangingButtons.forEach((btn) => {
           btn.addEventListener("click", showOrHighlightBtnRefresh);
@@ -1099,7 +1088,7 @@ function generateSectionResults(arResults) {
       <button
         id='${tab.id}TabBtn'
         class="title-on-hover ${tab.id === "results" ? "activeTabBtn" : ""}"
-        type="button" title="${tab.tooltip}"
+        type="button" data-tooltip="${tab.tooltip}"
       ><i class='bx ${tab.icon}'></i></button>`;
 
       tabBtnContainer.addEventListener("click", () => {

@@ -8,7 +8,7 @@ const TEXT_VOTING_CONTRA = "Dislike";
 const TEXT_VOTING_BACK = "<i class='bx bx-skip-previous bx-sm'></i>&nbsp;Back";
 const TEXT_VOTING_SKIP =
   "No matter&nbsp;/ Skip <i class='bx bx-skip-next bx-sm'></i>";
-const TEXT_VOTING_DOUBLE = "Double weight";
+const TEXT_VOTING_DOUBLE = "Double-weighted";
 const ICON_SKIPPED = "No matter";
 
 // Statistic

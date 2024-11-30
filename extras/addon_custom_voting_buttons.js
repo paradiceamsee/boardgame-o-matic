@@ -7,7 +7,8 @@ function createCustomVotingButtons() {
     .setAttribute("data-question-number", activeQuestion); // To add custom CSS, if needed
 
   // Show voting double button, might have been hidden from previous question
-  const colVoteDouble = document.querySelector("#votingDouble").parentNode;
+  // const colVoteDouble = document.querySelector("#votingDouble").parentNode;
+  const colVoteDouble = document.querySelector("#votingDouble");
   colVoteDouble.classList.remove("d-none");
 
   // Remove all custom buttons (from previous question), except those for the active question
@@ -83,7 +84,9 @@ function createInitialCustomPositionButtons() {
   CUSTOM_POSITION_BUTTONS.forEach((obj) => {
     const i = obj.questionNr - 1;
     if (obj.hideVotingDouble)
-      document.querySelector(`#doubleIcon${i}`).classList.add("d-none");
+      document
+        .querySelector(`#voting-double-container${i}`)
+        .classList.add("d-none");
 
     const arPositionButtons = document.querySelectorAll(
       `.partyPositionToQuestion${i},

@@ -170,21 +170,17 @@
                   </p>
                 </div>
                 <!-- 3. VOTING BUTTONS -->
-
+                <div id="votingDouble">
+                  <input
+                    type="checkbox"
+                    name="voting-double"
+                    id="checkbox-voting-double"
+                    onchange="fnChangeVotingDouble()"
+                  />
+                  <label for="checkbox-voting-double">Double-weighted</label>
+                </div>
                 <section id="sectionVotingButtons">
                   <div class="row">
-                    <div class="col">
-                      <button
-                        type="button"
-                        title='Klicke bei Fragen, die dir besonders wichtig sind, erst auf "Doppelt gewichten" und wähle dann deine Antwort'
-                        id="votingDouble"
-                        onclick="fnChangeVotingDouble()"
-                        class="btn btn-outline-dark btn-lg btn-block"
-                      >
-                        [x2] Important
-                      </button>
-                    </div>
-
                     <div class="col">
                       <button
                         type="button"
