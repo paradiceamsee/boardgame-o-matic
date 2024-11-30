@@ -169,7 +169,7 @@ i.bx-sm {
   position: relative;
 }
 
-.highlightedTabBtn::after {
+.highlightedTabBtn::before {
   content: "";
   position: absolute;
   top: -1px;
@@ -543,4 +543,29 @@ i.bx-sm {
 [id^="help-modal"] .modal-content {
   width: 90%;
   margin: 0 auto;
+}
+
+.title-on-hover::before {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--success);
+  color: var(--text-on-success);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  white-space: nowrap;
+  font-size: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  border: 2px solid #000;
+}
+
+.title-on-hover:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }

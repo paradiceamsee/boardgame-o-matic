@@ -185,6 +185,7 @@ function createFilterHtml(filter) {
     <label for="filter-single-checkbox-${filter.internalName}"> ${
       filter.label
     }</label>`;
+  } else if (filter.type === "number-comparison") {
   }
   containerOfFilter.innerHTML = divContent;
   return containerOfFilter;

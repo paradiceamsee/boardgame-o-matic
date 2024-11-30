@@ -1067,32 +1067,40 @@ function generateSectionResults(arResults) {
       {
         icon: "bx-slider-alt",
         id: "finetuning",
+        tooltip: "Finetuning",
       },
       {
         icon: "bx-trophy",
         id: "results",
+        tooltip: "Results",
       },
       {
         icon: "bx-share-alt",
         id: "shareAndSave",
+        tooltip: "Share & Save",
       },
       {
         icon: "bx-info-circle",
         id: "info",
+        tooltip: "About",
       },
     ];
     if (isActivated("addon_filter_results.js"))
       arTabsNavigationBar.splice(1, 0, {
         icon: "bx-filter-alt",
         id: "filters",
+        tooltip: "Filter",
       });
 
     arTabsNavigationBar.forEach((tab) => {
       const tabBtnContainer = document.createElement("div");
       tabBtnContainer.setAttribute("id", `${tab.id}TabBtnContainer`);
-      tabBtnContainer.innerHTML = `<button id='${tab.id}TabBtn' ${
-        tab.id === "results" ? "class='activeTabBtn'" : ""
-      }><i class='bx ${tab.icon}'></i></button>`;
+      tabBtnContainer.innerHTML = `
+      <button
+        id='${tab.id}TabBtn'
+        class="title-on-hover ${tab.id === "results" ? "activeTabBtn" : ""}"
+        type="button" title="${tab.tooltip}"
+      ><i class='bx ${tab.icon}'></i></button>`;
 
       tabBtnContainer.addEventListener("click", () => {
         const oldActiveTab = document.querySelector(".activeTab");
@@ -1127,7 +1135,6 @@ function generateSectionResults(arResults) {
         .classList.add("highlightedTabBtn");
     }
     document.querySelector("#sectionResults").appendChild(navigationBar);
-
     circulateSharingAndSavingIcon();
   }
   document.querySelector("#sectionShowQuestions").remove();

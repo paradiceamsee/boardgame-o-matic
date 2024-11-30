@@ -512,6 +512,25 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       },
       errorMessage: "You must allow at least one theme.",
     },
+    // {
+    //   internalName: "release-year",
+    //   type: "number-comparison",
+    //   icon: "bx-calendar",
+    //   title: "Filter by release year: ",
+    //   min: 1990,
+    //   max: new Date().getFullYear(),
+    //   displayRangeSlider: true,
+    //   preventManualEdit: true,
+    //   exludeIfSmaller: true,
+    //   excludeIfEqual: false,
+    //   displayInSharedModal: false,
+    //   displayFilterValuesInResultDetails: {
+    //     isWanted: false,
+    //   },
+    //   setAtStart: {
+    //     isWanted: false,
+    //   },
+    // },
   ];
   /* 
   Other required variables:
