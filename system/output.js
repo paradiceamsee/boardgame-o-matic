@@ -28,7 +28,8 @@ function fnStart() {
   $("#votingContra").html(TEXT_VOTING_CONTRA);
   $("#votingBack").html(TEXT_VOTING_BACK);
   $("#votingSkip").html(TEXT_VOTING_SKIP);
-  document.querySelector("#votingDouble label").innerHTML = TEXT_VOTING_DOUBLE;
+  document.querySelector("#voting-double-container-card label span").innerHTML =
+    TEXT_VOTING_DOUBLE;
 
   // 4. Navigation
   $("#sectionNavigation").hide();
@@ -43,11 +44,13 @@ function fnStart() {
   $("#resultsAddonBottom").empty();
 
   // Bereich - Footer
-  //	$("#keepStatsQuestion").empty();
   $("#statisticsModalLabel").html(TEXT_ALLOW_STATISTIC_TITLE);
   $("#statisticsModalBody").html(TEXT_ALLOW_STATISTIC_TEXT);
   $("#statisticsModalButtonNo").html(TEXT_ALLOW_STATISTIC_NO);
   $("#statisticsModalButtonYes").html(TEXT_ALLOW_STATISTIC_YES);
+
+  $("#votingDoubleModalLabel").html(TEXT_VOTING_DOUBLE_MODAL_HEADING);
+  $("#votingDoubleModalBody").html(TEXT_VOTING_DOUBLE_MODAL_BODY);
 
   // Nach jedem Klick auf einen Button den Fokus wieder entfernen, um bleibende Hervorhebungen (Unterstreichungen) zu vermeiden
   document.querySelectorAll("button").forEach((button) => {
@@ -237,8 +240,18 @@ function fnShowQuestionNumber(questionNumber) {
     });
 
     // Checkbox für doppelte Bewertung
-    document.querySelector("#checkbox-voting-double").checked =
-      arVotingDouble[questionNumber];
+
+    const votingDoubleCheckbox = document.querySelector(
+      "#checkbox-voting-double"
+    );
+    if (votingDoubleCheckbox.checked !== !!arVotingDouble[questionNumber]) {
+      setTimeout(
+        () => {
+          votingDoubleCheckbox.checked = arVotingDouble[questionNumber];
+        },
+        animateQuestionsCard ? 400 : 0
+      );
+    }
   }
 
   // Alle Fragen durchgelaufen -> Auswertung
@@ -694,9 +707,18 @@ function addContentToFinetuningTab() {
                     </div>
 
                     <div id='resultsByThesisQuestion${i}PersonalPosition'>
-                    <div id="voting-double-container${i}">
-                      <input type="checkbox" id="checkbox-voting-double${i}" onchange="fnToggleDouble(${i})">
-                      <label for="checkbox-voting-double${i}">${TEXT_VOTING_DOUBLE}</label>
+                    <div id="voting-double-container-question${i}">
+                      <input type="checkbox" id="checkbox-voting-double-question${i}" onchange="fnToggleDouble(${i})" ${
+      arVotingDouble[i] ? "checked" : ""
+    }>
+                      <label for="checkbox-voting-double-question${i}" class="flex-center"
+                      ><i class="bx bx-check bx-border"></i>
+                      <span>Double-weighted</span>
+                      <button
+                        class="bx bx-help-circle icon-help icon-help-voting-double"
+                        onclick="$('#votingDoubleModal').modal('show');"
+                      ></button
+                    ></label>
                     </div>
 
                     <small>${TEXT_ANSWER_USER}: </small><button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${i}' onclick='fnToggleSelfPosition(${i})' 
@@ -705,16 +727,6 @@ function addContentToFinetuningTab() {
     }">
                         ${positionIcon}
                     </button>
-
-                    <!-- <button type='button'  id='doubleIcon${i}'
-                          onclick='fnToggleDouble(${i})' 
-   ${
-     arVotingDouble[i]
-       ? `class='btn btn-sm btn-dark' title='${TEXT_ANSWER_DOUBLE}'>x2`
-       : `class='btn btn-sm btn-outline-dark' title='${TEXT_ANSWER_NORMAL}'>x1`
-   }
-                  
-                    </button> -->
                 </div>
 
                     <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>

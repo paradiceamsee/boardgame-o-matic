@@ -238,7 +238,7 @@ if (isActivated("addon_custom_voting_buttons.js")) {
       // ],
       arPositionValues: [2, 1, 0, -1, -2],
       votingDoubleByDefault: true,
-      hideVotingDouble: true,
+      hideVotingDouble: false,
     },
     {
       questionNr: 2,
@@ -265,7 +265,7 @@ if (isActivated("addon_custom_voting_buttons.js")) {
       ],
       arPositionValues: [2, 1, 0, -1, -2],
       votingDoubleByDefault: true,
-      hideVotingDouble: true,
+      hideVotingDouble: false,
     },
     {
       questionNr: 3,

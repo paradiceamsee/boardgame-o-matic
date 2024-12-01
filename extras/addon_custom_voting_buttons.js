@@ -8,7 +8,7 @@ function createCustomVotingButtons() {
 
   // Show voting double button, might have been hidden from previous question
   // const colVoteDouble = document.querySelector("#votingDouble").parentNode;
-  const colVoteDouble = document.querySelector("#votingDouble");
+  const colVoteDouble = document.querySelector("#voting-double-container-card");
   colVoteDouble.classList.remove("d-none");
 
   // Remove all custom buttons (from previous question), except those for the active question
@@ -85,7 +85,7 @@ function createInitialCustomPositionButtons() {
     const i = obj.questionNr - 1;
     if (obj.hideVotingDouble)
       document
-        .querySelector(`#voting-double-container${i}`)
+        .querySelector(`#voting-double-container-question${i}`)
         .classList.add("d-none");
 
     const arPositionButtons = document.querySelectorAll(

@@ -569,3 +569,52 @@ i.bx-sm {
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
+
+#voting-double-container-card {
+  padding: 0 calc(15px + 0.2em);
+  font-size: 90%;
+}
+
+[id^="voting-double-container"] input {
+  display: none;
+}
+
+[id^="voting-double-container"] i.bx-check {
+  padding: 0;
+  border-color: var(--text-on-primary);
+  background-color: transparent;
+  color: transparent;
+}
+
+#resultsByThesis [id^="voting-double-container"] {
+  margin-top: 10px;
+  font-size: 80%;
+}
+
+#resultsByThesis [id^="voting-double-container"] i.bx-check {
+  border-color: #000;
+}
+
+[id^="checkbox-voting-double"]:checked + label > i.bx-check {
+  background-color: var(--success);
+  color: var(--text-on-success);
+}
+
+#votingBack {
+  padding-left: 0;
+  gap: 0;
+}
+
+#votingSkip {
+  padding-right: 0;
+  gap: 0;
+}
+
+.card .icon-help-voting-double {
+  color: #bbb;
+  font-size: 110%;
+}
+
+#resultsByThesis .icon-help-voting-double {
+  font-size: 120%;
+}

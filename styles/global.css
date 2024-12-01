@@ -287,13 +287,6 @@ button {
   transition: transform 0.3s, opacity 0.5s !important;
 }
 
-#votingDouble {
-  font-size: 1rem;
-  border: 1px solid var(--text-on-primary);
-  color: var(--text-on-primary);
-  background: transparent;
-}
-
 #votingDouble.btn-dark,
 #votingDouble.btn-dark:hover {
   font-weight: 700;

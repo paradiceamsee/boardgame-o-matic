@@ -408,21 +408,9 @@ function fnToggleSelfPosition(i) {
 // 02/2015 BenKob (doppelte Wertung)
 function fnToggleDouble(i) {
   arVotingDouble[i] = !arVotingDouble[i];
-  if (arVotingDouble[i]) {
-    // $("#doubleIcon"+i).attr("src","img/double-yes_icon.png");
-    $("#doubleIcon" + i)
-      .removeClass("btn-outline-dark")
-      .addClass("btn-dark");
-    $("#doubleIcon" + i).attr("title", TEXT_ANSWER_DOUBLE);
-    $("#doubleIcon" + i).html("x2");
-  } else {
-    // $("#doubleIcon"+i).attr("src","img/double-no_icon.png");
-    $("#doubleIcon" + i)
-      .removeClass("btn-dark")
-      .addClass("btn-outline-dark");
-    $("#doubleIcon" + i).attr("title", TEXT_ANSWER_NORMAL);
-    $("#doubleIcon" + i).html("x1");
-  }
+  document
+    .querySelector(`#voting-double-container-question${i} i.bx-check`)
+    .classList.toggle("isChecked");
   fnReEvaluate();
 }
 

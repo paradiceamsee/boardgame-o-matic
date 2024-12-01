@@ -67,3 +67,7 @@ const TEXT_IMAGE = "Image";
 const TEXT_PARTY = "Board game";
 const TEXT_ANSWER_NORMAL = "Question is single-weighted";
 const TEXT_ANSWER_DOUBLE = "Question is double-weighted";
+
+const TEXT_VOTING_DOUBLE_MODAL_HEADING = "Double-weighting questions";
+const TEXT_VOTING_DOUBLE_MODAL_BODY =
+  "<p>Use this option, if the issue of the question is particularly relevant for you. Activate the checkbox and then select your answer.</p><p>The impact of double-weighted questions on the matching algorithm is twice as high.</p>";
