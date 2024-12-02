@@ -223,7 +223,11 @@ function displayFilterValuesInResultDetails() {
     window.lookupTableForCustomQuestions = {};
     DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS.questionsToBeDisplayed.forEach(
       (question) => {
-        if (!question.isCustomQuestion) return;
+        if (
+          !isActivated("addon_custom_voting_buttons.js") ||
+          !question.isCustomQuestion
+        )
+          return;
         const lookupTableEntry = {};
         objCustomQuestion = CUSTOM_POSITION_BUTTONS.find(
           (obj) => obj.questionNr === question.questionNr
@@ -246,7 +250,10 @@ function displayFilterValuesInResultDetails() {
         const answerIndex = resultNr * intQuestions + (question.questionNr - 1);
         const answerValue = arPartyPositions[answerIndex];
         let answerText = "";
-        if (question.isCustomQuestion)
+        if (
+          isActivated("addon_custom_voting_buttons.js") &&
+          question.isCustomQuestion
+        )
           answerText =
             window.lookupTableForCustomQuestions[question.questionNr][
               answerValue

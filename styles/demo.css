@@ -72,7 +72,7 @@
   --display-internet-above-description: none; /* "inline" (show) or "none" (hide) */
   --display-internet-below-description: inline; /* "inline" (show) or "none" (hide) */
   --text-your-answer: "Your answer:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
-  --text-party-answer: "Answer of the game:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
+  --text-party-answer: "Value of the game:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
 }
 
 main {
@@ -262,8 +262,8 @@ i.bx-sm {
   text-decoration: underline;
 }
 
-.filter-dropdown-select {
-  border: none;
+.filter-dropdown-select,
+[class^="selfPosition"] {
   background: transparent;
   padding: 10px;
   border-radius: var(--border-radius);
@@ -588,7 +588,7 @@ i.bx-sm {
 
 #resultsByThesis [id^="voting-double-container"] {
   margin-top: 10px;
-  font-size: 80%;
+  font-size: 90%;
 }
 
 #resultsByThesis [id^="voting-double-container"] i.bx-check {
@@ -617,4 +617,22 @@ i.bx-sm {
 
 #resultsByThesis .icon-help-voting-double {
   font-size: 120%;
+}
+
+[id$="collapse"] {
+  border: none;
+  margin-left: -0.5rem;
+}
+
+#resultsByThesis label.your-answer {
+  font-size: 90%;
+}
+
+[id^="resultsByThesisQuestion"][id$="Text"] {
+  margin-bottom: 10px;
+}
+
+/* Leave space to pseudo elements building the table header */
+[id^="resultsAnswerParty"][id$="ToQuestion1"] div:first-child {
+  margin-top: 25px;
 }

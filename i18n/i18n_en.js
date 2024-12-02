@@ -41,15 +41,15 @@ const TEXT_LINK_TO_EXTERNAL_PAGE =
   "<i class='bx bx-link-external' ></i> View at BoardGameGeek";
 const TEXT_FINETUNING_HEADING = "Finetuning";
 const TEXT_FINETUNING_SUBHEADING =
-  "<ul style='text-align: left; font-size: 80%;'><li>Click on the buttons to change your answers and weights</li><li>Check out the values of your matching board games for each question</li></ul>";
-const TEXT_SHOW_PARTY_DESCRIPTION = `Show details <i class='bx bx-chevron-down bx-sm' ></i>`;
-const TEXT_HIDE_PARTY_DESCRIPTION = `Hide details <i class='bx bx-chevron-up bx-sm' ></i>`;
-const TEXT_SHOW_PARTY_ANSWERS = `Compare answers <i class='bx bx-chevron-down bx-sm' ></i>`;
-const TEXT_HIDE_PARTY_ANSWERS = `Hide answers <i class='bx bx-chevron-up bx-sm' ></i>`;
+  "<ul style='text-align: left; font-size: 80%;'><li>Change your answers and weightings</li><li>Check out the values of your matching board games for each question</li></ul>";
+const TEXT_SHOW_PARTY_DESCRIPTION = `<i class='bx bx-plus bx-sm' ></i> Show details`;
+const TEXT_HIDE_PARTY_DESCRIPTION = `<i class='bx bx-minus bx-sm' ></i> Hide details`;
+const TEXT_SHOW_PARTY_ANSWERS = `<i class='bx bx-plus bx-sm' ></i> Show answers to questions`;
+const TEXT_HIDE_PARTY_ANSWERS = `<i class='bx bx-minus bx-sm' ></i> Hide answers`;
 const TEXT_SHOW_THESIS_ANSWERS =
-  "Show values of board games <i class='bx bx-chevron-down bx-sm' ></i>";
+  "<i class='bx bx-plus bx-sm' ></i> Show values of board games";
 const TEXT_HIDE_THESIS_ANSWERS =
-  "Hide values of board games <i class='bx bx-chevron-up bx-sm' ></i>";
+  "<i class='bx bx-minus bx-sm' ></i> Hide values of board games";
 
 const TEXT_SHARE_AND_SAVE_HEADING = "Share or Save your Results";
 const TEXT_SHARE_AND_SAVE_SUBHEADING =

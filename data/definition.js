@@ -24,9 +24,6 @@ const system = [
 const design = [
   "styles/global.css",
   "styles/demo.css",
-  "system/fontawesome/css/fontawesome.css",
-  "system/fontawesome/css/solid.css",
-  "system/fontawesome/css/regular.css",
   "styles/boxicons.min.css",
 ];
 
@@ -109,11 +106,7 @@ const TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS =
 const addons = [
   "extras/addon_limit_results.js",
   "extras/addon_filter_results.js",
-  // "extras/addon_tooltips.js",
   "extras/addon_custom_voting_buttons.js",
-  // "extras/addon_show_first_results.js",
-  // "extras/addon_make_questions_optional.js",
-  // "extras/addon_display_answers_and_filter_values_in_result_details.js",
 ];
 
 // Addon-specific variables are set in this configuration file as well
@@ -186,10 +179,6 @@ if (isActivated("addon_custom_voting_buttons.js")) {
     // To overwrite the default values for a question, set the key arBackgroundColor / arTextColor in an object of CUSTOM_POSITION_BUTTONS
     // The value of arBackgroundColor / arTextColor must be an array with as many elements as there are values of the button
   };
-  const full = "<i class='bx bxs-cog bx-sm'></i>";
-  const empty = "<i class='bx bx-cog bx-sm'></i>";
-  const fullBolt = "<i class='bx bxs-bolt-circle bx-sm' ></i>";
-  const emptyBolt = "<i class='bx bx-bolt-circle bx-sm'></i>";
   // For each question that should be customized, add an object to the array CUSTOM_POSITION_BUTTONS
   // The following keys are required (x = number of options/buttons for this question, should be an odd number)
   //    questionNr (integer; 1-indexed)
@@ -229,13 +218,6 @@ if (isActivated("addon_custom_voting_buttons.js")) {
         "Advanced",
         "For experts",
       ],
-      // arPositionIcons: [
-      //   `${full}${empty}${empty}${empty}${empty}`,
-      //   `${full}${full}${empty}${empty}${empty}`,
-      //   `${full}${full}${full}${empty}${empty}`,
-      //   `${full}${full}${full}${full}${empty}`,
-      //   `${full}${full}${full}${full}${full}`,
-      // ],
       arPositionValues: [2, 1, 0, -1, -2],
       votingDoubleByDefault: true,
       hideVotingDouble: false,

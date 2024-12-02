@@ -9,6 +9,7 @@ var version = "0.6.0.10.20230420";
 var arQuestionsShort = new Array(); // Kurzform der Fragen: Atomkraft, Flughafenausbau, ...
 var arQuestionsLong = new Array(); // Langform der Frage: Soll der Flughafen ausgebaut werden?
 const arQuestionsIcon = [];
+const arIcons = ["&#x2716;", "&#x25EF;", "&#x2714;"];
 
 var arPartyPositions = new Array(); // Position der Partei als Zahl aus den CSV-Dateien (1/0/-1)
 var arPartyOpinions = new Array(); // Begründung der Parteien aus den CSV-Dateien
@@ -117,19 +118,10 @@ function fnEvaluation() {
 
   $("#keepStats").hide();
 
-  // Anzahl der Fragen bestimmen, da Positions-Array ein Vielfaches aus Fragen * Parteien enthält.
-  //	var numberOfQuestions = arQuestionsLong.length;		// 3 Fragen
-  //	var numberOfPositions = arPartyPositions.length; // 12 = 3 Fragen * 4 Parteien
-
   var indexPartyInArray = -1; // Berechnung der Position des Index der aktuellen Partei
   let positionsMatch = 0; // Zaehler fuer gemeinsame Positionen
 
-  // var arResults = new Array();
   var arResults = [];
-  //	for (i = 0; i <= (arPartyFiles.length-1); i++)
-  // for (let i = 0; i < intParties; i++) {
-  //   arResults.push(0); // Array mit leeren Werten füllen
-  // }
 
   // Vergleichen der Positionen (= Fragen x Parteien)
   for (let i = 0; i <= arPartyPositions.length; i++) {
@@ -322,7 +314,6 @@ function fnTransformPositionToButton(position) {
 // v.0.3 NEU
 // ersetzt die Position (-1, 0, 1) mit dem passenden Icon
 function fnTransformPositionToIcon(position) {
-  var arIcons = new Array("&#x2716;", "&#x25EF;", "&#x2714;");
   var positionIcon = ICON_SKIPPED;
   for (z = -1; z <= 1; z++) {
     if (z == position) {
@@ -377,41 +368,25 @@ function fnBarImage(percent) {
 }
 
 // 02/2015 BenKob (doppelte Wertung)
-function fnToggleSelfPosition(i) {
-  arPersonalPositions[i]--;
-  if (arPersonalPositions[i] == -2) {
-    arPersonalPositions[i] = 99;
-  }
-  if (arPersonalPositions[i] == 98) {
-    arPersonalPositions[i] = 1;
-  }
-  //	var positionImage = fnTransformPositionToImage(arPersonalPositions[i]);
-  var positionButton = fnTransformPositionToButton(arPersonalPositions[i]);
-  var positionIcon = fnTransformPositionToIcon(arPersonalPositions[i]);
-  // var positionColor = fnTransformPositionToColor(arPersonalPositions[i]);
-  var positionText = fnTransformPositionToText(arPersonalPositions[i]);
-
-  // $("#selfPosition"+i).attr("src", "img/"+positionImage);
-  $(".selfPosition" + i)
-    .removeClass("btn-danger btn-warning btn-success btn-default")
-    .addClass(positionButton);
-  $(".selfPosition" + i).html(positionIcon);
-  $(".selfPosition" + i).attr("alt", positionText);
-  $(".selfPosition" + i).attr("title", positionText);
-  // $(".positionRow"+i).css("border","1px solid "+positionColor);
-
-  //	console.log("toggle funktion i: "+i)
-
-  fnReEvaluate();
+function fnToggleSelfPosition(target) {
+  const i = +Array.from(target.classList)
+    .find((cls) => cls.startsWith("selfPosition"))
+    .replace("selfPosition", "");
+  const selectedOption = +target.value;
+  arPersonalPositions[i] = selectedOption;
+  document.querySelectorAll(`.selfPosition${i}`).forEach((dropdown) => {
+    dropdown.value = selectedOption;
+  });
+  document
+    .querySelector(`#voting-double-container-question${i}`)
+    .classList.toggle("d-none", selectedOption === 99);
+  showOrHighlightBtnRefresh();
 }
 
 // 02/2015 BenKob (doppelte Wertung)
 function fnToggleDouble(i) {
   arVotingDouble[i] = !arVotingDouble[i];
-  document
-    .querySelector(`#voting-double-container-question${i} i.bx-check`)
-    .classList.toggle("isChecked");
-  fnReEvaluate();
+  showOrHighlightBtnRefresh();
 }
 
 // vanilla JavaScript FadeIn / FadeOut

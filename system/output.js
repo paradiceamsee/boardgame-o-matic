@@ -490,7 +490,7 @@ function addContentToResultsTab() {
   <div id="containerForAddonGeneratedElements"></div>`;
     if (!HIDE_TABLE_resultsByPartyAnswers) {
       tableContentResultsShort += `<div style='text-align: center; width: 100%;'>
-  <button id='resultsByPartyAnswers${partyNum}collapse' class='nonexpanded btn btn-sm btn-outline-secondary' type='button'>
+  <button id='resultsByPartyAnswers${partyNum}collapse' class='nonexpanded btn btn-sm btn-outline-secondary flex-center' type='button'>
       ${TEXT_SHOW_PARTY_ANSWERS}
   </button>
   <span id='resultsByPartyAnswersToQuestion${partyNum}'> <!-- Hilfs-SPAN für Textfilter -->
@@ -506,7 +506,9 @@ function addContentToResultsTab() {
         modulo = j % intQuestions; // z.B. arPartyPositions[11] % 5 Fragen = 1 -> arQuestionsShort[1] = 2. Frage
 
         tableContentResultsShort += `
-              <div class='row mow-row-striped' role='row'>
+              <div class='row mow-row-striped' id='resultsAnswerParty${partyNum}ToQuestion${
+          modulo + 1
+        }' role='row'>
                   <div class='col col-10 col-md-5' role='cell'>
                       ${modulo + 1}. <strong>${
           arQuestionsShort[modulo]
@@ -524,11 +526,12 @@ function addContentToResultsTab() {
         );
 
         tableContentResultsShort += `<div class='col col-4 col-md-2' id='selfPositionContainer${modulo}' role='cell'>
-                    <button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${modulo}' 
-                            onclick='fnToggleSelfPosition(${modulo})' alt='${TEXT_ANSWER_USER} : ${positionText}'
-                            title='${TEXT_ANSWER_USER} : ${positionText}' data-value='${arPersonalPositions[modulo]}'>
-                        ${positionIcon}
-                    </button>
+                    <select class="selfPosition${modulo}" onchange="fnToggleSelfPosition(this)">
+                      <option value="1">${TEXT_VOTING_PRO}</option>
+                      <option value="0">${TEXT_VOTING_NEUTRAL}</option>
+                      <option value="-1">${TEXT_VOTING_CONTRA}</option>
+                      <option value="99">${ICON_SKIPPED}</option>
+                    </select>
                 </div>`;
 
         // 3./4 Zellen - Icons für Postion der Parteien [+] [0] [-]
@@ -562,6 +565,7 @@ function addContentToResultsTab() {
 
   // Daten in Browser schreiben
   document.querySelector("#resultsShort").innerHTML = tableContentResultsShort;
+  document.querySelectorAll("#resultsShort");
 
   if (!HIDE_TABLE_resultsByPartyAnswers) {
     for (let i = 0; i < intParties; i++) {
@@ -721,12 +725,13 @@ function addContentToFinetuningTab() {
                     ></label>
                     </div>
 
-                    <small>${TEXT_ANSWER_USER}: </small><button type='button' id='' class='btn ${positionButton} btn-sm selfPosition${i}' onclick='fnToggleSelfPosition(${i})' 
-                            alt='${TEXT_ANSWER_USER} : ${positionText}' title='${TEXT_ANSWER_USER} : ${positionText}' data-value="${
-      arPersonalPositions[i]
-    }">
-                        ${positionIcon}
-                    </button>
+                    <label class="your-answer" for="resultsByThesisSelfPosition${i}">${TEXT_ANSWER_USER}: </label>
+                    <select id="resultsByThesisSelfPosition${i}" class="selfPosition${i}" onchange="fnToggleSelfPosition(this)">
+                      <option value="1">${TEXT_VOTING_PRO}</option>
+                      <option value="0">${TEXT_VOTING_NEUTRAL}</option>
+                      <option value="-1">${TEXT_VOTING_CONTRA}</option>
+                      <option value="99">${ICON_SKIPPED}</option>
+                    </select>
                 </div>
 
                     <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>
@@ -884,84 +889,10 @@ function addContentToFinetuningTab() {
   });
 
   (function checkIfResultsChange() {
-    function showOrHighlightBtnRefresh() {
-      if (
-        document
-          .querySelector("#resultsTabBtn")
-          .classList.contains("reload-results")
-      )
-        return;
-
-      document.querySelector("#resultsTabBtn").addEventListener("click", () => {
-        for (i = 0; i < intParties; i++) {
-          arSortParties[i] = i;
-        }
-        arSortParties.sort((a, b) => arResults[b] - arResults[a]);
-        arSortParties.forEach((num) => {
-          document
-            .querySelector("#resultsShortTable .col")
-            .appendChild(
-              document.querySelector(`#resultsShortPartyClamp${num}`)
-            );
-        });
-        document
-          .querySelectorAll("[id^='resultsByThesisAnswersToQuestion']")
-          .forEach((table) => {
-            arSortParties.forEach((num) => {
-              table
-                .querySelector(".col")
-                .appendChild(table.querySelector(`.result${num}`));
-            });
-          });
-        sendMessageToLimitResultsAddon();
-        // addContentToFinetuningTab();
-        document
-          .querySelector("#resultsTabBtn")
-          .classList.remove("reload-results");
-      });
-      document.querySelector("#resultsTabBtn").classList.add("reload-results");
-
-      if (document.querySelector("#btn-see-updated-results")) return;
-      const btnRefresh = document.createElement("button");
-      btnRefresh.setAttribute("id", "btn-see-updated-results");
-      btnRefresh.classList.add(
-        "btn",
-        "btn-secondary",
-        "flex-center",
-        "off-screen",
-        "btn-above-navbar"
-      );
-      btnRefresh.innerHTML =
-        REFRESH_BUTTON_TEXT !== undefined
-          ? REFRESH_BUTTON_TEXT
-          : "&#8634; Ranking aktualisieren";
-      btnRefresh.addEventListener("click", () => {
-        document.querySelector("#resultsTabBtn").click();
-      });
-      document.querySelector("#resultsTabBtn").addEventListener("click", () => {
-        btnRefresh.remove();
-      });
-
-      document.querySelector("#sectionResults").appendChild(btnRefresh);
-      setTimeout(() => {
-        btnRefresh.classList.remove("off-screen");
-      }, 0);
-      if (
-        addons.some((item) =>
-          item.includes("addon_check_iframe_resize_client.js")
-        )
-      ) {
-        // In iframe, the button is (re-)positioned whenever the parent window scrolls
-        // This must happen as soon as the button is created
-        // Message is listened to by addon_check_iframe_resize_host.js, sends scroll event with position values back
-        parent.postMessage(["triggerScrollEvent", null], "*");
-      }
-    }
-
     setTimeout(
       () => {
         const nodelistResultChangingButtons = document.querySelectorAll(
-          "[class*='selfPosition'], [id^='checkbox-voting-double']"
+          "[id^='checkbox-voting-double']"
         );
         nodelistResultChangingButtons.forEach((btn) => {
           btn.addEventListener("click", showOrHighlightBtnRefresh);
@@ -1141,6 +1072,15 @@ function generateSectionResults(arResults) {
   document.querySelector("#sectionShowQuestions").remove();
   addContentToResultsTab();
   addContentToFinetuningTab();
+  for (let i = 0; i < intQuestions; i++) {
+    document.querySelectorAll(`.selfPosition${i}`).forEach((dropdown) => {
+      dropdown.value = arPersonalPositions[i];
+    });
+    if (arPersonalPositions[i] === 99)
+      document
+        .querySelector(`#voting-double-container-question${i}`)
+        .classList.add("d-none");
+  }
   addContentToInfoTab();
   createNavigationBar();
   document.querySelector("#sectionResults").style.display = "block";
@@ -1212,5 +1152,74 @@ function fnReEvaluate() {
       .addClass(barImage);
 
     $(`#partyPoints${i}`).html(`${arResults[i]}/${maxPoints}`);
+  }
+}
+
+function showOrHighlightBtnRefresh() {
+  if (
+    document
+      .querySelector("#resultsTabBtn")
+      .classList.contains("reload-results")
+  )
+    return;
+
+  document.querySelector("#resultsTabBtn").addEventListener("click", () => {
+    fnReEvaluate();
+    for (i = 0; i < intParties; i++) {
+      arSortParties[i] = i;
+    }
+    arSortParties.sort((a, b) => arResults[b] - arResults[a]);
+    arSortParties.forEach((num) => {
+      document
+        .querySelector("#resultsShortTable .col")
+        .appendChild(document.querySelector(`#resultsShortPartyClamp${num}`));
+    });
+    document
+      .querySelectorAll("[id^='resultsByThesisAnswersToQuestion']")
+      .forEach((table) => {
+        arSortParties.forEach((num) => {
+          table
+            .querySelector(".col")
+            .appendChild(table.querySelector(`.result${num}`));
+        });
+      });
+    sendMessageToLimitResultsAddon();
+    // addContentToFinetuningTab();
+    document.querySelector("#resultsTabBtn").classList.remove("reload-results");
+  });
+  document.querySelector("#resultsTabBtn").classList.add("reload-results");
+
+  if (document.querySelector("#btn-see-updated-results")) return;
+  const btnRefresh = document.createElement("button");
+  btnRefresh.setAttribute("id", "btn-see-updated-results");
+  btnRefresh.classList.add(
+    "btn",
+    "btn-secondary",
+    "flex-center",
+    "off-screen",
+    "btn-above-navbar"
+  );
+  btnRefresh.innerHTML =
+    REFRESH_BUTTON_TEXT !== undefined
+      ? REFRESH_BUTTON_TEXT
+      : "&#8634; Ranking aktualisieren";
+  btnRefresh.addEventListener("click", () => {
+    document.querySelector("#resultsTabBtn").click();
+  });
+  document.querySelector("#resultsTabBtn").addEventListener("click", () => {
+    btnRefresh.remove();
+  });
+
+  document.querySelector("#sectionResults").appendChild(btnRefresh);
+  setTimeout(() => {
+    btnRefresh.classList.remove("off-screen");
+  }, 0);
+  if (
+    addons.some((item) => item.includes("addon_check_iframe_resize_client.js"))
+  ) {
+    // In iframe, the button is (re-)positioned whenever the parent window scrolls
+    // This must happen as soon as the button is created
+    // Message is listened to by addon_check_iframe_resize_host.js, sends scroll event with position values back
+    parent.postMessage(["triggerScrollEvent", null], "*");
   }
 }

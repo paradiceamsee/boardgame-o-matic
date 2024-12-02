@@ -46,17 +46,19 @@ function createCustomVotingButtons() {
       newBtn.classList.add("col");
       newBtn.innerHTML = `<button type="button" class="btn btn-lg btn-custom btn-custom-${activeQuestion} btn-block btn-voting">${correspondingCustomQuestion.arButtonLabels[i]}</button>`;
       if (correspondingCustomQuestion.isYesOrDontCareQuestion) {
-        if (correspondingCustomQuestion.arPositionValues[i] === 1) {
+        // For such questions, it only needs two buttons:
+        //    One button meaning "I do care": The first button is used (it is the one which agrees most)
+        //    One button meading "I don't care": The last button is used (the value is later changed to 99)
+        if (i === 0) {
           newBtn.querySelector("button").innerHTML =
             correspondingCustomQuestion.buttonTextAndIconLabelForYes;
-        } else if (correspondingCustomQuestion.arPositionValues[i] === 0) {
-          // For such questions, the button with value -1 functions as a "Don't care button", which is why it is created (even though the user can't actually answer with -1)
-          // The 0 button, however, is not required at all -  and therefore not created
-          continue;
-        } else if (correspondingCustomQuestion.arPositionValues[i] === -1) {
+        } else if (
+          i ===
+          correspondingCustomQuestion.arButtonLabels.length - 1
+        ) {
           newBtn.querySelector("button").innerHTML =
             correspondingCustomQuestion.buttonTextAndIconLabelForDontCare;
-        }
+        } else continue;
       }
       newBtn.querySelector("button").addEventListener("click", () => {
         arPersonalPositions[activeQuestion] =
@@ -80,172 +82,60 @@ function createCustomVotingButtons() {
 function createInitialCustomPositionButtons() {
   // mutationObserver is triggered at the very start, because resultsHeading is emptied. This first trigger is ignored
   if (!document.querySelector("#resultsHeading").textContent) return;
-
   CUSTOM_POSITION_BUTTONS.forEach((obj) => {
     const i = obj.questionNr - 1;
     if (obj.hideVotingDouble)
-      document
-        .querySelector(`#voting-double-container-question${i}`)
-        .classList.add("d-none");
-
-    const arPositionButtons = document.querySelectorAll(
-      `.partyPositionToQuestion${i},
-       .selfPosition${i}`
-    );
-    arPositionButtons.forEach((oldBtn) => {
-      const newBtn = document.createElement("button");
-      newBtn.classList.add("btn", "btn-custom", "btn-sm");
-      newBtn.setAttribute("type", "button");
-      const position = +oldBtn.getAttribute("data-value");
-      newBtn.setAttribute("data-value", position);
-      const index = obj.arPositionValues.indexOf(position);
-      let btnTitleAndAltText;
-      if (index === -1) {
-        newBtn.style.backgroundColor = "transparent";
-        newBtn.style.color = "#000";
-        newBtn.innerHTML = ICON_SKIPPED;
-        btnTitleAndAltText = obj.arButtonAltTexts[index] ?? TEXT_VOTING_SKIP;
+      document.querySelector(
+        `#voting-double-container-question${i}`
+      ).style.display = "none"; // Not using .d-none, because this is removed and added to this element by other mechanism
+    document.querySelectorAll(`.selfPosition${i}`).forEach((dropdown) => {
+      let dropdownContent = "";
+      if (obj.isYesOrDontCareQuestion) {
+        dropdownContent += `
+        <option value="${obj.arPositionValues[0]}">${obj.buttonTextAndIconLabelForYes}</option>
+        <option value="99">${obj.buttonTextAndIconLabelForDontCare}</option>`;
       } else {
-        newBtn.style.backgroundColor =
-          obj.arBackgroundColor?.[index] ||
-          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.backgroundColor;
-        newBtn.style.color =
-          obj.arTextColor?.[index] ||
-          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.textColor;
-        newBtn.innerHTML = obj.arPositionIcons[index];
-        btnTitleAndAltText = obj.arButtonAltTexts[index] ?? TEXT_VOTING_SKIP;
+        for (let j = 0; j < obj.arPositionValues.length; j++) {
+          dropdownContent += `<option value="${obj.arPositionValues[j]}">${obj.arPositionIcons[j]}</option>`;
+        }
+        dropdownContent += `<option value="99">${ICON_SKIPPED}</option>`;
       }
+      dropdown.innerHTML = dropdownContent;
+      dropdown.value = arPersonalPositions[i];
+    });
 
-      if (oldBtn.classList.contains(`selfPosition${i}`)) {
-        newBtn.setAttribute(
-          "onclick",
-          `toggleSelfPositionOfCustomQuestion(${i})`
-        );
-        newBtn.classList.add(`selfPosition${i}`);
-        newBtn.setAttribute(
-          "alt",
-          `${TEXT_ANSWER_USER}: ${btnTitleAndAltText}`
-        );
-        newBtn.setAttribute(
-          "title",
-          `${TEXT_ANSWER_USER}: ${btnTitleAndAltText}`
-        );
+    document.querySelectorAll(`.partyPositionToQuestion${i}`).forEach((btn) => {
+      btn.classList.remove(
+        "btn-success",
+        "btn-warning",
+        "btn-danger",
+        "btn-default"
+      );
+      const partyPosition = +btn.getAttribute("data-value");
+      const positionIndex = obj.arPositionValues.indexOf(partyPosition);
+      let btnTitleAndAltText = "";
+      if (positionIndex === -1) {
+        btn.style.cssText = "background-color: transparent; color: #000";
+        btn.innerHTML = ICON_SKIPPED;
+        btnTitleAndAltText = obj.arButtonAltTexts[index] ?? TEXT_VOTING_SKIP;
       } else {
-        newBtn.classList.add(`partyPositionToQuestion${i}`);
-        newBtn.setAttribute(
-          "alt",
-          `${TEXT_ANSWER_PARTY}: ${btnTitleAndAltText}`
-        );
-        newBtn.setAttribute(
+        btn.innerHTML = obj.arPositionIcons[positionIndex];
+        btn.style.cssText = `background-color: ${
+          obj.arBackgroundColor?.[positionIndex] ||
+          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.backgroundColor
+        }; color: ${
+          obj.arTextColor?.[positionIndex] ||
+          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.textColor
+        }`;
+        btnTitleAndAltText = obj.arButtonAltTexts[positionIndex];
+        btn.setAttribute("alt", `${TEXT_ANSWER_PARTY}: ${btnTitleAndAltText}`);
+        btn.setAttribute(
           "title",
           `${TEXT_ANSWER_PARTY}: ${btnTitleAndAltText}`
         );
-        newBtn.disabled = true;
       }
-      if (
-        obj.isYesOrDontCareQuestion &&
-        newBtn.classList.contains(`selfPosition${i}`)
-      ) {
-        const isYes = +newBtn.getAttribute("data-value") === 1 ? true : false;
-        newBtn.innerHTML = isYes
-          ? obj.buttonTextAndIconLabelForYes
-          : obj.buttonTextAndIconLabelForDontCare;
-        newBtn.setAttribute(
-          "title",
-          `${TEXT_ANSWER_USER}: ${
-            isYes
-              ? obj.buttonTextAndIconLabelForYes
-              : obj.buttonTextAndIconLabelForDontCare
-          }`
-        );
-        newBtn.setAttribute(
-          "alt",
-          `${TEXT_ANSWER_USER}: ${
-            isYes
-              ? obj.buttonTextAndIconLabelForYes
-              : obj.buttonTextAndIconLabelForDontCare
-          }`
-        );
-      }
-
-      oldBtn.parentNode.insertBefore(newBtn, oldBtn);
-      oldBtn.remove();
     });
   });
-}
-
-function toggleSelfPositionOfCustomQuestion(i) {
-  const oldPosition = arPersonalPositions[i];
-  const obj = CUSTOM_POSITION_BUTTONS.find((obj) => obj.questionNr === i + 1); // This is the corresponding custom question object from definition.js
-  const indexOfOldPosition = obj.arPositionValues.indexOf(oldPosition);
-  let indexOfNewPosition = indexOfOldPosition + 1;
-  if (indexOfOldPosition === -1)
-    indexOfNewPosition = 0; // The oldPosition is not in the array, because it is 99 (skip). Continue with first position
-  else if (indexOfOldPosition === obj.arButtonLabels.length - 1)
-    indexOfNewPosition = null; // oldPosition was last one in array. Continue with skip
-  const newPosition = obj.arPositionValues[indexOfNewPosition] ?? 99;
-
-  arPersonalPositions[i] = newPosition;
-
-  document.querySelectorAll(`.selfPosition${i}`).forEach((btn) => {
-    btn.setAttribute("data-value", newPosition);
-    btn.innerHTML = obj.arPositionIcons[indexOfNewPosition];
-    if (btn.innerHTML === "undefined") {
-      btn.innerHTML = ICON_SKIPPED;
-      btn.style.backgroundColor = "transparent";
-      btn.style.color = "#000";
-      btn.setAttribute("alt", `${TEXT_ANSWER_USER}: ${TEXT_VOTING_SKIP}`);
-      btn.setAttribute("title", `${TEXT_ANSWER_USER}: ${TEXT_VOTING_SKIP}`);
-    } else {
-      btn.style.backgroundColor =
-        obj.arBackgroundColor?.[indexOfNewPosition] ||
-        CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.backgroundColor;
-      btn.style.color =
-        obj.arTextColor?.[indexOfNewPosition] ||
-        CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.textColor;
-      btn.setAttribute(
-        "alt",
-        `${TEXT_ANSWER_USER}: ${obj.arButtonAltTexts[indexOfNewPosition]}`
-      );
-      btn.setAttribute(
-        "title",
-        `${TEXT_ANSWER_USER}: ${obj.arButtonAltTexts[indexOfNewPosition]}`
-      );
-    }
-    if (obj.isYesOrDontCareQuestion) {
-      const isYes = +btn.getAttribute("data-value") === 1 ? true : false;
-      btn.innerHTML = isYes
-        ? obj.buttonTextAndIconLabelForYes
-        : obj.buttonTextAndIconLabelForDontCare;
-      btn.setAttribute(
-        "title",
-        `${TEXT_ANSWER_USER}: ${
-          isYes
-            ? obj.buttonTextAndIconLabelForYes
-            : obj.buttonTextAndIconLabelForDontCare
-        }`
-      );
-      btn.setAttribute(
-        "alt",
-        `${TEXT_ANSWER_USER}: ${
-          isYes
-            ? obj.buttonTextAndIconLabelForYes
-            : obj.buttonTextAndIconLabelForDontCare
-        }`
-      );
-    }
-  });
-
-  fnReEvaluate();
-
-  if (obj.isYesOrDontCareQuestion) {
-    if (newPosition === 0) {
-      document.querySelector(`.selfPosition${i}`).click();
-      document.querySelector(`.selfPosition${i}`).click();
-    } else if (newPosition === -1) {
-      document.querySelector(`.selfPosition${i}`).click();
-    }
-  }
 }
 
 window.addEventListener("load", () => {
