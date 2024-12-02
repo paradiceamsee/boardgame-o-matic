@@ -261,7 +261,12 @@ function fnShowQuestionNumber(questionNumber) {
         if (questionWithCustomButtons.isYesOrDontCareQuestion) {
           const correspondingQuestion =
             questionWithCustomButtons.questionNr - 1;
-          if (arPersonalPositions[correspondingQuestion] === -1)
+          if (
+            arPersonalPositions[correspondingQuestion] ===
+            questionWithCustomButtons.arPositionValues[
+              questionWithCustomButtons.arPositionValues.length - 1
+            ]
+          )
             arPersonalPositions[correspondingQuestion] = 99;
         }
       });
