@@ -8,7 +8,7 @@ const separator = ";";
 const fileQuestions = "demo-questions.csv";
 
 // Number of questions
-const intQuestions = 5;
+const intQuestions = 6;
 
 // Name of the CSV file with the board games in the /data directory
 const fileAnswers = "demo-games.csv";
@@ -291,11 +291,6 @@ if (isActivated("addon_custom_voting_buttons.js")) {
         "High conflict level",
       ],
       arPositionIcons: ["Little conflict", "Medium conflict", "High conflict"],
-      // arPositionIcons: [
-      //   `${fullBolt}${emptyBolt}${emptyBolt}`,
-      //   `${fullBolt}${fullBolt}${emptyBolt}`,
-      //   `${fullBolt}${fullBolt}${fullBolt}`,
-      // ],
     },
     {
       questionNr: 5,
@@ -303,6 +298,34 @@ if (isActivated("addon_custom_voting_buttons.js")) {
       arButtonLabels: ["Cooperative", "Semi-cooperative", "Competetive"],
       arButtonAltTexts: ["Cooperative", "Semi-cooperative", "Competetive"],
       arPositionIcons: ["Coop", "Semi-coop", "Compe&shy;tetive"],
+    },
+    {
+      questionNr: 6,
+      arPositionValues: [2, 1, 0, -1, -2],
+      arButtonLabels: [
+        "≤ 2 years old",
+        "3 - 5 years old",
+        "5 - 10 years old",
+        "10 - 20 years old",
+        "> 20 years old",
+      ],
+      arButtonAltTexts: [
+        "Less than 3 years old",
+        "3 - 5 years old",
+        "5 - 10 years old",
+        "10 - 20 years old",
+        "More than 20 years old",
+      ],
+      arPositionIcons: [
+        "≤ 2 years old",
+        "3 - 5 years old",
+        "5 - 10 years old",
+        "10 - 20 years old",
+        "> 20 years old",
+      ],
+      isYesOrDontCareQuestion: true,
+      buttonTextAndIconLabelForYes: "Yes",
+      buttonTextAndIconLabelForDontCare: "No matter",
     },
   ];
 }
