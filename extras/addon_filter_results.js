@@ -419,6 +419,8 @@ function addEventListenerToFilter(filter) {
     if (!isFilterValid) {
       if (filter.displayInSharedModal)
         window.allFiltersInSharedModalCorrect = false; // This causes the modal not to close
+      else if (filter.displayInIndividualModal?.isWanted)
+        window[`${filter.internalName}FilterCorrectIsValid`] = false; // This causes the modal not to close
       return;
     }
     hideResults(filter);
@@ -709,9 +711,6 @@ function createAndAppendSharedFilterModal() {
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>${SHARED_MODAL.heading}</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body" id="sharedFilterModalBody"></div>
                 <div class="modal-footer">
@@ -736,7 +735,7 @@ function createAndAppendSharedFilterModal() {
       setTimeout(() => {
         if (window.allFiltersInSharedModalCorrect)
           $("#sharedFilterModal").modal("hide");
-      }, 300);
+      }, 100);
     });
 }
 
@@ -769,9 +768,6 @@ function createAndAppendIndividualFilterModal(nodeFilter, filter) {
               <div class="modal-content">
                   <div class="modal-header">
                       <h2>${filter.displayInIndividualModal.heading}</h2>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
                   </div>
                   <div class="modal-body" id="individualFilterModalBody-${filter.internalName}"></div>
                   <div class="modal-footer">
@@ -796,7 +792,12 @@ function createAndAppendIndividualFilterModal(nodeFilter, filter) {
   document
     .querySelector(`#individual-filter-modal-confirm-${filter.internalName}`)
     .addEventListener("click", () => {
-      $(`#individualFilterModal-${filter.internalName}`).modal("hide");
+      window[`${filter.internalName}FilterCorrectIsValid`] = true;
+      // If the filter in the modal fails validation, this is set to false, preventing the closing of the modal
+      setTimeout(() => {
+        if (window[`${filter.internalName}FilterCorrectIsValid`])
+          $(`#individualFilterModal-${filter.internalName}`).modal("hide");
+      }, 100);
     });
 }
 
