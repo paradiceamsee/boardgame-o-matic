@@ -251,7 +251,7 @@ i.bx-sm {
 }
 
 #filtersContainer div {
-  height: 40px;
+  min-height: 40px;
 }
 
 .btn-open-filter-modal {
@@ -277,10 +277,10 @@ i.bx-sm {
 }
 
 #reset-all-filters {
-  background-color: transparent;
-  border: 1px solid;
-  padding: 3px 6px;
-  color: var(--danger);
+  background-color: var(--danger);
+  border: none;
+  padding: 4px 8px;
+  color: var(--text-on-danger);
   border-radius: var(--border-radius);
   margin-left: -7px;
 }
@@ -545,29 +545,31 @@ i.bx-sm {
   margin: 0 auto;
 }
 
-.title-on-hover::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--success);
-  color: var(--text-on-success);
-  padding: 5px 10px;
-  border-radius: var(--border-radius);
-  white-space: nowrap;
-  font-size: 1rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-  border: 2px solid #000;
-}
+@media only screen and (min-width: 1024px) {
+  .title-on-hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--success);
+    color: var(--text-on-success);
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+    font-size: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    border: 2px solid #000;
+  }
 
-.title-on-hover:hover::before {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
+  .title-on-hover:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 #voting-double-container-card {
@@ -635,4 +637,11 @@ i.bx-sm {
 /* Leave space to pseudo elements building the table header */
 [id^="resultsAnswerParty"][id$="ToQuestion1"] div:first-child {
   margin-top: 25px;
+}
+
+/* If the title is long and breaks into 2 or more lines, it would look bad with flex-direction: column, because the icon would be pushed to the very left while the text is centered*/
+@media only screen and (max-width: 767px) {
+  .card-header h2.flex-center {
+    flex-direction: column;
+  }
 }

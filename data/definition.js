@@ -394,7 +394,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       internalName: "player-number",
       type: "dropdown",
       icon: "bx-group",
-      label: "Filter by player number: ",
+      label: "Player number: ",
       options: [
         { text: "Solo", value: "1" },
         { text: "2", value: "2" },
@@ -422,7 +422,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       type: "checkbox-list",
       icon: "bx-cog",
       heading:
-        "All board games, which have at least one of the mechanics you disallow, are exluced from your results.",
+        "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
       options: [
         { label: "Area control", value: "areaControl", help: "Dummy text" },
         {
@@ -462,7 +462,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInIndividualModal: {
         isWanted: true,
         iconButtonOpenModal: "",
-        textButtonOpenModal: "Filter by Mechanics",
+        textButtonOpenModal: "Mechanics",
         heading: "Filter by Mechanics",
         buttonShowResults: "Apply filter",
       },
@@ -478,7 +478,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       type: "checkbox-list",
       icon: "bx-landscape",
       heading:
-        "All board games, which have at least one of the themes you disallow, are exluced from your results.",
+        "All board games, which have at least one of the themes you disallow, are excluded from your results.",
       options: [
         { label: "Adventure", value: "adventure" },
         { label: "Wild West", value: "wildWest" },
@@ -501,7 +501,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInSharedModal: false,
       displayInIndividualModal: {
         isWanted: true,
-        textButtonOpenModal: "Filter by Themes",
+        textButtonOpenModal: "Themes",
         heading: "Filter by Themes / Settings",
         buttonShowResults: "Apply filter",
       },
