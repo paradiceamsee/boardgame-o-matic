@@ -683,11 +683,6 @@ button:active,
   text-align: center;
 }
 
-#resultsShortTable .img-fluid {
-  max-height: 50px;
-  border-radius: 0 !important;
-}
-
 /* addon_angebote+einrichtungen.js */
 
 .freinet-container {
@@ -760,10 +755,6 @@ button:active,
   [id^="resultsByPartyHeading"] .text-container {
     grid-column: span 2;
   }
-}
-
-#resultsShortTable .img-fluid {
-  max-height: unset;
 }
 
 .btn-dark:not(:disabled):not(.disabled).active,

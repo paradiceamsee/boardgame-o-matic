@@ -71,7 +71,6 @@ const TEXT_ANSWER_DOUBLE = "Question is double-weighted";
 const TEXT_VOTING_DOUBLE_MODAL_HEADING = "Double-weighting questions";
 const TEXT_VOTING_DOUBLE_MODAL_BODY =
   "<p>Use this option, if the issue of the question is particularly relevant for you. Activate the checkbox and then select your answer.</p><p>The impact of double-weighted questions on the matching algorithm is twice as high.</p>";
-const TEXT_QUESTION_GO_TO_RESULT_DETAILS =
-  "<p>Do want to see the details of this board game? You can just come back here afterwards.</p>";
-const TEXT_DONT_GO_TO_RESULT_DETAILS = "No, thanks";
-const TEXT_GO_TO_RESULT_DETAILS = "Yes, please!";
+
+const HEADING_MODAL_RESULT_DETAILS_FINETUNING = "Board game details";
+const TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING = "Close";

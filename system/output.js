@@ -767,7 +767,7 @@ function addContentToFinetuningTab() {
       tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
 
                         <div class='w-50 d-flex align-items-center' role='cell'>
-                            <small><strong><a onclick="showModalGotoResult(${partyNum})">${arPartyNamesLong[
+                            <small><strong><a onclick="showModalResultDetails(${partyNum})">${arPartyNamesLong[
         partyNum
       ].replace(/ <small>.*?<\/small>/, "")}</a>: </strong></small>${
         arPartyOpinions[partyPositionsRow] ? ":" : ""
@@ -1228,58 +1228,37 @@ function showOrHighlightBtnRefresh() {
   }
 }
 
-function showModalGotoResult(i) {
-  let nodeModal = document.querySelector(`#modal-go-to-result-${i}`);
-  if (nodeModal) {
-    $(`#modal-go-to-result-${i}`).modal("show");
-  } else {
+function showModalResultDetails(i) {
+  let nodeModal = document.querySelector(`#modal-result-details`);
+  if (!nodeModal) {
     nodeModal = document.createElement("div");
     nodeModal.classList.add("modal", "fade");
-    nodeModal.setAttribute("id", `modal-go-to-result-${i}`);
+    nodeModal.setAttribute("id", `modal-result-details`);
     nodeModal.setAttribute("role", "dialog");
     nodeModal.setAttribute("aria-modal", "true");
-    let divContent = `<div class="modal-dialog modal-dialog-centered" role="document">
+    let divContent = `
+          <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h5>${arPartyNamesLong[i]}</h5>
+                      <h5>${HEADING_MODAL_RESULT_DETAILS_FINETUNING}</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div class="modal-body">${TEXT_QUESTION_GO_TO_RESULT_DETAILS}
+                  <div class="modal-body">
+
                   </div>
                   <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    ${TEXT_DONT_GO_TO_RESULT_DETAILS}
-                  </button>
-                  <button type="button" class="btn btn-primary btn-go-to-result-details">
-                    ${TEXT_GO_TO_RESULT_DETAILS}
+                  ${TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING}
                   </button>
                 </div>
               </div>
           </div>`;
     nodeModal.innerHTML = divContent;
-    nodeModal
-      .querySelector(".btn-go-to-result-details")
-      .addEventListener("click", () => {
-        document.querySelector(`#resultsByThesisTable .expanded`).click();
-        document.querySelector("#resultsTabBtn").click();
-        document
-          .querySelector(`#resultsShortPartyDescriptionButton${i}`)
-          .click();
-        $(`#modal-go-to-result-${i}`).modal("hide");
-        if (window.innerWidth > 768) {
-          setTimeout(() => {
-            document
-              .querySelector(`#resultsShortPartyClamp${i}`)
-              .scrollIntoView({ behavior: "smooth" });
-          }, 600);
-        }
-      });
     document.body.append(nodeModal);
-    setTimeout(() => {
-      // Timeout required so that animation works
-      $(`#modal-go-to-result-${i}`).modal("show");
-    }, 0);
   }
+  document.querySelector("#modal-result-details .modal-body").innerHTML =
+    document.querySelector(`#resultsShortPartyClamp${i}`).innerHTML;
+  $(`#modal-result-details`).modal("show");
 }

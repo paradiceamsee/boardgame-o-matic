@@ -651,3 +651,31 @@ a:not([href]) {
   color: var(--link-color);
   cursor: pointer;
 }
+
+#modal-result-details .modal-dialog {
+  max-width: 700px;
+}
+
+.modal-content .col-2 {
+  -ms-flex: 0 0 30%;
+  flex: 0 0 30%;
+  max-width: 30%;
+  padding: 5px;
+}
+
+.modal-content .col-10 {
+  flex: 0 0 70%;
+}
+
+.modal-content .col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.modal-content [id^="resultsShortPartyDescriptionButton"] {
+  display: none;
+}
+
+.modal-content [id^="resultsShortPartyDetails"] {
+  display: block !important;
+}
