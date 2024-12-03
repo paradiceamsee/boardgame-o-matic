@@ -679,3 +679,22 @@ a:not([href]) {
 .modal-content [id^="resultsShortPartyDetails"] {
   display: block !important;
 }
+
+#permalink-btn-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
+}
+
+#welcome-message-after-permalink {
+  margin: auto;
+  padding: 15px;
+  border: 3px solid var(--secondary-color);
+  border-radius: calc(var(--border-radius) * 2);
+  max-width: 600px;
+  margin: auto;
+}
+
+#welcome-message-after-permalink a {
+  text-decoration: underline;
+}

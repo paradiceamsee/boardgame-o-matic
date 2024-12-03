@@ -56,6 +56,7 @@ function processPermalink(urlParams) {
   setTimeout(() => {
     // Jump to results. Without timeout, not everything would be ready
     fnShowQuestionNumber(intQuestions);
+    handleTypeFromPermalink(urlParams);
     if (isActivated("addon_filter_results.js"))
       handleFiltersFromPermalink(urlParams);
   }, 500);
@@ -117,7 +118,18 @@ function handleFiltersFromPermalink(urlParams) {
   // }, 300);
 }
 
-function generateLinkWithCurrentUserAnswers() {
+function handleTypeFromPermalink(urlParams) {
+  const type = decodeURIComponent(urlParams.get("type"));
+  const nodeWelcome = document.createElement("div");
+  nodeWelcome.setAttribute("id", "welcome-message-after-permalink");
+  nodeWelcome.innerHTML =
+    type === "share"
+      ? TEXT_WELCOME_AFTER_PERMALINK_SHARE
+      : TEXT_WELCOME_AFTER_PERMALINK_SAVE;
+  document.querySelector("#results").prepend(nodeWelcome);
+}
+
+function generateLinkWithCurrentUserAnswers(type) {
   let link = window.location.origin + window.location.pathname;
   // Add parameter with personal positions
   link += "?pos=" + encodeURIComponent(arPersonalPositions.join(","));
@@ -148,6 +160,7 @@ function generateLinkWithCurrentUserAnswers() {
       }
     });
   }
+  link += `&type=${type}`;
   return link;
 }
 
@@ -169,33 +182,36 @@ window.addEventListener("load", () => {
     ).innerHTML = `<h1>${TEXT_SHARE_AND_SAVE_HEADING}</h1><h2>${TEXT_SHARE_AND_SAVE_SUBHEADING}</h2>`;
     // Without disconnecting, the mutation would for some reason be triggered twice, leading to 2 buttons
     observerResults.disconnect();
-    const permalinkButton = document.createElement("button");
-    permalinkButton.setAttribute("id", "permalink-button");
-    permalinkButton.classList.add("btn", "btn-secondary", "flex-center");
-    permalinkButton.innerHTML = PERMALINK_BUTTON_TEXT;
-    const permalinkDescription = document.createElement("p");
-    permalinkDescription.setAttribute("id", "permalink-description");
-    permalinkDescription.innerHTML = PERMALINK_DESCRIPTION_TEXT;
-
-    permalinkButton.addEventListener("click", () => {
-      const permalinkUrl = generateLinkWithCurrentUserAnswers();
-      // Method for copying to clipboard is not supported in all browsers. Fallback: Show URL and tell user to copy it
-      navigator.clipboard.writeText(permalinkUrl).catch((error) => {
-        permalinkButton.innerHTML = `${
-          window.PERMALINK_BUTTON_TEXT_ALT !== undefined
-            ? PERMALINK_BUTTON_TEXT_ALT
-            : "Kopiere den folgenden Link und speichere ihn an einem Ort deiner Wahl oder teile ihn. Dieser Link führt wieder zu dieser persönlichen Ergebnisseite"
-        }: <small><a href="${permalinkUrl}" target="_blank">${permalinkUrl}</a></small>`;
-      });
-      // Animating the appearance and disappearance of the description box
-      permalinkDescription.classList.add("permalink-description-visible");
-      setTimeout(() => {
-        permalinkDescription.classList.remove("permalink-description-visible");
-      }, PERMALINK_DESCRIPTION_DURATION * 1000);
+    ["share", "save"].forEach((type) => {
+      const permalinkButton = document.createElement("button");
+      permalinkButton.setAttribute("id", `permalink-button-${type}`);
+      permalinkButton.setAttribute(
+        "onclick",
+        `copyPermalinkAndShowExplanation("${type}")`
+      );
+      permalinkButton.classList.add("btn", "btn-secondary", "flex-center");
+      permalinkButton.innerHTML =
+        type === "share" ? TEXT_BTN_PERMALINK_SHARE : TEXT_BTN_PERMALINK_SAVE;
+      document
+        .querySelector("#permalink-btn-container")
+        .append(permalinkButton);
     });
-
-    document
-      .querySelector("#shareAndSave")
-      .append(permalinkButton, permalinkDescription);
   }
 });
+
+function copyPermalinkAndShowExplanation(type) {
+  const permalinkUrl = generateLinkWithCurrentUserAnswers(type);
+  const permalinkDescription = document.querySelector("#permalink-description");
+  permalinkDescription.innerHTML =
+    type === "share" ? DESCRIPTION_PERMALINK_SHARE : DESCRIPTION_PERMALINK_SAVE;
+  navigator.clipboard.writeText(permalinkUrl).catch((error) => {
+    permalinkDescription.innerHTML =
+      type === "share"
+        ? DESCRIPTION_PERMALINK_SHARE_ALT
+        : DESCRIPTION_PERMALINK_SAVE_ALT;
+  });
+  permalinkDescription.classList.add("permalink-description-visible");
+  setTimeout(() => {
+    permalinkDescription.classList.remove("permalink-description-visible");
+  }, PERMALINK_DESCRIPTION_DURATION * 1000);
+}

@@ -74,3 +74,20 @@ const TEXT_VOTING_DOUBLE_MODAL_BODY =
 
 const HEADING_MODAL_RESULT_DETAILS_FINETUNING = "Board game details";
 const TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING = "Close";
+
+const TEXT_BTN_PERMALINK_SHARE =
+  "<i class='bx bx-sm bx-share-alt' ></i> Share results";
+const TEXT_BTN_PERMALINK_SAVE =
+  "<i class='bx bx-sm bx-save' ></i> Save results";
+const DESCRIPTION_PERMALINK_SHARE =
+  "Your share link has been copied to your clipboard. Send it to whoever you want so that they can see your personal results.";
+const DESCRIPTION_PERMALINK_SHARE_ALT =
+  "Copy the following link and send it to whoever you want so that they can see your personal results.";
+const DESCRIPTION_PERMALINK_SAVE =
+  "Your store link has been copied to your clipboard. Save it to a location of your choice &ndash; it leads you back to your personal results page.";
+const DESCRIPTION_PERMALINK_SAVE_ALT =
+  "Copy the following link and save it to a location of your choice &ndash; it leads you back to your personal results page.";
+
+const TEXT_WELCOME_AFTER_PERMALINK_SHARE = `<p><strong>Hello there!</strong> These are the BoardGame-O-Matic results of whoever sent you this link. To get your own results, just <a onclick="document.querySelector('#restart').click()">restart the BoardGame-O-Matic</a>.</p>`;
+const TEXT_WELCOME_AFTER_PERMALINK_SAVE = `<p><strong>Welcome back!</strong> Your BoardGame-O-Matic results have patiently waited here for you. If there should be any changes in your ranking, then that's because our collection changed.</p>
+                           <p>If you don't like your results anymore, you can simply <a onclick="document.querySelector('#restart').click()">restart the BoardGame-O-Matic</a>`;

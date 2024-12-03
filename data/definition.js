@@ -85,14 +85,6 @@ const privacyExternalPageLink = false;
 const privacyModalTitle = `Privacy policy for the Demo Boardgame-O-Matic`;
 const privacyModalGeneral = `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.`;
 
-// Text in the button
-const PERMALINK_BUTTON_TEXT = `<i class='bx bx-link'></i> Generate Link`;
-// Explanatory text, which is shown for a couple of seconds after the button is pressed
-const PERMALINK_DESCRIPTION_TEXT =
-  "Your link has been copied to your clipboard. Save it to a location of your choice or share it with others &ndash; it leads directly to your personal results page.";
-// Method for copying to clipboard is not supported in all browsers. Fallback: Show URL and tell user to copy it
-const PERMALINK_BUTTON_TEXT_ALT =
-  "Copy the following link and save it to a location of your choice or share it  &ndash; it leads directly to your personal results page.";
 // How many seconds is the explanatory text shown after each button click before it disappears again?
 const PERMALINK_DESCRIPTION_DURATION = 15;
 const REFRESH_BUTTON_TEXT = `See updated results <i class="bx bx-chevron-right bx-sm"></i>`;
