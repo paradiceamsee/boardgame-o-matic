@@ -122,6 +122,11 @@ function fnStart() {
 // Aufruf aus fnStart() wenn "descriptionShowOnStart = 0" ODER beim Klick auf Start-Button
 function fnHideWelcomeMessage() {
   document.querySelector("#restart").classList.remove("d-none");
+  // Warn user before leaving the page and ask for confirmation
+  window.addEventListener("beforeunload", function (event) {
+    event.preventDefault(); // Required in some browsers
+    event.returnValue = "dummy"; // A non-empty string is often ignored
+  });
   fnShowQuestionNumber(-1);
 }
 
