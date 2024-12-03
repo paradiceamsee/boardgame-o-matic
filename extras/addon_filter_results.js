@@ -345,10 +345,6 @@ function showHelpModalExplainingFilterOption(filterName, index, heading, body) {
     `#help-modal-${filterName}-option${index}`
   );
   if (helpModal) {
-    // const updatedModal = new bootstrap.Modal(helpModal, {
-    //   backdrop: origin === "result-details" ? "true" : "false",
-    // });
-    // updatedModal.show();
     $(`#help-modal-${filterName}-option${index}`).modal("show");
   } else {
     helpModal = document.createElement("div");
