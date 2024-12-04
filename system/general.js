@@ -313,8 +313,8 @@ function fnTransformPositionToButton(position) {
 
 // v.0.3 NEU
 // ersetzt die Position (-1, 0, 1) mit dem passenden Icon
-function fnTransformPositionToIcon(position) {
-  var positionIcon = ICON_SKIPPED;
+function fnTransformPositionToIcon(position, type) {
+  var positionIcon = type === "personal" ? ICON_SKIPPED : ICON_NO_DATA;
   for (z = -1; z <= 1; z++) {
     if (z == position) {
       positionIcon = arIcons[z + 1];
@@ -338,9 +338,9 @@ function fnTransformPositionToColor(position) {
 }
 
 // ersetzt die Partei-Position (-1, 0, 1) mit dem passenden Text
-function fnTransformPositionToText(position) {
+function fnTransformPositionToText(position, type) {
   var arText = new Array("[-]", "[o]", "[+]");
-  var positionText = "[/]";
+  var positionText = type === "personal" ? TEXT_SKIPPED : TEXT_NO_DATA;
   for (z = -1; z <= 1; z++) {
     if (z == position) {
       positionText = arText[z + 1];

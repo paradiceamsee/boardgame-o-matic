@@ -10,6 +10,9 @@ const TEXT_VOTING_SKIP =
   "No matter&nbsp;/ Skip <i class='bx bx-skip-next bx-sm'></i>";
 const TEXT_VOTING_DOUBLE = "Double-weighted";
 const ICON_SKIPPED = "No matter";
+const TEXT_SKIPPED = "No matter";
+const ICON_NO_DATA = "No data";
+const TEXT_NO_DATA = "No data";
 
 // Statistic
 const TEXT_ALLOW_STATISTIC_TITLE = "Before you see your results...";

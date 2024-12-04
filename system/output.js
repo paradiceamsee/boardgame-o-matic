@@ -529,10 +529,12 @@ function addContentToResultsTab() {
           arPersonalPositions[modulo]
         );
         var positionIcon = fnTransformPositionToIcon(
-          arPersonalPositions[modulo]
+          arPersonalPositions[modulo],
+          "personal"
         );
         var positionText = fnTransformPositionToText(
-          arPersonalPositions[modulo]
+          arPersonalPositions[modulo],
+          "personal"
         );
 
         tableContentResultsShort += `<div class='col col-4 col-md-2' id='selfPositionContainer${modulo}' role='cell'>
@@ -545,9 +547,15 @@ function addContentToResultsTab() {
                 </div>`;
 
         // 3./4 Zellen - Icons für Postion der Parteien [+] [0] [-]
-        var positionIcon = fnTransformPositionToIcon(arPartyPositions[j]);
+        var positionIcon = fnTransformPositionToIcon(
+          arPartyPositions[j],
+          "party"
+        );
         var positionButton = fnTransformPositionToButton(arPartyPositions[j]);
-        var positionText = fnTransformPositionToText(arPartyPositions[j]);
+        var positionText = fnTransformPositionToText(
+          arPartyPositions[j],
+          "party"
+        );
 
         tableContentResultsShort += `<div class='col col-4 col-md-2' id='partyPositionContainer${modulo}' role='cell'>
                     <button type='button' class='btn ${positionButton} partyPositionToQuestion${modulo} btn-sm' disabled data-value="${arPartyPositions[j]}"
@@ -706,8 +714,14 @@ function addContentToFinetuningTab() {
         <div class='col'>`;
   for (i = 0; i < intQuestions; i++) {
     var positionButton = fnTransformPositionToButton(arPersonalPositions[i]);
-    var positionIcon = fnTransformPositionToIcon(arPersonalPositions[i]);
-    var positionText = fnTransformPositionToText(arPersonalPositions[i]);
+    var positionIcon = fnTransformPositionToIcon(
+      arPersonalPositions[i],
+      "personal"
+    );
+    var positionText = fnTransformPositionToText(
+      arPersonalPositions[i],
+      "personal"
+    );
 
     tableContentResultsByThesis += `<div class='row border' id='resultsByThesisQuestion${i}Container' role='row'>
                 <div class='col' id='resultsByThesisQuestion${i}' role='cell'>
@@ -762,20 +776,23 @@ function addContentToFinetuningTab() {
         arPartyPositions[partyPositionsRow]
       );
       var positionIcon = fnTransformPositionToIcon(
-        arPartyPositions[partyPositionsRow]
+        arPartyPositions[partyPositionsRow],
+        "party"
       );
       var positionText = fnTransformPositionToText(
-        arPartyPositions[partyPositionsRow]
+        arPartyPositions[partyPositionsRow],
+        "party"
       );
 
       // Inhalt der Zelle
       tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
 
                         <div class='w-50 d-flex align-items-center' role='cell'>
-                            <small><strong>${arPartyNamesLong[partyNum].replace(
-                              / <small>.*?<\/small>/,
-                              ""
-                            )}</strong></small> <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>${
+                        <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>
+                        <small><strong>${arPartyNamesLong[partyNum].replace(
+                          / <small>.*?<\/small>/,
+                          ""
+                        )}</strong></small>${
         arPartyOpinions[partyPositionsRow] ? ":" : ""
       } ${arPartyOpinions[partyPositionsRow]}
                         <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->

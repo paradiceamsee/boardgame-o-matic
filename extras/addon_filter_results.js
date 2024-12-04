@@ -246,19 +246,22 @@ function displayFilterValuesInResultDetails() {
     DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS.questionsToBeDisplayed.forEach(
       (question) => {
         const answerIndex = resultNr * intQuestions + (question.questionNr - 1);
-        const answerValue = arPartyPositions[answerIndex];
+        const answerValue = +arPartyPositions[answerIndex];
         let answerText = "";
-        if (
-          isActivated("addon_custom_voting_buttons.js") &&
-          question.isCustomQuestion
-        )
-          answerText =
-            window.lookupTableForCustomQuestions[question.questionNr][
-              answerValue
-            ];
-        else
-          answerText =
-            arIcons[answerValue === 1 ? "0" : answerValue === 0 ? "1" : "2"];
+        if (answerValue === 99) answerText = TEXT_NO_DATA;
+        else {
+          if (
+            isActivated("addon_custom_voting_buttons.js") &&
+            question.isCustomQuestion
+          )
+            answerText =
+              window.lookupTableForCustomQuestions[question.questionNr][
+                answerValue
+              ];
+          else
+            answerText =
+              arIcons[answerValue === 1 ? "0" : answerValue === 0 ? "1" : "2"];
+        }
         divContent += `<li class="flex-center"><i class="bx ${
           arQuestionsIcon[question.questionNr - 1]
         }"></i>`;

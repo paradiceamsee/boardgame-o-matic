@@ -116,8 +116,8 @@ function createInitialCustomPositionButtons() {
       let btnTitleAndAltText = "";
       if (positionIndex === -1) {
         btn.style.cssText = "background-color: transparent; color: #000";
-        btn.innerHTML = ICON_SKIPPED;
-        btnTitleAndAltText = obj.arButtonAltTexts[index] ?? TEXT_VOTING_SKIP;
+        btn.innerHTML = ICON_NO_DATA;
+        btnTitleAndAltText = TEXT_NO_DATA;
       } else {
         btn.innerHTML = obj.arPositionIcons[positionIndex];
         btn.style.cssText = `background-color: ${
