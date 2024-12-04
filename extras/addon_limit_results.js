@@ -200,7 +200,8 @@ function fnCalculate_Buttons(rowStart, rowEnd) {
 
   // verhindere negative Werte
   // prevent negative values
-  if (rowEndMinus <= 0) rowEndMinus = 1;
+  // if (rowEndMinus <= 0) rowEndMinus = 1;
+  if (rowEndMinus < 5) rowEndMinus = 5;
 
   // Normalerweise würde man einfach nur Anfang und Ende an die Funktion "fnCalculate_Buttons(start,end)" übergeben.
   // Aber das Addon "addon_results_textfilter.js" setzt alle Filter zurück.
@@ -247,7 +248,7 @@ function fnCalculate_Buttons(rowStart, rowEnd) {
 
   // wenn WENIGER Parteien (Zeilen) angezeigt werden sollten, als eigentlich vorhanden sind ...
   // if the script wants to show FEWER parties (lines) than exists ...
-  if (rowEnd <= 1) {
+  if (rowEnd <= 5) {
     // ... blende den Button aus / ... hide button
     for (var i = 0; i < buttons_minus.length; i++) {
       fnFadeOut(buttons_minus[i], 500, 1);
