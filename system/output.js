@@ -772,15 +772,16 @@ function addContentToFinetuningTab() {
       tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
 
                         <div class='w-50 d-flex align-items-center' role='cell'>
-                            <small><strong><a onclick="showModalResultDetails(${partyNum})">${arPartyNamesLong[
-        partyNum
-      ].replace(/ <small>.*?<\/small>/, "")}</a>: </strong></small>${
+                            <small><strong>${arPartyNamesLong[partyNum].replace(
+                              / <small>.*?<\/small>/,
+                              ""
+                            )}</strong></small> <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>${
         arPartyOpinions[partyPositionsRow] ? ":" : ""
       } ${arPartyOpinions[partyPositionsRow]}
                         <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
                             <span style='visibility:hidden; display:none;' aria-hidden='true'>${
                               arPartyDescription[partyNum]
-                            }</span>
+                            }</span> 
                         </div>
                         <div class='w-50 d-flex align-items-center' role='cell'>
                             <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
@@ -1193,7 +1194,6 @@ function showOrHighlightBtnRefresh() {
         });
       });
     sendMessageToLimitResultsAddon();
-    // addContentToFinetuningTab();
     document.querySelector("#resultsTabBtn").classList.remove("reload-results");
   });
   document.querySelector("#resultsTabBtn").classList.add("reload-results");
@@ -1222,7 +1222,7 @@ function showOrHighlightBtnRefresh() {
   document.querySelector("#sectionResults").appendChild(btnRefresh);
   setTimeout(() => {
     btnRefresh.classList.remove("off-screen");
-  }, 0);
+  }, 100);
   if (
     addons.some((item) => item.includes("addon_check_iframe_resize_client.js"))
   ) {
@@ -1241,11 +1241,12 @@ function showModalResultDetails(i) {
     nodeModal.setAttribute("id", `modal-result-details`);
     nodeModal.setAttribute("role", "dialog");
     nodeModal.setAttribute("aria-modal", "true");
+    nodeModal.setAttribute("tabindex", "-1");
     let divContent = `
           <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h5>${HEADING_MODAL_RESULT_DETAILS_FINETUNING}</h5>
+                      <h2>${HEADING_MODAL_RESULT_DETAILS_FINETUNING}</h2>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                       </button>

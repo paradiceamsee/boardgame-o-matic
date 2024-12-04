@@ -161,8 +161,7 @@ function createFilterHtml(filter) {
         }>${filter.options[i].label}</span>
       </label>`;
       if (filter.options[i].help) {
-        divContent += `<button class="bx bx-help-circle icon-help" id="icon-help-${filter.internalName}-option${i}" onclick='showHelpModalExplainingFilterOption("${filter.internalName}","${i}",
-          "${filter.options[i].label}",
+        divContent += `<button class="bx bx-help-circle icon-help" id="icon-help-${filter.internalName}-option${i}" onclick='showHelpModalExplainingFilterOption("${filter.options[i].label}",
           "${filter.options[i].help}")'></button>`;
       }
       divContent += `</div>`;
@@ -301,9 +300,7 @@ function displayFilterValuesInResultDetails() {
               filter.internalName
             }-option${filter.options.indexOf(
               option
-            )}" onclick='showHelpModalExplainingFilterOption("${
-              filter.internalName
-            }","${filter.options.indexOf(option)}",
+            )}" onclick='showHelpModalExplainingFilterOption(
               "${option[filter.type === "dropdown" ? "text" : "label"]}",
               "${option.help}")'></button>`;
           }
@@ -339,19 +336,18 @@ function displayFilterValuesInResultDetails() {
     });
 }
 
-function showHelpModalExplainingFilterOption(filterName, index, heading, body) {
-  const isAnotherModalAlreadyOpen = document.querySelector(".modal-backdrop");
-  let helpModal = document.querySelector(
-    `#help-modal-${filterName}-option${index}`
-  );
+function showHelpModalExplainingFilterOption(heading, body) {
+  let helpModal = document.querySelector("#help-modal-filter-option");
   if (helpModal) {
-    $(`#help-modal-${filterName}-option${index}`).modal("show");
+    helpModal.querySelector(".modal-header h2").innerHTML = heading;
+    helpModal.querySelector(".modal-body").innerHTML = body;
   } else {
     helpModal = document.createElement("div");
     helpModal.classList.add("modal", "fade");
-    helpModal.setAttribute("id", `help-modal-${filterName}-option${index}`);
+    helpModal.setAttribute("id", "help-modal-filter-option");
     helpModal.setAttribute("role", "dialog");
     helpModal.setAttribute("aria-modal", "true");
+    helpModal.setAttribute("tabindex", "-1");
     let divContent = `<div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -365,26 +361,28 @@ function showHelpModalExplainingFilterOption(filterName, index, heading, body) {
         </div>`;
     helpModal.innerHTML = divContent;
     document.body.append(helpModal);
-    setTimeout(() => {
-      // Timeout required so that ...on(show.bs.modal) registers the first showong
-      $(`#help-modal-${filterName}-option${index}`).modal("show");
-    }, 0);
-    ["show", "hide"].forEach((eventType) => {
-      $(`#help-modal-${filterName}-option${index}`).on(
-        `${eventType}.bs.modal`,
-        () => {
-          const otherOpenModal = document.querySelector(
-            `.modal.show:not(#help-modal-${filterName}-option${index})`
-          );
-          if (!otherOpenModal) return;
-          otherOpenModal.style.zIndex = eventType === "show" ? "1040" : "1050";
-        }
+
+    $("#help-modal-filter-option").on("hide.bs.modal", () => {
+      const otherOpenModal = document.querySelector(
+        ".modal.show:not(#help-modal-filter-option)"
       );
+      if (!otherOpenModal) return;
+      // Reset other modal's z-index to be in front of its own backdrop (z-index: 1040), but still behind #help-modal-filter-option (z-index: 1050)
+      otherOpenModal.style.zIndex = "1045";
+      setTimeout(() => {
+        document.body.classList.add("modal-open");
+      }, 500);
     });
   }
-  if (isAnotherModalAlreadyOpen) {
-    // To overlapping backdrops are not too much; one backdrop covering everything but the top most modal is sufficient
+  $("#help-modal-filter-option").modal("show");
+  const otherOpenModal = document.querySelector(
+    ".modal.show:not(#help-modal-filter-option)"
+  );
+  if (otherOpenModal) {
+    // Put the other modal behind its own backdrop (resetted when top modal is closed)
+    otherOpenModal.style.zIndex = "1040";
     setTimeout(() => {
+      // Make the backdrop of the top modal invisible
       document.querySelectorAll(".modal-backdrop")[1].style.opacity = "0";
     }, 0);
   }
