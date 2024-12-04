@@ -201,8 +201,7 @@ function addFilterNodeToDOM(nodeFilter, filter) {
   } else document.querySelector("#filtersContainer").appendChild(nodeFilter);
 
   addEventListenerToFilter(filter);
-  if (FILTERS.some((filter) => filter.setAtStart?.isWanted))
-    setPreselectedFilter();
+  if (filter.setAtStart?.isWanted) setPreselectedFilter(filter);
 }
 
 function toggleStylesOfLabel(element, strikethroughOptionsThatGetHidden) {
@@ -928,29 +927,21 @@ function setFiltersAtStart() {
   }
 }
 
-function setPreselectedFilter() {
+function setPreselectedFilter(filter) {
   if (window.allFiltersResetted) {
     // If BUTTON_RESET_ALL_FILTERS.showButton is true and the button has been clicked already, window.allFiltersResetted is set to true
     // This prevents setting preselected filters again (reset all filters overwrites preselected filters)
     return;
   }
-  setTimeout(() => {
-    const arFiltersSetAtStart = FILTERS.filter(
-      (filter) => filter.setAtStart?.isWanted
-    );
-    arFiltersSetAtStart.forEach((filter) => {
-      const selectedFilter = window[`setFilter${filter.internalName}`];
-      if (selectedFilter) {
-        document.querySelector(
-          `#filter-dropdown-${filter.internalName}`
-        ).value = selectedFilter;
-        const eventFilterChanged = new Event("change", { bubbles: true });
-        document
-          .querySelector(`#filter-dropdown-${filter.internalName}`)
-          .dispatchEvent(eventFilterChanged);
-      }
-    });
-  }, 100);
+
+  const selectedFilter = window[`setFilter${filter.internalName}`];
+  if (selectedFilter) {
+    document.querySelector(`#filter-dropdown-${filter.internalName}`).value =
+      selectedFilter;
+    document
+      .querySelector(`#filter-dropdown-${filter.internalName}`)
+      .dispatchEvent(new Event("change", { bubbles: true }));
+  }
 }
 
 function setupButtonResetAllFilters() {

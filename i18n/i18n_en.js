@@ -70,7 +70,7 @@ const TEXT_ANSWER_DOUBLE = "Question is double-weighted";
 
 const TEXT_VOTING_DOUBLE_MODAL_HEADING = "Double-weighting questions";
 const TEXT_VOTING_DOUBLE_MODAL_BODY =
-  "<p>Use this option, if the issue of the question is particularly relevant for you. Activate the checkbox and then select your answer.</p><p>The impact of double-weighted questions on the matching algorithm is twice as high.</p>";
+  "<p>Use this option, if the issue of the question is particularly important for you. Activate the checkbox (unless it's already checked by default) and then select your answer.</p>";
 
 const HEADING_MODAL_RESULT_DETAILS_FINETUNING = "Board game details";
 const TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING = "Close";
