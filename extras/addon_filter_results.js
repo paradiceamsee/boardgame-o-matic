@@ -278,13 +278,14 @@ function displayFilterValuesInResultDetails() {
       if (!filter.displayFilterValuesInResultDetails?.isWanted) return;
       const presentFilterValueStrings = description
         .querySelector(".filter-values")
-        .getAttribute(`data-${filter.internalName}`)
-        .split(" ");
+        ?.getAttribute(`data-${filter.internalName}`)
+        ?.split(" ");
       if (
         presentFilterValueStrings.length === 1 &&
         presentFilterValueStrings[0] === ""
-      )
+      ) {
         return;
+      }
       const presentFilterOptions = presentFilterValueStrings.map(
         (presentValue) =>
           filter.options.find((option) => option.value === presentValue)

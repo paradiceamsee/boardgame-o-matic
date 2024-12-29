@@ -42,9 +42,9 @@ const mainLogoTitle = "Demo logo"; // This is just used for the title attribute 
 const descriptionShowOnStart = true;
 // The title of the page, which is displayed in the browser tab, must be changed directly in the index.html (<title> and meta property "og:title")
 const descriptionHeading1 = "Demo BoardGame-O-Matic";
-const descriptionHeading2 = "Playfully finding your matching board game";
+const descriptionHeading2 = "Playfully find your matching board game";
 const descriptionExplanation =
-  "Answer the short questions to find out, which board games of our collection best match your preferences.</p><p><em>This example tool demonstrates, how the BoardGame-O-Matic works. You can setup your own version for free, see <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
+  "Answer the short questions to find out which board games of our collection best match your preferences.</p><p><em>This example tool demonstrates how the BoardGame-O-Matic works. You can setup your own version for free, see <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
 
 // Right to left slide animations when a new question is shown - OR - immediate cuts
 const animateQuestionsCard = true;
@@ -287,9 +287,9 @@ if (isActivated("addon_custom_voting_buttons.js")) {
     {
       questionNr: 5,
       arPositionValues: [1, 0, -1],
-      arButtonLabels: ["Cooperative", "Semi-cooperative", "Competetive"],
-      arButtonAltTexts: ["Cooperative", "Semi-cooperative", "Competetive"],
-      arPositionIcons: ["Coop", "Semi-coop", "Compe&shy;tetive"],
+      arButtonLabels: ["Cooperative", "Team-based", "Competitive"],
+      arButtonAltTexts: ["Cooperative", "Team-based", "Competitive"],
+      arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
     },
     {
       questionNr: 6,
@@ -409,7 +409,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       internalName: "player-number",
       type: "dropdown",
       icon: "bx-group",
-      label: "Player number: ",
+      label: "Number of players: ",
       options: [
         { text: "Solo", value: "1" },
         { text: "2", value: "2" },
@@ -428,12 +428,12 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       },
       setAtStart: {
         isWanted: true,
-        cardHeading: "Player number",
+        cardHeading: "Number of players",
         cardBody: "With how many players do you want to play?",
       },
     },
     {
-      internalName: "mechanisms",
+      internalName: "mechanics",
       type: "checkbox-list",
       icon: "bx-cog",
       heading:

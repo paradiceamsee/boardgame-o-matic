@@ -4,12 +4,12 @@
     <!-- Mat-o-Wahl EINSTELLUNGEN / SETTINGS (Javascript) -->
     <script type="text/javascript" src="data/definition.js"></script>
 
-    <title>Demo Boardgame-O-Matic</title>
-    <meta property="og:title" content="Demo Boardgame-O-Matic" />
+    <title>BoardGame-O-Matic | DEV</title>
+    <meta property="og:title" content="BoardGame-O-Matic | DEV" />
     <meta property="og:type" content="website" />
     <meta
       property="og:description"
-      content="Beantworte die Fragen und erfahre, welches Brettspiel aus unserer Sammlung am besten zu dir passt."
+      content="Answer the short questions and find out: Which board game of our collection matches your preferences best?"
     />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,7 +24,7 @@
 
     <meta
       name="description"
-      content="Beantworte die Fragen und erfahre, welches Brettspiel aus unserer Sammlung am besten zu dir passt."
+      content="Answer the short questions and find out: Which board game of our collection matches your preferences best?"
     />
 
     <!-- BOOTSTRAP + JQUERY --- START -->
@@ -346,13 +346,14 @@
         </div>
         <div class="col activeTab" id="results">
           <div id="resultsHeading" class="tabHeading"></div>
+          <div id="buttonsAboveResultsShort" class="row"></div>
           <div id="resultsShort"></div>
         </div>
         <div class="col d-none" id="shareAndSave">
           <div id="shareAndSaveHeading" class="tabHeading"></div>
           <div id="permalink-btn-container"></div>
+          <p id="permalink-description"></p>
         </div>
-        <p id="permalink-description"></p>
         <div class="col d-none" id="info">
           <div id="infoHeading" class="tabHeading"></div>
           <div id="infoText"></div>

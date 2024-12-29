@@ -73,7 +73,7 @@ const TEXT_ANSWER_DOUBLE = "Question is double-weighted";
 
 const TEXT_VOTING_DOUBLE_MODAL_HEADING = "Double-weighting questions";
 const TEXT_VOTING_DOUBLE_MODAL_BODY =
-  "<p>Use this option, if the issue of the question is particularly important for you. Activate the checkbox (unless it's already checked by default) and then select your answer.</p>";
+  "<p>Use this option if the issue of the question is particularly important for you. Activate the checkbox (unless it's already checked by default) and then select your answer.</p>";
 
 const HEADING_MODAL_RESULT_DETAILS_FINETUNING = "Board game details";
 const TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING = "Close";
@@ -94,3 +94,8 @@ const DESCRIPTION_PERMALINK_SAVE_ALT =
 const TEXT_WELCOME_AFTER_PERMALINK_SHARE = `<p><strong>Hello there!</strong> These are the BoardGame-O-Matic results of whoever sent you this link. To get your own results, just <a onclick="document.querySelector('#restart').click()">restart the BoardGame-O-Matic</a>.</p>`;
 const TEXT_WELCOME_AFTER_PERMALINK_SAVE = `<p><strong>Welcome back!</strong> Your BoardGame-O-Matic results have patiently waited here for you. If there should be any changes in your ranking, then that's because our collection changed.</p>
                            <p>If you don't like your results anymore, you can simply <a onclick="document.querySelector('#restart').click()">restart the BoardGame-O-Matic</a>`;
+
+const TEXT_BUTTON_ABOVE_RESULTS_SHORT_CHANGE_ANSWERS =
+  "<i class='bx bx-sm bx-slider-alt'></i> Change your answers";
+const TEXT_BUTTON_ABOVE_RESULTS_SHORT_FILTER_RESULTS =
+  "<i class='bx bx-sm bx-filter-alt'></i> Filter your results";

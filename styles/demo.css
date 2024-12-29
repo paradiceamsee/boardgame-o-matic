@@ -574,7 +574,6 @@ i.bx-sm {
 
 #voting-double-container-card {
   padding: 0 calc(15px + 0.2em);
-  font-size: 90%;
 }
 
 [id^="voting-double-container"] input {
@@ -697,4 +696,12 @@ a:not([href]) {
 
 #welcome-message-after-permalink a {
   text-decoration: underline;
+}
+
+[id^="resultsByThesisQuestion"][id$="Text"] i {
+  font-size: 120%;
+}
+
+[id^="resultsShortParty"] .col-12 {
+  padding: 5px;
 }

@@ -436,6 +436,28 @@ function addContentToResultsTab() {
       "#resultsHeading"
     ).innerHTML = `<h1>${TEXT_RESULTS_HEADING}</h1><h2>${TEXT_RESULTS_SUBHEADING}</h2>`;
 
+  (function addButtonsAboveResultsShort() {
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add(
+      "col",
+      "d-flex",
+      "flex-column",
+      "align-items-start"
+    );
+    let divContent = "";
+    if (isActivated("addon_filter_results.js")) {
+      divContent += `<button id="btn-above-results-short-filter-results" class="btn btn-secondary flex-center" onclick="document.querySelector('#filtersTabBtn').click()">
+        ${TEXT_BUTTON_ABOVE_RESULTS_SHORT_FILTER_RESULTS}
+      </button>`;
+    }
+    divContent += `<button id="btn-above-results-short-change-answers" class="btn btn-secondary flex-center" onclick="document.querySelector('#finetuningTabBtn').click()">
+              ${TEXT_BUTTON_ABOVE_RESULTS_SHORT_CHANGE_ANSWERS}
+            </button>`;
+    buttonsContainer.innerHTML = divContent;
+    document
+      .querySelector("#buttonsAboveResultsShort")
+      .appendChild(buttonsContainer);
+  })();
   //Anzahl der Maximalpunkte ermitteln
   const maxPoints = calculateMaxPoints();
 
@@ -454,7 +476,7 @@ function addContentToResultsTab() {
   <div class='col col-2 col-md-1 logo-container' role='cell'>
     ${
       !isActivated("addon_limit_results.js") || i < intPartiesShowAtEnd
-        ? `<img src="${arPartyLogosImg[partyNum]}" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`
+        ? `<img src="${arPartyLogosImg[partyNum]}" class='result-logo rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`
         : ""
     }
   </div>
@@ -691,13 +713,13 @@ function addContentToResultsTab() {
             "#resultsShortTable .row-with-one-result:not([class*='hidden-by'])"
           )
           .forEach((row) => {
-            if (row.querySelector("img")) return;
+            if (row.querySelector(".result-logo")) return;
             const partyNum = +row
               .getAttribute("id")
               .replace("resultsShortPartyClamp", "");
             row.querySelector(
               ".logo-container"
-            ).innerHTML = `<img src="${arPartyLogosImg[partyNum]}" class='rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`;
+            ).innerHTML = `<img src="${arPartyLogosImg[partyNum]}" class='result-logo rounded img-fluid' alt="Logo ${arPartyNamesLong[partyNum]}" />`;
           });
       }, 0);
     });
@@ -727,7 +749,7 @@ function addContentToFinetuningTab() {
                 <div class='col' id='resultsByThesisQuestion${i}' role='cell'>
                 
                     <div id='resultsByThesisQuestion${i}Text'>
-                        <strong><i class="bx bx-fw ${
+                        <strong class="flex-center" style="display: inline-flex"><i class="bx ${
                           arQuestionsIcon[i]
                         }"></i> ${arQuestionsShort[i]}</strong>: ${
       arQuestionsLong[i]
@@ -1097,6 +1119,7 @@ function generateSectionResults(arResults) {
     circulateSharingAndSavingIcon();
   }
   document.querySelector("#sectionShowQuestions").remove();
+  createNavigationBar();
   addContentToResultsTab();
   addContentToFinetuningTab();
   for (let i = 0; i < intQuestions; i++) {
@@ -1109,7 +1132,7 @@ function generateSectionResults(arResults) {
         .classList.add("d-none");
   }
   addContentToInfoTab();
-  createNavigationBar();
+
   document.querySelector("#sectionResults").style.display = "block";
 }
 
@@ -1162,7 +1185,6 @@ function fnReEvaluate() {
 
   //Anzahl der Maximalpunkte ermitteln
   const maxPoints = calculateMaxPoints();
-
   //	for (i = 0; i <= (arPartyFiles.length-1); i++)
   for (i = 0; i <= intParties - 1; i++) {
     var percent = fnPercentage(arResults[i], maxPoints);
