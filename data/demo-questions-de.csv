@@ -1,0 +1,6 @@
+"Schwierigkeitsgrad";"Wie anspruchsvoll soll das Spiel sein?";"bx-dumbbell"
+"Dauer";"Wie lang soll eine Partie gehen?";"bx-time-five"
+"Sprachliche Anforderungen";"Soll das Spiel möglichst wenig Text enthalten, damit es auch für Nicht-Muttersprachler:innen gut spielbar ist?";"bx-file"
+"Konflikt";"Wie konflikthaft soll der Interaktion zwischen den Spieler:innen sein? Friedliches Miteinander oder direkte Konfrontation?";"bx-bolt-circle"
+"Kooperativ vs. kompetitiv";"Welche Art von Spiel soll es sein?<br><ul><li><em>Kooperativ</em>: Alle zusammen gegen das Spiel</li><li><em>Semi-kooperativ / Team-basiert</em>: In Teams gegeneinander oder eine:r gegen alle</li><li><em>Kompetitiv</em>: Alle gegen alle</li></ul>";"bx-horizontal-center"
+"Aktualität";"Soll das Spiel möglichst neu erschienen sein?";"bx-calendar"

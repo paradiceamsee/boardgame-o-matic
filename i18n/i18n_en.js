@@ -99,3 +99,14 @@ const TEXT_BUTTON_ABOVE_RESULTS_SHORT_CHANGE_ANSWERS =
   "<i class='bx bx-sm bx-slider-alt'></i> Change your answers";
 const TEXT_BUTTON_ABOVE_RESULTS_SHORT_FILTER_RESULTS =
   "<i class='bx bx-sm bx-filter-alt'></i> Filter your results";
+
+const REFRESH_BUTTON_TEXT = `See updated results <i class="bx bx-chevron-right bx-sm"></i>`;
+
+const TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS =
+  "<i class='bx bx-chevron-left' ></i> Back to list";
+
+const TOOLTIP_FINETUNING = "Finetuning";
+const TOOLTIP_RESULTS = "Results";
+const TOOLTIP_SHARE_AND_SAVE = "Share & Save";
+const TOOLTIP_INFO = "About";
+const TOOLTIP_FILTER = "Filter";

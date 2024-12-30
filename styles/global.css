@@ -597,13 +597,6 @@ button[onclick^="fnToggleSelfPosition"] {
   color: #000;
 }
 
-[id$="collapse"]:active,
-.expanded,
-.expanded:hover {
-  background: var(--secondary-color) !important;
-  color: var(--text-on-secondary);
-}
-
 /* In resultsByPartyTable, indicate which answer is yours and which is from the initiative */
 
 @media only screen and (min-width: 768px) {
@@ -913,22 +906,9 @@ button:active,
   display: var(--display-internet-below-description);
 }
 
-[id^="resultsShortPartyDescriptionButton"] {
-  border: 1px solid black;
-}
-
 button:focus,
 .btn:focus {
   text-decoration: underline;
-}
-
-[id^="resultsShortPartyDescriptionButton"]:not(.expanded) {
-  color: #000;
-  background: transparent;
-}
-
-[id^="resultsShortPartyDescriptionButton"].expanded {
-  color: var(--text-on-secondary);
 }
 
 div[id^="resultsShortPartyDescription"] {

@@ -439,18 +439,17 @@ function addContentToResultsTab() {
   (function addButtonsAboveResultsShort() {
     const buttonsContainer = document.createElement("div");
     buttonsContainer.classList.add(
-      "col",
       "d-flex",
       "flex-column",
       "align-items-start"
     );
     let divContent = "";
     if (isActivated("addon_filter_results.js")) {
-      divContent += `<button id="btn-above-results-short-filter-results" class="btn btn-secondary flex-center" onclick="document.querySelector('#filtersTabBtn').click()">
+      divContent += `<button id="btn-above-results-short-filter-results" class="btn btn-primary flex-center" onclick="document.querySelector('#filtersTabBtn').click()">
         ${TEXT_BUTTON_ABOVE_RESULTS_SHORT_FILTER_RESULTS}
       </button>`;
     }
-    divContent += `<button id="btn-above-results-short-change-answers" class="btn btn-secondary flex-center" onclick="document.querySelector('#finetuningTabBtn').click()">
+    divContent += `<button id="btn-above-results-short-change-answers" class="btn btn-primary flex-center" onclick="document.querySelector('#finetuningTabBtn').click()">
               ${TEXT_BUTTON_ABOVE_RESULTS_SHORT_CHANGE_ANSWERS}
             </button>`;
     buttonsContainer.innerHTML = divContent;
@@ -485,7 +484,7 @@ function addContentToResultsTab() {
       <br />
       <span class="tagline">${arPartyInternet[partyNum]}</span>
       <br /> 
-      <button type="button" class="btn btn-sm btn-outline-secondary flex-center" 
+      <button type="button" class="btn btn-sm btn-secondary flex-center" 
         id="resultsShortPartyDescriptionButton${partyNum}">
         ${TEXT_SHOW_PARTY_DESCRIPTION}</button>
   </div> 
@@ -749,11 +748,9 @@ function addContentToFinetuningTab() {
                 <div class='col' id='resultsByThesisQuestion${i}' role='cell'>
                 
                     <div id='resultsByThesisQuestion${i}Text'>
-                        <strong class="flex-center" style="display: inline-flex"><i class="bx ${
-                          arQuestionsIcon[i]
-                        }"></i> ${arQuestionsShort[i]}</strong>: ${
-      arQuestionsLong[i]
-    }
+                    <i class="bx bx-fw ${arQuestionsIcon[i]}"></i><strong>${
+      arQuestionsShort[i]
+    }</strong>: ${arQuestionsLong[i]}
                     </div>
 
                     <div id='resultsByThesisQuestion${i}PersonalPosition'>
@@ -763,7 +760,7 @@ function addContentToFinetuningTab() {
     }>
                       <label for="checkbox-voting-double-question${i}" class="flex-center"
                       ><i class="bx bx-check bx-border"></i>
-                      <span>Double-weighted</span>
+                      <span>${TEXT_VOTING_DOUBLE}</span>
                       <button
                         class="bx bx-help-circle icon-help icon-help-voting-double"
                         onclick="$('#votingDoubleModal').modal('show');"
@@ -780,7 +777,7 @@ function addContentToFinetuningTab() {
                     </select>
                 </div>
 
-                    <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-sm flex-center' type='button'>
+                    <button id='resultsByThesisQuestion${i}collapse' style='float: left;' class='nonexpanded btn btn-secondary btn-sm flex-center' type='button'>
                         ${TEXT_SHOW_THESIS_ANSWERS}
                     </button>
                 </div>
@@ -814,9 +811,7 @@ function addContentToFinetuningTab() {
                         <small><strong>${arPartyNamesLong[partyNum].replace(
                           / <small>.*?<\/small>/,
                           ""
-                        )}</strong></small>${
-        arPartyOpinions[partyPositionsRow] ? ":" : ""
-      } ${arPartyOpinions[partyPositionsRow]}
+                        )}</strong></small>
                         <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
                             <span style='visibility:hidden; display:none;' aria-hidden='true'>${
                               arPartyDescription[partyNum]
@@ -1048,29 +1043,29 @@ function generateSectionResults(arResults) {
       {
         icon: "bx-slider-alt",
         id: "finetuning",
-        tooltip: "Finetuning",
+        tooltip: TOOLTIP_FINETUNING,
       },
       {
         icon: "bx-trophy",
         id: "results",
-        tooltip: "Results",
+        tooltip: TOOLTIP_RESULTS,
       },
       {
         icon: "bx-share-alt",
         id: "shareAndSave",
-        tooltip: "Share & Save",
+        tooltip: TOOLTIP_SHARE_AND_SAVE,
       },
       {
         icon: "bx-info-circle",
         id: "info",
-        tooltip: "About",
+        tooltip: TOOLTIP_INFO,
       },
     ];
     if (isActivated("addon_filter_results.js"))
       arTabsNavigationBar.splice(1, 0, {
         icon: "bx-filter-alt",
         id: "filters",
-        tooltip: "Filter",
+        tooltip: TOOLTIP_FILTER,
       });
 
     arTabsNavigationBar.forEach((tab) => {

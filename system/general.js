@@ -79,7 +79,6 @@ function fnSetIntParties(data) {
       arIntParties.pop();
     } else break;
   }
-  // Globale Variable erstellen, um Problem mit return values in async ajax calls zu umgehen
   // Ergebnis runden, um Fehlertoleranz zu erhöhen
   return Math.round(arIntParties.length / (intQuestions + 6));
 }
@@ -255,6 +254,7 @@ function fnTransformCsvToArray(csvData, modus) {
   //	for(i = 0; i <= arZeilen.length-1; i++)
   for (i = 0; i <= lastLine - 1; i++) {
     // console.log("i: "+i+" m: "+modus+" val0: "+arZeilen[i][0]+" val1: "+arZeilen[i][1] )
+
     valueOne = arZeilen[i][0];
     valueTwo = arZeilen[i][1];
     valueThree = arZeilen[i][2];

@@ -1,3 +1,6 @@
+// Defines which i18n/i18n_xx.js file is used
+const language = "de";
+
 // This is the central configuration file of the Boardgame-O-Matic
 // If possible, all adjustments should be made through variables in this file
 
@@ -5,13 +8,13 @@
 const separator = ";";
 
 // Name of the CSV file with the questions in the /data directory
-const fileQuestions = "demo-questions.csv";
+const fileQuestions = `demo-questions-${language}.csv`;
 
 // Number of questions
 const intQuestions = 6;
 
 // Name of the CSV file with the board games in the /data directory
-const fileAnswers = "demo-games.csv";
+const fileAnswers = `demo-games-${language}.csv`;
 
 // File paths to system and CSS files
 // If you have several instances of this tool running, you can use absolute references to global files (therefore, these are not hardcoded)=
@@ -34,17 +37,22 @@ const matomoSiteId = "";
 
 // Logo in top left corner for branding (not recommended if embedded as iframe)
 const showMainLogoInTopLeftCorner = true;
-const mainLogoPath = "./Boardgame-O-Matic-Logo.png";
+// const mainLogoPath = "./Boardgame-O-Matic-Logo.png";
+const mainLogoPath = "./Brettspiel-O-Mat-Logo.png";
+
 const mainLogoHref = ""; // The link opens in a new tab
 const mainLogoTitle = "Demo logo"; // This is just used for the title attribute of the image, it is not displayed
 
 // Welcome and info screen before the first question
 const descriptionShowOnStart = true;
 // The title of the page, which is displayed in the browser tab, must be changed directly in the index.html (<title> and meta property "og:title")
-const descriptionHeading1 = "Demo BoardGame-O-Matic";
-const descriptionHeading2 = "Playfully find your matching board game";
+// const descriptionHeading1 = "Demo BoardGame-O-Matic";
+const descriptionHeading1 = "Demo Brettspiel-O-Mat";
+// const descriptionHeading2 = "Playfully find your matching board game";
+const descriptionHeading2 = "Spielerisch das passende Brettspiel finden";
 const descriptionExplanation =
-  "Answer the short questions to find out which board games of our collection best match your preferences.</p><p><em>This example tool demonstrates how the BoardGame-O-Matic works. You can setup your own version for free, see <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
+  // "Answer the short questions to find out which board games of our collection best match your preferences.</p><p><em>This example tool demonstrates how the BoardGame-O-Matic works. You can setup your own version for free, see <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
+  "Beantworte die kurzen Fragen um herauszufinden, welche Spiele aus unserer Sammlung am besten zu deinen Vorlieben passen.</p><p><em>Dieses Beispiel-Tool demonstriert, wie der Brettspiel-O-Mat funktioniert. Du kannst kostenlos deine eigene Version aufsetzen, siehe <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
 
 // Right to left slide animations when a new question is shown - OR - immediate cuts
 const animateQuestionsCard = true;
@@ -60,10 +68,8 @@ const showQuestionNumberOnCard = false;
 // Optional box with info icon and text, displayed on results page between headings and results table
 const showInfoBoxAboveResultsShortTable = true;
 const textInfoBox =
-  "This demo tool is not based on a real board game collection. Instead, the matching simply uses the BoardGameGeek Top 200 games (as of March 2024).";
-
-// Defines which i18n/i18n_xx.js file is used
-const language = "en";
+  "Dieses Demo-Tool basiert nicht auf einer echten Brettspiel-Sammlung. Stattdessen werden für das Matching einfach die BoardGameGeek 200 (Stand März 2024) verwendet.";
+// "This demo tool is not based on a real board game collection. Instead, the matching simply uses the BoardGameGeek Top 200 games (as of March 2024).";
 
 // Save anonymous data about how users answered the questions and which results they got?
 // If active, users see a modal before they get their results, asking them for permission (opt-in)
@@ -87,10 +93,6 @@ const privacyModalGeneral = `Lorem ipsum dolor sit amet, consetetur sadipscing e
 
 // How many seconds is the explanatory text shown after each button click before it disappears again?
 const PERMALINK_DESCRIPTION_DURATION = 15;
-const REFRESH_BUTTON_TEXT = `See updated results <i class="bx bx-chevron-right bx-sm"></i>`;
-
-const TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS =
-  "<i class='bx bx-chevron-left' ></i> Back to list";
 
 // Addons can vastly enhance the functionality of your tool
 // Add the paths of the addon files you want to activate to the array
@@ -141,9 +143,12 @@ if (isActivated("addon_limit_results.js")) {
   // Number of results displayed at first
   // Also the number of results added to the table with each press of the show more button
   intPartiesShowAtEnd = 10;
-  TEXT_RESULTS_BUTTON_SHOW_MORE = "<strong>+</strong> Show more";
-  TEXT_RESULTS_BUTTON_SHOW_LESS = "<strong>-</strong> Show less";
-  TEXT_RESULTS_BUTTON_SHOW_ALL = "Show all";
+  // TEXT_RESULTS_BUTTON_SHOW_MORE = "<strong>+</strong> Show more";
+  // TEXT_RESULTS_BUTTON_SHOW_LESS = "<strong>-</strong> Show less";
+  // TEXT_RESULTS_BUTTON_SHOW_ALL = "Show all";
+  TEXT_RESULTS_BUTTON_SHOW_MORE = "<strong>+</strong> Mehr zeigen";
+  TEXT_RESULTS_BUTTON_SHOW_LESS = "<strong>-</strong> Weniger zeigen";
+  TEXT_RESULTS_BUTTON_SHOW_ALL = "Alle zeigen";
 }
 
 if (isActivated("addon_tooltips.js")) {
@@ -189,26 +194,47 @@ if (isActivated("addon_custom_voting_buttons.js")) {
   CUSTOM_POSITION_BUTTONS = [
     {
       questionNr: 1,
+      // arButtonLabels: [
+      //   "Super easy",
+      //   "Beginner-friendly",
+      //   "Moderate",
+      //   "Advanced",
+      //   "For experts",
+      // ],
+      // arButtonAltTexts: [
+      //   "Super easy",
+      //   "Beginner-friendly",
+      //   "Moderate",
+      //   "Advanced",
+      //   "For experts",
+      // ],
+      // arPositionIcons: [
+      //   "Super easy",
+      //   "Beginner-friendly",
+      //   "Moderate",
+      //   "Advanced",
+      //   "For experts",
+      // ],
       arButtonLabels: [
-        "Super easy",
-        "Beginner-friendly",
-        "Moderate",
-        "Advanced",
-        "For experts",
+        "Super einfach",
+        "Einstiegsfreundlich",
+        "Moderat",
+        "Fortgeschritten",
+        "Für Expert:innen",
       ],
       arButtonAltTexts: [
-        "Super easy",
-        "Beginner-friendly",
-        "Moderate",
-        "Advanced",
-        "For experts",
+        "Super einfach",
+        "Einstiegsfreundlich",
+        "Moderat",
+        "Fortgeschritten",
+        "Für Expert:innen",
       ],
       arPositionIcons: [
-        "Super easy",
-        "Beginner-friendly",
-        "Moderate",
-        "Advanced",
-        "For experts",
+        "Super einfach",
+        "Einstiegsfreundlich",
+        "Moderat",
+        "Fortgeschritten",
+        "Für Expert:innen",
       ],
       arPositionValues: [2, 1, 0, -1, -2],
       votingDoubleByDefault: true,
@@ -216,19 +242,33 @@ if (isActivated("addon_custom_voting_buttons.js")) {
     },
     {
       questionNr: 2,
+      // arButtonLabels: [
+      //   "Up to 45&nbsp;min",
+      //   "45&nbsp;&ndash;&nbsp;90&nbsp;min",
+      //   "90&nbsp;&ndash;&nbsp;120&nbsp;min",
+      //   "120&nbsp;&ndash;&nbsp;180&nbsp;min",
+      //   "More than 180&nbsp;min",
+      // ],
       arButtonLabels: [
-        "Up to 45&nbsp;min",
+        "Bis zu 45&nbsp;min",
         "45&nbsp;&ndash;&nbsp;90&nbsp;min",
         "90&nbsp;&ndash;&nbsp;120&nbsp;min",
         "120&nbsp;&ndash;&nbsp;180&nbsp;min",
-        "More than 180&nbsp;min",
+        "Mehr als 180&nbsp;min",
       ],
+      // arButtonAltTexts: [
+      //   "Up to 45 min",
+      //   "45 - 90 min",
+      //   "90 - 120 min",
+      //   "120 - 180 min",
+      //   "More than 180 min",
+      // ],
       arButtonAltTexts: [
-        "Up to 45 min",
+        "Bis zu 45 min",
         "45 - 90 min",
         "90 - 120 min",
         "120 - 180 min",
-        "More than 180 min",
+        "Mehr als 180 min",
       ],
       arPositionIcons: [
         "<&nbsp;45&prime;",
@@ -244,110 +284,153 @@ if (isActivated("addon_custom_voting_buttons.js")) {
     {
       questionNr: 3,
       arPositionValues: [2, 1, 0, -1, -2],
+      // arButtonLabels: [
+      //   "No text",
+      //   "Little text",
+      //   "Some text",
+      //   "Lots of text",
+      //   "Massive text",
+      // ],
+      // arButtonAltTexts: [
+      //   "No text",
+      //   "Little text",
+      //   "Some text",
+      //   "Lots of text",
+      //   "Massive text",
+      // ],
+      // arPositionIcons: [
+      //   "No text",
+      //   "Little text",
+      //   "Some text",
+      //   "Lots of text",
+      //   "Massive text",
+      // ],
       arButtonLabels: [
-        "No text",
-        "Little text",
-        "Some text",
-        "Lots of text",
-        "Massive text",
+        "Kein Text",
+        "Wenig Text",
+        "Etwas Text",
+        "Viel Text",
+        "Extrem viel Text",
       ],
       arButtonAltTexts: [
-        "No text",
-        "Little text",
-        "Some text",
-        "Lots of text",
-        "Massive text",
+        "Kein Text",
+        "Wenig Text",
+        "Etwas Text",
+        "Viel Text",
+        "Extrem viel Text",
       ],
       arPositionIcons: [
-        "No text",
-        "Little text",
-        "Some text",
-        "Lots of text",
-        "Massive text",
+        "Kein Text",
+        "Wenig Text",
+        "Etwas Text",
+        "Viel Text",
+        "Extrem viel Text",
       ],
       isYesOrDontCareQuestion: true,
-      buttonTextAndIconLabelForYes: "Yes",
-      buttonTextAndIconLabelForDontCare: "No matter",
+      // buttonTextAndIconLabelForYes: "Yes",
+      // buttonTextAndIconLabelForDontCare: "No matter",
+      buttonTextAndIconLabelForYes: "Ja, möglichst wenig Text",
+      buttonTextAndIconLabelForDontCare: "Egal",
     },
     {
       questionNr: 4,
       arPositionValues: [1, 0, -1],
+      // arButtonLabels: [
+      //   "Low conflict level",
+      //   "Moderate conflict level",
+      //   "High conflict level",
+      // ],
       arButtonLabels: [
-        "Low conflict level",
-        "Moderate conflict level",
-        "High conflict level",
+        "Geringes Konflikt-Level",
+        "Moderates Konflikt-Level",
+        "Hohes Konflikt-Level",
       ],
+      // arButtonAltTexts: [
+      //   "Low conflict level",
+      //   "Moderate conflict level",
+      //   "High conflict level",
+      // ],
       arButtonAltTexts: [
-        "Low conflict level",
-        "Moderate conflict level",
-        "High conflict level",
+        "Geringes Konflikt-Level",
+        "Moderates Konflikt-Level",
+        "Hohes Konflikt-Level",
       ],
-      arPositionIcons: ["Little conflict", "Medium conflict", "High conflict"],
+      // arPositionIcons: ["Little conflict", "Medium conflict", "High conflict"],
+      arPositionIcons: [
+        "Wenig Konflikt",
+        "Moderater Konflikt",
+        "Hoher Konflikt",
+      ],
     },
     {
       questionNr: 5,
       arPositionValues: [1, 0, -1],
-      arButtonLabels: ["Cooperative", "Team-based", "Competitive"],
-      arButtonAltTexts: ["Cooperative", "Team-based", "Competitive"],
-      arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
+      // arButtonLabels: ["Cooperative", "Team-based", "Competitive"],
+      // arButtonAltTexts: ["Cooperative", "Team-based", "Competitive"],
+      // arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
+      arButtonLabels: ["Kooperativ", "Team-basiert", "Kompetitiv"],
+      arButtonAltTexts: ["Kooperativ", "Team-basiert", "Kompetitiv"],
+      arPositionIcons: ["Koop", "Team-basiert", "Kompe&shy;titiv"],
     },
     {
       questionNr: 6,
       arPositionValues: [2, 1, 0, -1, -2],
+      // arButtonLabels: [
+      //   "≤ 2 years old",
+      //   "3 - 5 years old",
+      //   "5 - 10 years old",
+      //   "10 - 20 years old",
+      //   "> 20 years old",
+      // ],
       arButtonLabels: [
-        "≤ 2 years old",
-        "3 - 5 years old",
-        "5 - 10 years old",
-        "10 - 20 years old",
-        "> 20 years old",
+        "≤ 2 Jahre alt",
+        "3 - 5 Jahre alt",
+        "5 - 10 Jahre alt",
+        "10 - 20 Jahre alt",
+        "> 20 Jahre alt",
       ],
+      // arButtonAltTexts: [
+      //   "Less than 3 years old",
+      //   "3 - 5 years old",
+      //   "5 - 10 years old",
+      //   "10 - 20 years old",
+      //   "More than 20 years old",
+      // ],
       arButtonAltTexts: [
-        "Less than 3 years old",
-        "3 - 5 years old",
-        "5 - 10 years old",
-        "10 - 20 years old",
-        "More than 20 years old",
+        "WEniger als 3 Jahre alt",
+        "3 - 5 Jahre alt",
+        "5 - 10 Jahre alt",
+        "10 - 20 Jahre alt",
+        "Mehr als 20 Jahre alt",
       ],
+      // arPositionIcons: [
+      //   "≤ 2 years old",
+      //   "3 - 5 years old",
+      //   "5 - 10 years old",
+      //   "10 - 20 years old",
+      //   "> 20 years old",
+      // ],
       arPositionIcons: [
-        "≤ 2 years old",
-        "3 - 5 years old",
-        "5 - 10 years old",
-        "10 - 20 years old",
-        "> 20 years old",
+        "≤ 2 Jahre alt",
+        "3 - 5 Jahre alt",
+        "5 - 10 Jahre alt",
+        "10 - 20 Jahre alt",
+        "> 20 Jahre alt",
       ],
       isYesOrDontCareQuestion: true,
-      buttonTextAndIconLabelForYes: "Yes",
-      buttonTextAndIconLabelForDontCare: "No matter",
+      // buttonTextAndIconLabelForYes: "Yes",
+      // buttonTextAndIconLabelForDontCare: "No matter",
+      buttonTextAndIconLabelForYes: "Ja, möglichst neue Spiele",
+      buttonTextAndIconLabelForDontCare: "Egal",
     },
   ];
 }
 
-if (isActivated("addon_make_questions_optional.js")) {
-  // Number of the question before which users get asked, whether they want to continue or skip to the results
-  FIRST_OPTIONAL_QUESTION = 6;
-  // Title and body of the modal asking the user whether to continue with optional questions or skip to results
-  OPTIONAL_QUESTIONS_MODAL_TITLE =
-    "Off to the results &ndash; or a few more questions?";
-  OPTIONAL_QUESTIONS_MODAL_BODY = `You have answered the basic questions. Now you can choose:
-  <ul>
-    <li>Do you want to answer the ${
-      intQuestions - FIRST_OPTIONAL_QUESTION
-    } additional questions regarding board game mechanics?</li>
-    <li>Or jump to the results (and maybe answer the additional questions subsequently)?</li>
-  </ul>`;
-  // Text of modal button that leads to continuing with optional questions
-  OPTIONAL_QUESTIONS_MODAL_TO_OPTIONAL_QUESTIONS =
-    "Answer additional questions";
-  // Text of modal button that leads to jumping to results
-  OPTIONAL_QUESTIONS_MODAL_TO_RESULTS = "To the results";
-  // Text of buttons on the results page, which allow users to subsequently answer the optional questions
-  BTNS_GO_BACK_TO_OPTIONAL_QUESTIONS =
-    OPTIONAL_QUESTIONS_MODAL_TO_OPTIONAL_QUESTIONS;
-}
-
 if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
-  TEXT_FILTERS_HEADING = "Filters";
-  TEXT_FILTERS_SUBHEADING = "Set filters to get more accurate suggestions";
+  // TEXT_FILTERS_HEADING = "Filters";
+  TEXT_FILTERS_HEADING = "Filter";
+  // TEXT_FILTERS_SUBHEADING = "Set filters to get more accurate suggestions";
+  TEXT_FILTERS_SUBHEADING = "Setze Filter, um genauere Ergebnisse zu bekommen";
   HIGHLIGHT_FILTER_ICON = true;
   FILTERS = [
     /* 
@@ -409,7 +492,8 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       internalName: "player-number",
       type: "dropdown",
       icon: "bx-group",
-      label: "Number of players: ",
+      // label: "Number of players: ",
+      label: "Spieler:innenanzahl: ",
       options: [
         { text: "Solo", value: "1" },
         { text: "2", value: "2" },
@@ -419,25 +503,31 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         { text: "6", value: "6" },
         { text: "≥ 7", value: "7" },
       ],
-      textOfOptionToShowAll: "Show all",
+      // textOfOptionToShowAll: "Show all",
+      textOfOptionToShowAll: "Alle anzeigen",
       displayInSharedModal: false,
       displayFilterValuesInResultDetails: {
         isWanted: true,
-        label: "Player number",
+        // label: "Player number",
+        label: "Spieler:innenanzahl",
         bulletList: false,
       },
       setAtStart: {
         isWanted: true,
-        cardHeading: "Number of players",
-        cardBody: "With how many players do you want to play?",
+        // cardHeading: "Number of players",
+        cardHeading: "Spieler:innenanzahl",
+        // cardBody: "With how many players do you want to play?",
+        cardBody: "Zu wievielt wollt ihr spielen?",
       },
     },
     {
       internalName: "mechanics",
       type: "checkbox-list",
       icon: "bx-cog",
+      // heading:
+      //   "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
       heading:
-        "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
+        "Alle Brettspiele, die mindestens eine der ausgeschlossenen Mechaniken enthalten, werden aus deinen Ergebnissen ausgeblendet.",
       options: [
         { label: "Area control", value: "areaControl", help: "Dummy text" },
         {
@@ -452,23 +542,40 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         },
         { label: "Deck Building", value: "deckBuilding", help: "Dummy text" },
         { label: "Drafting", value: "drafting", help: "Dummy text" },
-        { label: "Deduction", value: "deduction", help: "Dummy text" },
+        // { label: "Deduction", value: "deduction", help: "Dummy text" },
+        { label: "Deduktion", value: "deduction", help: "Dummy text" },
         { label: "Push your luck", value: "pushYourLuck", help: "Dummy text" },
-        { label: "Tile Placement", value: "tilePlacement", help: "Dummy text" },
+        // { label: "Tile Placement", value: "tilePlacement", help: "Dummy text" },
         {
-          label: "Action / Speed / Dexterity",
+          label: "Plättchen legen",
+          value: "tilePlacement",
+          help: "Dummy text",
+        },
+        {
+          // label: "Action / Speed / Dexterity",
+          label: "Action / Schnelligkeit / Geschicklichkeit",
           value: "action",
           help: "Dummy text",
         },
-        { label: "Drawing / Acting", value: "drawing", help: "Dummy text" },
-        { label: "Party Game", value: "party", help: "Dummy text" },
-        { label: "Auction / Bidding", value: "auction", help: "Dummy text" },
+        // { label: "Drawing / Acting", value: "drawing", help: "Dummy text" },
         {
-          label: "Trading / Negotiating",
+          label: "Malen / Schauspielern",
+          value: "drawing",
+          help: "Dummy text",
+        },
+
+        // { label: "Party Game", value: "party", help: "Dummy text" },
+        { label: "Party-Spiele", value: "party", help: "Dummy text" },
+        // { label: "Auction / Bidding", value: "auction", help: "Dummy text" },
+        { label: "Auktionen / Gebote", value: "auction", help: "Dummy text" },
+        {
+          // label: "Trading / Negotiating",
+          label: "Handeln & Verhandeln",
           value: "trading",
           help: "Dummy text",
         },
-        { label: "Trick-taking", value: "trickTaking", help: "Dummy text" },
+        // { label: "Trick-taking", value: "trickTaking", help: "Dummy text" },
+        { label: "Stich-Spiele", value: "trickTaking", help: "Dummy text" },
       ],
       allCheckedByDefault: false,
       checkedMeansExcluded: true,
@@ -477,38 +584,56 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInIndividualModal: {
         isWanted: true,
         iconButtonOpenModal: "",
-        textButtonOpenModal: "Mechanics",
-        heading: "Filter by Mechanics",
-        buttonShowResults: "Apply filter",
+        // textButtonOpenModal: "Mechanics",
+        textButtonOpenModal: "Mechaniken",
+        // heading: "Filter by Mechanics",
+        heading: "Nach Mechaniken filtern",
+        // buttonShowResults: "Apply filter",
+        buttonShowResults: "Filter anwenden",
       },
       displayFilterValuesInResultDetails: {
         isWanted: true,
-        label: "Mechanics",
+        // label: "Mechanics",
+        label: "Mechaniken",
         bulletList: true,
       },
-      errorMessage: "You must allow at least one mechanic.",
+      // errorMessage: "You must allow at least one mechanic.",
+      errorMessage: "Du musst mindestens eine Mechanik erlauben.",
     },
     {
       internalName: "themes",
       type: "checkbox-list",
       icon: "bx-landscape",
       heading:
-        "All board games, which have at least one of the themes you disallow, are excluded from your results.",
+        // "All board games, which have at least one of the themes you disallow, are excluded from your results.",
+        "Alle Brettspiele, die mindestens eins der ausgeschlossenen Themen enthalten, werden aus deinen Ergebnissen ausgeblendet.",
       options: [
-        { label: "Adventure", value: "adventure" },
-        { label: "Wild West", value: "wildWest" },
-        { label: "Ancient Times", value: "ancient" },
-        { label: "Prehistorical", value: "prehistoric" },
-        { label: "Animals & Environment", value: "animals" },
-        { label: "Cities & Infrastructure", value: "cities" },
-        { label: "Fantasy & Mythology", value: "fantasy" },
-        { label: "Agriculture", value: "farming" },
+        // { label: "Adventure", value: "adventure" },
+        { label: "Abenteuer", value: "adventure" },
+        // { label: "Wild West", value: "wildWest" },
+        { label: "Wilder Westen", value: "wildWest" },
+        // { label: "Ancient Times", value: "ancient" },
+        { label: "Antike", value: "ancient" },
+        // { label: "Prehistorical", value: "prehistoric" },
+        { label: "Prähistorisch", value: "prehistoric" },
+        // { label: "Animals & Environment", value: "animals" },
+        { label: "Tiere & Umwelt", value: "animals" },
+        // { label: "Cities & Infrastructure", value: "cities" },
+        { label: "Städte & Infrastruktur", value: "cities" },
+        // { label: "Fantasy & Mythology", value: "fantasy" },
+        { label: "Fantasy & Mythologie", value: "fantasy" },
+        // { label: "Agriculture", value: "farming" },
+        { label: "Landwirtschaft", value: "farming" },
         { label: "Horror & Zombies", value: "horror" },
-        { label: "Medieval & Renaissance", value: "medieval" },
-        { label: "Ships & Pirates", value: "nautical" },
-        { label: "Cars & Racing", value: "racing" },
+        // { label: "Medieval & Renaissance", value: "medieval" },
+        { label: "Mittelalter & Renaissance", value: "medieval" },
+        // { label: "Ships & Pirates", value: "nautical" },
+        { label: "Schiffe & Piraten", value: "nautical" },
+        // { label: "Cars & Racing", value: "racing" },
+        { label: "Autos & Rennen", value: "racing" },
         { label: "Science Fiction", value: "scifi" },
-        { label: "War", value: "war" },
+        // { label: "War", value: "war" },
+        { label: "Krieg", value: "war" },
       ],
       allCheckedByDefault: false,
       checkedMeansExcluded: true,
@@ -516,16 +641,21 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInSharedModal: false,
       displayInIndividualModal: {
         isWanted: true,
-        textButtonOpenModal: "Themes",
-        heading: "Filter by Themes / Settings",
-        buttonShowResults: "Apply filter",
+        // textButtonOpenModal: "Themes",
+        textButtonOpenModal: "Themen",
+        // heading: "Filter by Themes / Settings",
+        heading: "Nach Themen filtern",
+        // buttonShowResults: "Apply filter",
+        buttonShowResults: "Filter anwenden",
       },
       displayFilterValuesInResultDetails: {
         isWanted: true,
-        label: "Themes",
+        // label: "Themes",
+        label: "Themen",
         bulletList: true,
       },
-      errorMessage: "You must allow at least one theme.",
+      // errorMessage: "You must allow at least one theme.",
+      errorMessage: "Du musst mindestens ein Thema erlauben.",
     },
   ];
   /* 
@@ -546,11 +676,13 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
   };
   BUTTON_RESET_ALL_FILTERS = {
     showButton: true,
-    textButton: "Reset all filters",
+    // textButton: "Reset all filters",
+    textButton: "Alle Filter zurücksetzen",
     iconButton: "bx-trash",
   };
   ERROR_MESSAGE_NO_FILTER_RESULTS =
-    "None of our board games matches all your filters. Please change your filters and try again.";
+    // "None of our board games matches all your filters. Please change your filters and try again.";
+    "Keines unserer Spiele entspricht allen der von dir gesetzten Filtern. Bitte ändere deine Filter und versuche es erneut.";
   DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS = {
     isWanted: true,
     questionsToBeDisplayed: [

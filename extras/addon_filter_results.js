@@ -445,8 +445,7 @@ function showBtnGoToUpdatedResults() {
     "off-screen",
     "btn-secondary"
   );
-  btnSeeUpdatedResults.innerHTML =
-    "See updated results <i class='bx bx-chevron-right bx-sm'></i>";
+  btnSeeUpdatedResults.innerHTML = REFRESH_BUTTON_TEXT;
   document.querySelector("#sectionResults").appendChild(btnSeeUpdatedResults);
   setTimeout(() => {
     btnSeeUpdatedResults.classList.remove("off-screen");

@@ -295,12 +295,18 @@ i.bx-sm {
   padding: 0.1em;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
   background-color: var(--primary-color);
   color: var(--text-on-primary);
 }
 
-.btn-secondary {
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:not(:disabled):not(.disabled):active {
   background-color: var(--secondary-color);
   color: var(--text-on-secondary);
 }
@@ -496,14 +502,6 @@ i.bx-sm {
     border: 2px solid #fff;
   }
 }
-
-[id$="collapse"]:active,
-.expanded,
-.expanded:hover {
-  background: var(--primary-color) !important;
-  color: var(--text-on-primary) !important;
-}
-
 .card-header i.bx {
   font-size: 120%;
 }
@@ -552,8 +550,8 @@ i.bx-sm {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--success);
-    color: var(--text-on-success);
+    background-color: var(--secondary-color);
+    color: var(--text-on-secondary);
     padding: 5px 10px;
     border-radius: var(--border-radius);
     white-space: nowrap;
@@ -599,6 +597,7 @@ i.bx-sm {
 [id^="checkbox-voting-double"]:checked + label > i.bx-check {
   background-color: var(--success);
   color: var(--text-on-success);
+  border-color: var(--success);
 }
 
 #votingBack {
@@ -622,7 +621,6 @@ i.bx-sm {
 
 [id$="collapse"] {
   border: none;
-  margin-left: -0.5rem;
 }
 
 #resultsByThesis label.your-answer {
@@ -704,4 +702,16 @@ a:not([href]) {
 
 [id^="resultsShortParty"] .col-12 {
   padding: 5px;
+}
+
+[id^="resultsShortPartyDescriptionButton"] {
+  margin-left: 0;
+}
+
+#resultsShortTable > .col {
+  padding: 0;
+}
+
+#buttonsAboveResultsShort button {
+  margin-left: 0;
 }
