@@ -71,8 +71,8 @@
   --striped-results-short-table: transparent; /* "transparent" (no stripes) or "#e1e7e9" (grey stripes). Stripes conflict with the addon_results_textfilter*/
   --display-internet-above-description: none; /* "inline" (show) or "none" (hide) */
   --display-internet-below-description: inline; /* "inline" (show) or "none" (hide) */
-  --text-your-answer: "Your answer:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
-  --text-party-answer: "Value of the game:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
+  --text-your-answer: "Deine Antwort:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
+  --text-party-answer: "Wert des Spiels:"; /* Pseudo element in resultsByPartyAnswersToQuestion */
 }
 
 main {
@@ -311,17 +311,26 @@ i.bx-sm {
   color: var(--text-on-secondary);
 }
 
-.btn-success {
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:not(:disabled):not(.disabled):active {
   background-color: var(--success);
   color: var(--text-on-success);
 }
 
-.btn-warning {
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:not(:disabled):not(.disabled):active {
   background-color: var(--warning);
   color: var(--text-on-warning);
 }
 
-.btn-danger {
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:not(:disabled):not(.disabled):active {
   background-color: var(--danger);
   color: var(--text-on-danger);
 }
@@ -714,4 +723,17 @@ a:not([href]) {
 
 #buttonsAboveResultsShort button {
   margin-left: 0;
+}
+
+.checkbox-list-label {
+  cursor: pointer;
+}
+
+.empty-checkbox {
+  background-color: transparent;
+  color: transparent;
+}
+
+.checkbox-list-label .bx-border {
+  border-color: rgba(0, 0, 0, 0.3);
 }

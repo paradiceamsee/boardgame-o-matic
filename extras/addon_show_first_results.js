@@ -37,7 +37,7 @@ function mow_addon_show_first_results_MutationObserver() {
   var target = document.querySelector("#resultsHeading");
 
   // eine Instanz des Observers erzeugen und Callback-Funktion aufrufen
-  var observer = new MutationObserver(mow_addon_show_first_results_start);
+  var observer = new MutationObserver(mow_addon_show_first_results);
 
   // Konfiguration des Observers: alles melden - Änderungen an Daten, Kindelementen und Attributen
   var config = {
@@ -54,14 +54,19 @@ function mow_addon_show_first_results_MutationObserver() {
 }
 
 // Auf
-function mow_addon_show_first_results_start() {
+function mow_addon_show_first_results() {
   // id "#resultsHeading" wird in fnStart() am Anfang geleert (empty()).
   // -> mutationObserver erkennt Änderung und aktiviert diese Funktion :(
   // -> prüfen, ob Inhalt in DIV existiert
-  if (!document.querySelector("#resultsHeading").textContent) return;
+  if (
+    !document.querySelector("#resultsHeading").textContent ||
+    window.screen.width < 768
+  )
+    return;
+
   setTimeout(() => {
     const nodelistVisibleResults = document.querySelectorAll(
-      "[id^='resultsShortPartyClamp']:not(.hidden-by-filter-addon)"
+      "[id^='resultsShortPartyClamp']:not([class*='hidden-by'])"
     );
     for (let i = 0; i < SHOW_DETAILLED_RESULTS_AT_END; i++) {
       nodelistVisibleResults[i]

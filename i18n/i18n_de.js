@@ -94,7 +94,7 @@ const DESCRIPTION_PERMALINK_SAVE =
 const DESCRIPTION_PERMALINK_SAVE_ALT =
   "Kopiere den folgenden Link und sichere ihn an einem Ort deiner Wahl &ndash; er bringt dich zurück zu deiner persönlichen Ergebnis-Seite.";
 
-const TEXT_WELCOME_AFTER_PERMALINK_SHARE = `<p><strong>Hello there!</strong> Das sind die Brettspiel-O-Mat-Ergebnisse von der Person, die dir diesen Link geschickt hat. Um deine eigenen Ergebnisse zu bekommen, kannst du einfach den <a onclick="document.querySelector('#restart').click()">Brettspiel-O-Mat neu starten</a>.</p>`;
+const TEXT_WELCOME_AFTER_PERMALINK_SHARE = `<p><strong>Willkommen!</strong> Das sind die Brettspiel-O-Mat-Ergebnisse von der Person, die dir diesen Link geschickt hat. Um deine eigenen Ergebnisse zu bekommen, kannst du einfach den <a onclick="document.querySelector('#restart').click()">Brettspiel-O-Mat neu starten</a>.</p>`;
 
 const TEXT_WELCOME_AFTER_PERMALINK_SAVE = `<p><strong>Willkommen zurück!</strong> Deine Brettspiel-O-Mat-Ergebnisse haben hier geduldig auf dich gewartet. Sollte sich an deinem Ranking irgendwas geändert haben, liegt das daran, dass sich unsere Sammlung geändert hat.</p>
 <p>Wenn dir deine Ergebnisse nicht mehr gefallen, kannst du ganz einfach den <a onclick="document.querySelector('#restart').click()">Brettspiel-O-Mat neu starten</a>.`;

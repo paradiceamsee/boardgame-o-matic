@@ -137,28 +137,29 @@ function createFilterHtml(filter) {
     for (let i = 0; i < filter.options.length; i++) {
       const isChecked =
         filter.allCheckedByDefault || filter.options[i].checkedByDefault;
-      const isActive =
-        (isChecked && !filter.checkedMeansExcluded) ||
-        (!isChecked && filter.checkedMeansExcluded);
       divContent += `<div class="checkbox-container flex-center">
       <input type="checkbox" id="filter-checkbox-list-${
         filter.internalName
       }-option${i}" ${isChecked ? "checked" : ""} value="${
         filter.options[i].value
       }" onchange="toggleStylesOfLabel(this, ${
-        filter.strikethroughOptionsThatGetHidden
+        filter.strikethroughOptionsThatGetHidden && filter.checkedMeansExcluded
       })">
       <label class="checkbox-list-label" for="filter-checkbox-list-${
         filter.internalName
       }-option${i}">
-        <i class='bx bx-${isActive ? "check" : "x"} bx-sm bx-border ${
-        isActive ? "bg-color-success" : "bg-color-danger"
-      }'></i>
-        <span ${
-          !isActive && filter.strikethroughOptionsThatGetHidden
-            ? "class='line-through'"
-            : ""
-        }>${filter.options[i].label}</span>
+      <i class='bx bx-sm bx-border ${
+        filter.checkedMeansExcluded
+          ? "bx-x bg-color-danger"
+          : "bx-check bg-color-success"
+      } ${!isChecked ? "empty-checkbox" : ""}'></i>
+      <span ${
+        isChecked &&
+        filter.checkedMeansExcluded &&
+        filter.strikethroughOptionsThatGetHidden
+          ? "class='line-through'"
+          : ""
+      }>${filter.options[i].label}</span>
       </label>`;
       if (filter.options[i].help) {
         divContent += `<button class="bx bx-help-circle icon-help" id="icon-help-${filter.internalName}-option${i}" onclick='showHelpModalExplainingFilterOption("${filter.options[i].label}",
@@ -206,9 +207,7 @@ function addFilterNodeToDOM(nodeFilter, filter) {
 
 function toggleStylesOfLabel(element, strikethroughOptionsThatGetHidden) {
   const icon = element.nextElementSibling.querySelector("i");
-  ["bx-check", "bx-x", "bg-color-success", "bg-color-danger"].forEach((cls) =>
-    icon.classList.toggle(cls)
-  );
+  icon.classList.toggle("empty-checkbox");
   if (strikethroughOptionsThatGetHidden) {
     element.nextElementSibling
       .querySelector("span")

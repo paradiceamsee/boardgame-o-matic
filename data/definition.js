@@ -41,7 +41,7 @@ const showMainLogoInTopLeftCorner = true;
 const mainLogoPath = "./Brettspiel-O-Mat-Logo.png";
 
 const mainLogoHref = ""; // The link opens in a new tab
-const mainLogoTitle = "Demo logo"; // This is just used for the title attribute of the image, it is not displayed
+const mainLogoTitle = "Demo Logo"; // This is just used for the title attribute of the image, it is not displayed
 
 // Welcome and info screen before the first question
 const descriptionShowOnStart = true;
@@ -52,7 +52,7 @@ const descriptionHeading1 = "Demo Brettspiel-O-Mat";
 const descriptionHeading2 = "Spielerisch das passende Brettspiel finden";
 const descriptionExplanation =
   // "Answer the short questions to find out which board games of our collection best match your preferences.</p><p><em>This example tool demonstrates how the BoardGame-O-Matic works. You can setup your own version for free, see <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
-  "Beantworte die kurzen Fragen um herauszufinden, welche Spiele aus unserer Sammlung am besten zu deinen Vorlieben passen.</p><p><em>Dieses Beispiel-Tool demonstriert, wie der Brettspiel-O-Mat funktioniert. Du kannst kostenlos deine eigene Version aufsetzen, siehe <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
+  "Beantworte die kurzen Fragen, um herauszufinden, welche Spiele aus unserer Sammlung am besten zu deinen Vorlieben passen.</p><p><em>Dieses Beispiel-Tool demonstriert, wie der Brettspiel-O-Mat funktioniert. Du kannst kostenlos deine eigene Version aufsetzen, siehe <a style='color: var(--warning); text-decoration: underline;' href='https://github.com/fenglisch/boardgame-o-matic' target='_blank'>https://github.com/fenglisch/boardgame-o-matic</a></em>";
 
 // Right to left slide animations when a new question is shown - OR - immediate cuts
 const animateQuestionsCard = true;
@@ -101,6 +101,7 @@ const addons = [
   "extras/addon_limit_results.js",
   "extras/addon_filter_results.js",
   "extras/addon_custom_voting_buttons.js",
+  "extras/addon_show_first_results.js",
 ];
 
 // Addon-specific variables are set in this configuration file as well
@@ -584,8 +585,9 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInIndividualModal: {
         isWanted: true,
         iconButtonOpenModal: "",
-        // textButtonOpenModal: "Mechanics",
-        textButtonOpenModal: "Mechaniken",
+        // textButtonOpenModal: "Mechanics<i class='bx bx-fw bx-chevron-down'></i>",
+        textButtonOpenModal:
+          "Mechaniken<i class='bx bx-fw bx-chevron-down'></i>",
         // heading: "Filter by Mechanics",
         heading: "Nach Mechaniken filtern",
         // buttonShowResults: "Apply filter",
@@ -641,8 +643,8 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       displayInSharedModal: false,
       displayInIndividualModal: {
         isWanted: true,
-        // textButtonOpenModal: "Themes",
-        textButtonOpenModal: "Themen",
+        // textButtonOpenModal: "Themes<i class='bx bx-fw bx-chevron-down'></i>",
+        textButtonOpenModal: "Themen<i class='bx bx-fw bx-chevron-down'></i>",
         // heading: "Filter by Themes / Settings",
         heading: "Nach Themen filtern",
         // buttonShowResults: "Apply filter",
@@ -693,18 +695,6 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       { questionNr: 5, displayQuestionHeading: false, isCustomQuestion: true },
     ],
   };
-}
-
-if (
-  isActivated("addon_display_answers_and_filter_values_in_result_details.js")
-) {
-  QUESTIONS_TO_BE_DISPLAYED = [
-    { questionNr: 1, displayQuestionHeading: true, isCustomQuestion: true },
-    { questionNr: 2, displayQuestionHeading: true, isCustomQuestion: true },
-    { questionNr: 3, displayQuestionHeading: false, isCustomQuestion: true },
-    { questionNr: 4, displayQuestionHeading: false, isCustomQuestion: true },
-    { questionNr: 5, displayQuestionHeading: false, isCustomQuestion: true },
-  ];
 }
 
 const HIDE_TABLE_resultsByPartyAnswers = true;
