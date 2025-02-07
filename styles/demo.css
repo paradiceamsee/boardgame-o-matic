@@ -213,6 +213,9 @@ i.bx-sm {
   color: var(--text-on-primary);
   transition: transform 3s;
   transform: translateY(0);
+  border: none;
+
+  border-top: 2px solid #fff;
 }
 .fullscreen-on-mobile-btn-close-out-of-screen {
   transform: translateY(50px) !important;
@@ -244,7 +247,7 @@ i.bx-sm {
 }
 
 #filtersContainer {
-  padding: 15px;
+  padding: 15px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -282,7 +285,6 @@ i.bx-sm {
   padding: 4px 8px;
   color: var(--text-on-danger);
   border-radius: var(--border-radius);
-  margin-left: -7px;
 }
 
 .checkbox-list-label {
@@ -398,7 +400,7 @@ i.bx-sm {
 }
 
 #btn-see-updated-results {
-  border: none;
+  border-top: 2px solid #fff;
   position: fixed;
   bottom: 70px;
   left: 0;
@@ -416,6 +418,7 @@ i.bx-sm {
   justify-content: center;
   gap: 7px;
   width: max-content;
+  max-width: 100%;
 }
 
 #navigationBar i {
@@ -469,6 +472,8 @@ i.bx-sm {
   color: var(--text-on-primary);
   transition: transform 3s;
   transform: translateY(0);
+  border: none;
+  border-top: 2px solid #fff;
 }
 
 [id^="resultsByThesisQuestion"][id$="Container"] {
@@ -736,4 +741,38 @@ a:not([href]) {
 
 .checkbox-list-label .bx-border {
   border-color: rgba(0, 0, 0, 0.3);
+}
+
+details summary {
+  list-style: none; /* Hides the default arrow */
+}
+
+details .disclosure-chevron::before {
+  content: "\ea50";
+}
+
+details[open] .disclosure-chevron::before {
+  content: "\ea4a";
+}
+
+.collapsible-section-opener {
+  background: var(--secondary-color);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  font-weight: bold;
+}
+
+.filter-description {
+  font-size: 90%;
+  margin-top: 20px;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.error-message {
+  font-size: 90%;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+#buttonsAboveResultsShort button {
+  font-size: 90%;
 }

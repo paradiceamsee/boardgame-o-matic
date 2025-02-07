@@ -527,8 +527,8 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       icon: "bx-cog",
       // heading:
       //   "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
-      heading:
-        "Alle Brettspiele, die mindestens eine der ausgeschlossenen Mechaniken enthalten, werden aus deinen Ergebnissen ausgeblendet.",
+      description:
+        "Wähle die Mechaniken aus, auf die du <strong>keine</strong> Lust hast. Alle Spiele, die eine der ausgewählten Mechaniken enthalten, werden ausgeschlossen.",
       options: [
         { label: "Area control", value: "areaControl", help: "Dummy text" },
         {
@@ -582,16 +582,9 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       checkedMeansExcluded: true,
       strikethroughOptionsThatGetHidden: true,
       displayInSharedModal: false,
-      displayInIndividualModal: {
+      displayInCollapsibleSection: {
         isWanted: true,
-        iconButtonOpenModal: "",
-        // textButtonOpenModal: "Mechanics<i class='bx bx-fw bx-chevron-down'></i>",
-        textButtonOpenModal:
-          "Mechaniken<i class='bx bx-fw bx-chevron-down'></i>",
-        // heading: "Filter by Mechanics",
-        heading: "Nach Mechaniken filtern",
-        // buttonShowResults: "Apply filter",
-        buttonShowResults: "Filter anwenden",
+        heading: "Mechaniken",
       },
       displayFilterValuesInResultDetails: {
         isWanted: true,
@@ -606,9 +599,9 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       internalName: "themes",
       type: "checkbox-list",
       icon: "bx-landscape",
-      heading:
+      description:
         // "All board games, which have at least one of the themes you disallow, are excluded from your results.",
-        "Alle Brettspiele, die mindestens eins der ausgeschlossenen Themen enthalten, werden aus deinen Ergebnissen ausgeblendet.",
+        "Wähle die Themen aus, auf die du <strong>keine</strong> Lust hast. Alle Spiele, die eins der ausgewählten Themen enthalten, werden ausgeschlossen.",
       options: [
         // { label: "Adventure", value: "adventure" },
         { label: "Abenteuer", value: "adventure" },
@@ -641,14 +634,9 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       checkedMeansExcluded: true,
       strikethroughOptionsThatGetHidden: true,
       displayInSharedModal: false,
-      displayInIndividualModal: {
+      displayInCollapsibleSection: {
         isWanted: true,
-        // textButtonOpenModal: "Themes<i class='bx bx-fw bx-chevron-down'></i>",
-        textButtonOpenModal: "Themen<i class='bx bx-fw bx-chevron-down'></i>",
-        // heading: "Filter by Themes / Settings",
-        heading: "Nach Themen filtern",
-        // buttonShowResults: "Apply filter",
-        buttonShowResults: "Filter anwenden",
+        heading: "Themen",
       },
       displayFilterValuesInResultDetails: {
         isWanted: true,
@@ -684,7 +672,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
   };
   ERROR_MESSAGE_NO_FILTER_RESULTS =
     // "None of our board games matches all your filters. Please change your filters and try again.";
-    "Keines unserer Spiele entspricht allen der von dir gesetzten Filtern. Bitte ändere deine Filter und versuche es erneut.";
+    "Keines unserer Spiele entspricht allen gesetzten Filtern. Bitte ändere deine Filter und versuche es erneut.";
   DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS = {
     isWanted: true,
     questionsToBeDisplayed: [

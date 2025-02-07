@@ -110,3 +110,4 @@ const TOOLTIP_RESULTS = "Results";
 const TOOLTIP_SHARE_AND_SAVE = "Share & Save";
 const TOOLTIP_INFO = "About";
 const TOOLTIP_FILTER = "Filter";
+const PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH = "Change filters";

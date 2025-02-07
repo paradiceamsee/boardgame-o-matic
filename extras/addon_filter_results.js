@@ -2,7 +2,7 @@
 This file seems to be long and complex, and it kind of is, because it must accommodate a variety of different filter types and configurations as well as their interactions
 However, the procedure for each filter type (started by setupFilters()) is the same:
   * createFilterHtml (of course, highly different HTML for each filter type)
-  * addFilterNodeToDOM (the same for each filter type, only difference is display above resultsShortTable (#resultsAddonTop) vs. in popup modal (which triggers createAndAppendSharedFilterModal))
+  * addFilterNodeToDOM
   * addEventListenerToFilter (little differences depending on filter type)
   * Now, after the filter is triggered:
     * validateFilter (only required for filter types where input can be invalid; if input is invalid, error message is displayed)
@@ -85,12 +85,6 @@ function createFilterHtml(filter) {
       id="filter-input-${filter.internalName}"
       list="datalist-${filter.internalName}"
     />`; // the input type is not relevant, because it is not actually submitted and sent to a server , "text" works just fine for all cases
-    // If the filter is in the modal, the modal button acts as submit button
-    if (
-      !filter.displayInSharedModal &&
-      !filter.displayInIndividualModal?.isWanted
-    )
-      divContent += `<button id='submit-filter-${filter.internalName}'>${filter.textButtonSubmit}</button>`;
 
     divContent += `<p class='error-message' id='error-message-filter-${filter.type}-${filter.internalName}'></p>
     <datalist id="datalist-${filter.internalName}">`;
@@ -123,17 +117,10 @@ function createFilterHtml(filter) {
       id="filter-distance-distance-${filter.internalName}"
     /> km
     <p class='error-message' id='error-message-filter-${filter.type}-${filter.internalName}'></p>`;
-    // If the filter is in the modal, the modal button acts as submit button
-    if (
-      !filter.displayInSharedModal &&
-      !filter.displayInIndividualModal?.isWanted
-    ) {
-      divContent += `<button id='submit-filter-${filter.internalName}'>${filter.textButtonSubmit}</button>`;
-    }
   } else if (filter.type === "checkbox-list") {
-    if (filter.heading)
-      divContent += `<p id="filter-heading-checkbox-list-${filter.internalName}" class="filter-heading">${filter.heading}</p>`;
-    divContent += `<div id="container-${filter.internalName}" class='container-checkbox-list' style='padding-left: 20px'>`;
+    divContent += `<div id="container-${filter.internalName}" class='container-checkbox-list' style='padding-left: 27px'>`;
+    if (filter.description)
+      divContent += `<p class="filter-description">${filter.description}</p>`;
     for (let i = 0; i < filter.options.length; i++) {
       const isChecked =
         filter.allCheckedByDefault || filter.options[i].checkedByDefault;
@@ -144,7 +131,9 @@ function createFilterHtml(filter) {
         filter.options[i].value
       }" onchange="toggleStylesOfLabel(this, ${
         filter.strikethroughOptionsThatGetHidden && filter.checkedMeansExcluded
-      })">
+      }); checkIfCheckboxChangeValid('${filter.internalName}', ${
+        filter.checkedMeansExcluded
+      }, this, '${filter.errorMessage}'); showBtnGoToUpdatedResults()">
       <label class="checkbox-list-label" for="filter-checkbox-list-${
         filter.internalName
       }-option${i}">
@@ -168,14 +157,6 @@ function createFilterHtml(filter) {
       divContent += `</div>`;
     }
     divContent += "</div>";
-    divContent += `<p class="error-message" id='error-message-filter-${filter.type}-${filter.internalName}'></p>`;
-    // If the filter is in the modal, the modal button acts as submit button
-    if (
-      !filter.displayInSharedModal &&
-      !filter.displayInIndividualModal?.isWanted
-    ) {
-      divContent += `<button id='submit-filter-${filter.internalName}'>${filter.textButtonSubmit}</button>`;
-    }
   } else if (filter.type === "single-checkbox") {
     if (filter.heading)
       divContent += `<p id="filter-heading-single-checkbox-${filter.internalName}" class="filter-heading">${filter.heading}</p>`;
@@ -193,14 +174,9 @@ function createFilterHtml(filter) {
 
 function addFilterNodeToDOM(nodeFilter, filter) {
   if (!document.querySelector("#resultsHeading").textContent) return;
-  if (filter.displayInSharedModal) {
-    if (!document.querySelector("#sharedFilterModal"))
-      createAndAppendSharedFilterModal();
-    document.querySelector("#sharedFilterModalBody").appendChild(nodeFilter);
-  } else if (filter.displayInIndividualModal?.isWanted) {
-    createAndAppendIndividualFilterModal(nodeFilter, filter);
-  } else document.querySelector("#filtersContainer").appendChild(nodeFilter);
-
+  if (filter.displayInCollapsibleSection?.isWanted)
+    createAndAppendCollapsibleSection(nodeFilter, filter);
+  else document.querySelector("#filtersContainer").appendChild(nodeFilter);
   addEventListenerToFilter(filter);
   if (filter.setAtStart?.isWanted) setPreselectedFilter(filter);
 }
@@ -391,42 +367,23 @@ function showHelpModalExplainingFilterOption(heading, body) {
 }
 
 function addEventListenerToFilter(filter) {
-  let selector;
-  let event;
-  if (filter.type === "dropdown" || filter.type === "single-checkbox") {
-    selector = `#filter-${filter.type}-${filter.internalName}`;
-    event = "change";
-  } else if (
-    filter.type === "input-datalist" ||
-    filter.type === "distance" ||
-    filter.type === "checkbox-list"
-  ) {
-    // If not in a modal, each of these filter types have their own submit button; otherwise, the modal button acts as global submit button for all filters it contains
-    selector = filter.displayInSharedModal
-      ? "#shared-filter-modal-confirm"
-      : filter.displayInIndividualModal?.isWanted
-      ? `#individual-filter-modal-confirm-${filter.internalName}`
-      : `#submit-filter-${filter.internalName}`;
-    event = "click";
-  }
+  document
+    .querySelectorAll("#resultsTabBtn, #finetuningTabBtn")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // const isFilterValid = validateFilter(filter);
+        // if (!isFilterValid) {
+        //   return;
+        // }
+        hideResults(filter);
+        checkIfAnyResultsLeft();
+        sendMessageToLimitResultsAddon();
+      });
+    });
 
-  document.querySelector(selector).addEventListener(event, () => {
-    const isFilterValid = validateFilter(filter);
-    if (!isFilterValid) {
-      if (filter.displayInSharedModal)
-        window.allFiltersInSharedModalCorrect = false; // This causes the modal not to close
-      else if (filter.displayInIndividualModal?.isWanted)
-        window[`${filter.internalName}FilterCorrectIsValid`] = false; // This causes the modal not to close
-      return;
-    }
-    hideResults(filter);
-    checkIfAnyResultsLeft();
-    sendMessageToLimitResultsAddon();
-    showBtnGoToUpdatedResults();
-  });
   if (filter.type === "single-checkbox" || filter.type === "checkbox-list") {
     // In case filters are set by default, a first check must be done upfront
-    document.querySelector(selector).dispatchEvent(new Event(event));
+    document.querySelector("#resultsTabBtn").dispatchEvent(new Event("click"));
   }
 }
 
@@ -458,64 +415,78 @@ function showBtnGoToUpdatedResults() {
   });
 }
 
-function validateFilter(filter) {
-  if (filter.type === "dropdown" || filter.type === "single-checkbox")
-    return true;
-  const nodeErrorMessage = document.querySelector(
-    `#error-message-filter-${filter.type}-${filter.internalName}`
+function checkIfCheckboxChangeValid(
+  internalName,
+  checkedMeansExcluded,
+  element,
+  errorMessage
+) {
+  const arAllCheckboxes = Array.from(
+    document.querySelectorAll(`#container-${internalName} input`)
   );
-  nodeErrorMessage.innerHTML = "";
-  if (filter.type === "input-datalist") {
-    const inputValue = document.querySelector(
-      `#filter-input-${filter.internalName}`
-    ).value;
-    // If the input is empty, the validation succeeds (no filter is applied)
-    if (inputValue && !filter.datalist.includes(inputValue)) {
-      nodeErrorMessage.innerHTML = filter.errorMessage;
-      return false;
-    } else return true;
-  } else if (filter.type === "distance") {
-    const inputValueLocation = document.querySelector(
-      `#filter-distance-location-${filter.internalName}`
-    ).value;
-    const inputValueDistance = document.querySelector(
-      `#filter-distance-distance-${filter.internalName}`
-    ).value;
-    // If both inputs are empty, the validation succeeds (no filter is applied)
-    if (!inputValueLocation && !inputValueDistance) return true;
-    // If one of the inputs is empty and the other one is not, the validation fails
-    if (!inputValueLocation) {
-      nodeErrorMessage.innerHTML = filter.errorMessageNoLocation;
-      return false;
-    } else if (
-      !filter.datalist.some((item) => item.text === inputValueLocation)
-    ) {
-      nodeErrorMessage.innerHTML = filter.errorMessageWrongLocation;
-      return false;
-    } else if (!inputValueDistance) {
-      // Since the input has "type='number'", any non-numerical input resolves to ""  (empty string)
-      nodeErrorMessage.innerHTML = filter.errorMessageDistance;
-      return false;
-    } else return true;
-  } else if (filter.type === "checkbox-list") {
-    const checkboxes = document.querySelectorAll(
-      `[id^="filter-checkbox-list-${filter.internalName}-option"]`
+  if (
+    (checkedMeansExcluded &&
+      arAllCheckboxes.every((box) => box.checked === true)) ||
+    (!checkedMeansExcluded &&
+      arAllCheckboxes.every((box) => box.checked === false))
+  ) {
+    element.click();
+    if (document.querySelector(`#container-${internalName} .error-message`))
+      return;
+    const nodeErrorMessage = document.createElement("p");
+    nodeErrorMessage.classList.add("error-message");
+    nodeErrorMessage.textContent = errorMessage;
+    element.parentNode.parentNode.insertBefore(
+      nodeErrorMessage,
+      element.parentNode.nextElementSibling
     );
-    const areNoneChecked = !Array.from(checkboxes).some(
-      (checkbox) => checkbox.checked
-    );
-    const areAllChecked = Array.from(checkboxes).every(
-      (checkbox) => checkbox.checked
-    );
-    if (
-      (filter.checkedMeansExcluded && areAllChecked) ||
-      (!filter.checkedMeansExcluded && areNoneChecked)
-    ) {
-      nodeErrorMessage.innerHTML = filter.errorMessage;
-      return false;
-    } else return true;
+    setTimeout(() => {
+      nodeErrorMessage.remove();
+    }, 3000);
   }
 }
+
+// function validateFilter(filter) {
+//   if (filter.type === "dropdown" || filter.type === "single-checkbox")
+//     return true;
+//   const nodeErrorMessage = document.querySelector(
+//     `#error-message-filter-${filter.type}-${filter.internalName}`
+//   );
+//   nodeErrorMessage.innerHTML = "";
+//   if (filter.type === "input-datalist") {
+//     const inputValue = document.querySelector(
+//       `#filter-input-${filter.internalName}`
+//     ).value;
+//     // If the input is empty, the validation succeeds (no filter is applied)
+//     if (inputValue && !filter.datalist.includes(inputValue)) {
+//       nodeErrorMessage.innerHTML = filter.errorMessage;
+//       return false;
+//     } else return true;
+//   } else if (filter.type === "distance") {
+//     const inputValueLocation = document.querySelector(
+//       `#filter-distance-location-${filter.internalName}`
+//     ).value;
+//     const inputValueDistance = document.querySelector(
+//       `#filter-distance-distance-${filter.internalName}`
+//     ).value;
+//     // If both inputs are empty, the validation succeeds (no filter is applied)
+//     if (!inputValueLocation && !inputValueDistance) return true;
+//     // If one of the inputs is empty and the other one is not, the validation fails
+//     if (!inputValueLocation) {
+//       nodeErrorMessage.innerHTML = filter.errorMessageNoLocation;
+//       return false;
+//     } else if (
+//       !filter.datalist.some((item) => item.text === inputValueLocation)
+//     ) {
+//       nodeErrorMessage.innerHTML = filter.errorMessageWrongLocation;
+//       return false;
+//     } else if (!inputValueDistance) {
+//       // Since the input has "type='number'", any non-numerical input resolves to ""  (empty string)
+//       nodeErrorMessage.innerHTML = filter.errorMessageDistance;
+//       return false;
+//     } else return true;
+//   }
+// }
 
 function hideResults(filter) {
   const nodelistAllResults = document.querySelectorAll(".row-with-one-result");
@@ -668,7 +639,7 @@ function checkIfAnyResultsLeft() {
     nodeErrorMessage.classList.add("error-message");
     nodeErrorMessage.setAttribute("id", "error-message-no-filter-results");
     nodeErrorMessage.innerHTML = `<p>${ERROR_MESSAGE_NO_FILTER_RESULTS}</p>\
-    <button id="no-filter-results-change-filters" class="btn btn-primary flex-center"><i class="bx bx-chevron-left bx-sm"></i> Change filters</button>`;
+    <button id="no-filter-results-change-filters" class="btn btn-primary flex-center"><i class="bx bx-chevron-left bx-sm"></i> ${PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH}</button>`;
     nodeErrorMessage
       .querySelector("#no-filter-results-change-filters")
       .addEventListener("click", () => {
@@ -682,117 +653,29 @@ function sendMessageToLimitResultsAddon() {
   window.postMessage("filter changed", "*");
 }
 
-function createAndAppendSharedFilterModal() {
-  const containerBtnOpenSharedFilterModal = document.createElement("div");
-  containerBtnOpenSharedFilterModal.setAttribute(
-    "id",
-    "container-button-open-shared-filter-modal"
-  );
-  containerBtnOpenSharedFilterModal.innerHTML = `<i class="bx bx-fw ${SHARED_MODAL.iconButtonOpenModal}"></i><button id="button-open-shared-filter-modal" class="btn-open-filter-modal">
-    ${SHARED_MODAL.textButtonOpenModal}
-  </button>`;
-  document
-    .querySelector("#filtersContainer")
-    .appendChild(containerBtnOpenSharedFilterModal);
+function createAndAppendCollapsibleSection(nodeFilter, filter) {
+  const section = document.createElement("details");
+  section.innerHTML = `<summary><i class='bx bx-fw disclosure-chevron'></i><span class="collapsible-section-opener"><i class="bx bx-fw ${filter.icon}"></i>${filter.displayInCollapsibleSection.heading}<span></summary>`;
+  section.appendChild(nodeFilter);
+  document.querySelector("#filtersContainer").appendChild(section);
 
-  const sharedFilterModal = document.createElement("div");
-  sharedFilterModal.setAttribute("data-backdrop", "static");
-  sharedFilterModal.classList.add("modal", "fade");
-  sharedFilterModal.setAttribute("id", "sharedFilterModal");
-  sharedFilterModal.setAttribute("role", "dialog");
-  sharedFilterModal.setAttribute("aria-modal", "true");
-  let divContent = `
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>${SHARED_MODAL.heading}</h2>
-                </div>
-                <div class="modal-body" id="sharedFilterModalBody"></div>
-                <div class="modal-footer">
-                    <button type="button" id="shared-filter-modal-confirm" class="btn btn-primary">
-                        ${SHARED_MODAL.buttonShowResults}
-                    </button>
-                </div>
-            </div>
-        </div>`;
-  sharedFilterModal.innerHTML = divContent;
-  document.body.append(sharedFilterModal);
-  document
-    .querySelector("#button-open-shared-filter-modal")
-    .addEventListener("click", () => {
-      $("#sharedFilterModal").modal("show");
+  // Only one expanded section at a time
+  section.addEventListener("toggle", () => {
+    if (!section.open) return;
+    document.querySelectorAll("details[open]").forEach((openDetail) => {
+      if (openDetail !== section) {
+        openDetail.open = false;
+      }
     });
-  document
-    .querySelector("#shared-filter-modal-confirm")
-    .addEventListener("click", () => {
-      window.allFiltersInSharedModalCorrect = true;
-      // If a filter in the modal fails validation, this is set to false, preventing the closing of the modal
-      setTimeout(() => {
-        if (window.allFiltersInSharedModalCorrect)
-          $("#sharedFilterModal").modal("hide");
-      }, 100);
-    });
-}
+  });
 
-function createAndAppendIndividualFilterModal(nodeFilter, filter) {
-  const containerBtnOpenIndividualFilterModal = document.createElement("div");
-  containerBtnOpenIndividualFilterModal.setAttribute(
-    "id",
-    `container-button-open-individual-filter-modal-${filter.internalName}`
-  );
-  containerBtnOpenIndividualFilterModal.innerHTML = `
-  <i class="bx bx-fw ${filter.icon}"></i>
-  <button id="button-open-individual-filter-modal-${filter.internalName}"  class="btn-open-filter-modal">
-    ${filter.displayInIndividualModal.textButtonOpenModal}
-  </button>`;
+  // Collapse section if tab changes
   document
-    .querySelector("#filtersContainer")
-    .appendChild(containerBtnOpenIndividualFilterModal);
-
-  const individualFilterModal = document.createElement("div");
-  individualFilterModal.setAttribute("data-backdrop", "static");
-  individualFilterModal.classList.add("modal", "fade");
-  individualFilterModal.setAttribute(
-    "id",
-    `individualFilterModal-${filter.internalName}`
-  );
-  individualFilterModal.setAttribute("role", "dialog");
-  individualFilterModal.setAttribute("aria-modal", "true");
-  let divContent = `
-          <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h2>${filter.displayInIndividualModal.heading}</h2>
-                  </div>
-                  <div class="modal-body" id="individualFilterModalBody-${filter.internalName}"></div>
-                  <div class="modal-footer">
-                      <button type="button" id="individual-filter-modal-confirm-${filter.internalName}" class="btn btn-primary">
-                          ${filter.displayInIndividualModal.buttonShowResults}
-                      </button>
-                  </div>
-              </div>
-          </div>`;
-  individualFilterModal.innerHTML = divContent;
-  individualFilterModal
-    .querySelector(`#individualFilterModalBody-${filter.internalName}`)
-    .appendChild(nodeFilter);
-  document.body.append(individualFilterModal);
-  document
-    .querySelector(
-      `#button-open-individual-filter-modal-${filter.internalName}`
-    )
-    .addEventListener("click", () => {
-      $(`#individualFilterModal-${filter.internalName}`).modal("show");
-    });
-  document
-    .querySelector(`#individual-filter-modal-confirm-${filter.internalName}`)
-    .addEventListener("click", () => {
-      window[`${filter.internalName}FilterCorrectIsValid`] = true;
-      // If the filter in the modal fails validation, this is set to false, preventing the closing of the modal
-      setTimeout(() => {
-        if (window[`${filter.internalName}FilterCorrectIsValid`])
-          $(`#individualFilterModal-${filter.internalName}`).modal("hide");
-      }, 100);
+    .querySelectorAll("#navigationBar button:not(#filtersTabBtn)")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        section.open = false;
+      });
     });
 }
 
@@ -969,10 +852,8 @@ function setupButtonResetAllFilters() {
         // Instead of manually resetting each filter, we just delete and re-create them all
         document
           .querySelectorAll(
-            `.filter-container, \
-            #container-button-open-shared-filter-modal, \
-            [id^='container-button-open-individual-filter-modal'], \
-            #sharedFilterModal, [id^='individualFilterModal'], \
+            `#filtersContainer details, \
+            .filter-container, \
             #container-reset-all-filters, \
             #error-message-no-filter-results`
           )
