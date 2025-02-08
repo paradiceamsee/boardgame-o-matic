@@ -86,6 +86,8 @@ const DESCRIPTION_PERMALINK_SHARE =
   "Your share link has been copied to your clipboard. Send it to whoever you want so that they can see your personal results.";
 const DESCRIPTION_PERMALINK_SHARE_ALT =
   "Copy the following link and send it to whoever you want so that they can see your personal results.";
+const MESSAGE_SHARE_VIA_WEB_SHARE_API =
+  "Look at the suggestions I got from the BoardGame-O-Matic!";
 const DESCRIPTION_PERMALINK_SAVE =
   "Your store link has been copied to your clipboard. Save it to a location of your choice &ndash; it leads you back to your personal results page.";
 const DESCRIPTION_PERMALINK_SAVE_ALT =

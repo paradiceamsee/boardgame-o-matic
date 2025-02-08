@@ -202,16 +202,38 @@ window.addEventListener("load", () => {
 function copyPermalinkAndShowExplanation(type) {
   const permalinkUrl = generateLinkWithCurrentUserAnswers(type);
   const permalinkDescription = document.querySelector("#permalink-description");
-  permalinkDescription.innerHTML =
-    type === "share" ? DESCRIPTION_PERMALINK_SHARE : DESCRIPTION_PERMALINK_SAVE;
-  navigator.clipboard.writeText(permalinkUrl).catch((error) => {
-    permalinkDescription.innerHTML =
-      type === "share"
-        ? DESCRIPTION_PERMALINK_SHARE_ALT
-        : DESCRIPTION_PERMALINK_SAVE_ALT;
-  });
-  permalinkDescription.classList.add("permalink-description-visible");
-  setTimeout(() => {
-    permalinkDescription.classList.remove("permalink-description-visible");
-  }, PERMALINK_DESCRIPTION_DURATION * 1000);
+  if (type === "share") {
+    try {
+      navigator.share({
+        title: descriptionHeading1,
+        text: MESSAGE_SHARE_VIA_WEB_SHARE_API,
+        url: permalinkUrl,
+      });
+      // (async () => {
+      //   await navigator.share({
+      //     title: descriptionHeading1,
+      //     text: MESSAGE_SHARE_VIA_WEB_SHARE_API,
+      //     url: permalinkUrl,
+      //   });
+      // })();
+    } catch {
+      permalinkDescription.innerHTML = DESCRIPTION_PERMALINK_SHARE;
+      navigator.clipboard.writeText(permalinkUrl).catch((error) => {
+        permalinkDescription.innerHTML = DESCRIPTION_PERMALINK_SHARE_ALT;
+      });
+      permalinkDescription.classList.add("permalink-description-visible");
+      setTimeout(() => {
+        permalinkDescription.classList.remove("permalink-description-visible");
+      }, PERMALINK_DESCRIPTION_DURATION * 1000);
+    }
+  } else {
+    permalinkDescription.innerHTML = DESCRIPTION_PERMALINK_SAVE;
+    navigator.clipboard.writeText(permalinkUrl).catch((error) => {
+      permalinkDescription.innerHTML = DESCRIPTION_PERMALINK_SAVE_ALT;
+    });
+    permalinkDescription.classList.add("permalink-description-visible");
+    setTimeout(() => {
+      permalinkDescription.classList.remove("permalink-description-visible");
+    }, PERMALINK_DESCRIPTION_DURATION * 1000);
+  }
 }

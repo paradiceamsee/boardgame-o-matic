@@ -88,6 +88,9 @@ const DESCRIPTION_PERMALINK_SHARE =
 
 const DESCRIPTION_PERMALINK_SHARE_ALT =
   "Kopiere den folgenden Link und sende ihn an andere, damit sie dein Ergebnis anschauen können.";
+const MESSAGE_SHARE_VIA_WEB_SHARE_API =
+  "Schau dir meine Vorschläge vom Brettspiel-O-Maten an!";
+
 const DESCRIPTION_PERMALINK_SAVE =
   "Dein Speicher-Link wurde in deine Zwischenablage kopiert. Sichere ihn an einem Ort deiner Wahl &ndash; er bringt dich zurück zu deiner persönlichen Ergebnis-Seite.";
 
