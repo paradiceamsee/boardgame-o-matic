@@ -437,7 +437,6 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
     /* 
   Global keys:
     * internalName::string (required, must be unique)
-    * displayInSharedModal::bool (optional; default: false)
 
   Available types and their special keys:
   "dropdown"
@@ -489,24 +488,61 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
     * checkedByDefault::bool (optional; default: false)
     * checkedMeansExcluded::bool (optional; default: false)
       */
+    // {
+    //   internalName: "player-number",
+    //   type: "dropdown",
+    //   icon: "bx-group",
+    //   // label: "Number of players: ",
+    //   label: "Spieler:innenanzahl: ",
+    //   options: [
+    //     { text: "Solo", value: "1" },
+    //     { text: "2", value: "2" },
+    //     { text: "3", value: "3" },
+    //     { text: "4", value: "4" },
+    //     { text: "5", value: "5" },
+    //     { text: "6", value: "6" },
+    //     { text: "≥ 7", value: "7" },
+    //   ],
+    //   // textOfOptionToShowAll: "Show all",
+    //   textOfOptionToShowAll: "Alle anzeigen",
+    //   displayInSharedModal: false,
+    //   displayFilterValuesInResultDetails: {
+    //     isWanted: true,
+    //     // label: "Player number",
+    //     label: "Spieler:innenanzahl",
+    //     bulletList: false,
+    //   },
+    //   setAtStart: {
+    //     isWanted: true,
+    //     // cardHeading: "Number of players",
+    //     cardHeading: "Spieler:innenanzahl",
+    //     // cardBody: "With how many players do you want to play?",
+    //     cardBody: "Zu wievielt wollt ihr spielen?",
+    //   },
+    // },
     {
       internalName: "player-number",
-      type: "dropdown",
+      type: "checkbox-list",
       icon: "bx-group",
       // label: "Number of players: ",
-      label: "Spieler:innenanzahl: ",
+      description:
+        "Alle Spiele, die mit keiner der ausgewählten Spieler:innenzahlen spielbar sind, werden ausgeblendet",
       options: [
-        { text: "Solo", value: "1" },
-        { text: "2", value: "2" },
-        { text: "3", value: "3" },
-        { text: "4", value: "4" },
-        { text: "5", value: "5" },
-        { text: "6", value: "6" },
-        { text: "≥ 7", value: "7" },
+        { label: "Solo", value: "1" },
+        { label: "2", value: "2" },
+        { label: "3", value: "3" },
+        { label: "4", value: "4" },
+        { label: "5", value: "5" },
+        { label: "6", value: "6" },
+        { label: "≥ 7", value: "7" },
       ],
-      // textOfOptionToShowAll: "Show all",
-      textOfOptionToShowAll: "Alle anzeigen",
-      displayInSharedModal: false,
+      allCheckedByDefault: true,
+      checkedMeansExcluded: false,
+      displayInCollapsibleSection: {
+        isWanted: true,
+        heading: "Spieler:innenanzahl",
+      },
+
       displayFilterValuesInResultDetails: {
         isWanted: true,
         // label: "Player number",
@@ -520,6 +556,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         // cardBody: "With how many players do you want to play?",
         cardBody: "Zu wievielt wollt ihr spielen?",
       },
+      errorMessage: "Du musst mindestens eine Spieler:innenanzahl erlauben.",
     },
     {
       internalName: "mechanics",
@@ -581,7 +618,6 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       allCheckedByDefault: false,
       checkedMeansExcluded: true,
       strikethroughOptionsThatGetHidden: true,
-      displayInSharedModal: false,
       displayInCollapsibleSection: {
         isWanted: true,
         heading: "Mechaniken",
@@ -633,7 +669,6 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       allCheckedByDefault: false,
       checkedMeansExcluded: true,
       strikethroughOptionsThatGetHidden: true,
-      displayInSharedModal: false,
       displayInCollapsibleSection: {
         isWanted: true,
         heading: "Themen",
@@ -650,20 +685,12 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
   ];
   /* 
   Other required variables:
-  * MODAL::object (required, if at least one filter has "displayInSharedModal: true")
-    * textButtonOpenModal::string (required)
-    * heading::string (required)
-    * buttonShowResults::string (required)
   * BUTTON_RESET_ALL_FILTERS::object (optional)
     * showButton::bool (optional; default: false)
     * textButton::string (required, if "showButton: true")
   * ERROR_MESSAGE_NO_FILTER_RESULTS::string (required)
   */
-  SHARED_MODAL = {
-    textButtonOpenModal: "Filter results",
-    heading: "Filter results",
-    buttonShowResults: "Go!",
-  };
+
   BUTTON_RESET_ALL_FILTERS = {
     showButton: true,
     // textButton: "Reset all filters",

@@ -727,7 +727,14 @@ function setFiltersAtStart() {
     history.replaceState({ type: "filterAtStart" }, "");
 
     const filter = arFiltersToSetAtStart[index];
-    if (filter.type !== "dropdown") return; // So far, only dropdown filters are supported; other filters can be added in the future if needed
+    if (
+      filter.type !== "dropdown" &&
+      (filter.type !== "checkbox-list" || filter.checkedMeansExcluded)
+    ) {
+      // So far, only dropdown filters and checkbox lists that are not exclusion-based are supported; other types can be added in the future if needed
+      showNextCardToSetFilter(index + 1);
+      return;
+    }
     const cardToSetFilter = document.createElement("div");
     cardToSetFilter.classList.add("card");
     cardToSetFilter.setAttribute(
@@ -744,7 +751,13 @@ function setFiltersAtStart() {
                     <div class="row">`;
     for (let i = 0; i < filter.options.length; i++) {
       divContent += `<div class="col">
-            <button type="button" data-value="${filter.options[i].value}" class="btn btn-lg btn-block btn-voting btn-set-filter-${filter.internalName}">${filter.options[i].text}</button>
+            <button type="button" data-value="${
+              filter.options[i].value
+            }" class="btn btn-lg btn-block btn-voting btn-set-filter-${
+        filter.internalName
+      }">${
+        filter.options[i][filter.type === "dropdown" ? "text" : "label"]
+      }</button>
           </div>`;
     }
     divContent += `</div></section>
@@ -821,13 +834,25 @@ function setPreselectedFilter(filter) {
   }
 
   const selectedFilter = window[`setFilter${filter.internalName}`];
-  if (selectedFilter) {
+  if (!selectedFilter) return;
+  if (filter.type === "dropdown") {
     document.querySelector(`#filter-dropdown-${filter.internalName}`).value =
       selectedFilter;
+  } else if (filter.type === "checkbox-list") {
     document
-      .querySelector(`#filter-dropdown-${filter.internalName}`)
-      .dispatchEvent(new Event("change", { bubbles: true }));
+      .querySelectorAll(`#filter-container-${filter.internalName} input`)
+      .forEach((checkbox) => {
+        const currentState = checkbox.checked;
+        const newState = checkbox.value === selectedFilter ? true : false;
+        if (currentState !== newState) {
+          checkbox.checked = newState;
+          checkbox.dispatchEvent(new Event("change"));
+        }
+      });
   }
+
+  // This causes the filter to be applied, so the result list is updated accordingly
+  document.querySelector("#resultsTabBtn").dispatchEvent(new Event("click"));
 }
 
 function setupButtonResetAllFilters() {
