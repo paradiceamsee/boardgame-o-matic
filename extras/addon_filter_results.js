@@ -873,6 +873,7 @@ function setupButtonResetAllFilters() {
               }
             });
           });
+        showBtnGoToUpdatedResults();
         createButtonResetAllFilters();
         sendMessageToLimitResultsAddon();
       });
