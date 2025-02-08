@@ -294,7 +294,8 @@ button {
   border-width: 2px;
 }
 
-#sectionVotingButtons button {
+#sectionVotingButtons button,
+#card-to-set-filter-player-number button {
   margin: 5px 0;
 }
 

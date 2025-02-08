@@ -620,7 +620,8 @@ i.bx-sm {
   gap: 0;
 }
 
-#votingSkip {
+#votingSkip,
+#skip-set-filter-player-number {
   padding-right: 0;
   gap: 0;
 }
