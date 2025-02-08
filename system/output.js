@@ -113,6 +113,8 @@ function fnStart() {
     $("#descriptionExplanation").empty().append(descriptionExplanationContent);
 
     window.setTimeout(fnHideWelcomeMessage, 2500);
+  } else {
+    history.pushState({ type: "welcomeScreen" }, "");
   }
 }
 
@@ -122,11 +124,6 @@ function fnStart() {
 // Aufruf aus fnStart() wenn "descriptionShowOnStart = 0" ODER beim Klick auf Start-Button
 function fnHideWelcomeMessage() {
   document.querySelector("#restart").classList.remove("d-none");
-  // Warn user before leaving the page and ask for confirmation
-  window.addEventListener("beforeunload", function (event) {
-    event.preventDefault(); // Required in some browsers
-    event.returnValue = "dummy"; // A non-empty string is often ignored
-  });
   fnShowQuestionNumber(-1);
 }
 
@@ -257,6 +254,9 @@ function fnShowQuestionNumber(questionNumber) {
         animateQuestionsCard ? 400 : 0
       );
     }
+
+    if (history.state?.questionNumber !== questionNumber)
+      history.pushState({ type: "question", questionNumber }, "");
   }
 
   // Alle Fragen durchgelaufen -> Auswertung
@@ -283,6 +283,18 @@ function fnShowQuestionNumber(questionNumber) {
     loadingAnimation.innerHTML =
       "<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>";
     document.body.appendChild(loadingAnimation);
+
+    history.pushState({ type: "tab", tabId: "results" }, "");
+
+    // Warn user before leaving the page and ask for confirmation
+    window.addEventListener("beforeunload", function (event) {
+      event.preventDefault(); // Required in some browsers
+      event.returnValue = "dummy"; // A non-empty string is often ignored
+      setTimeout(() => {
+        // The user decided to stay, so we add the current tab to the history again
+        history.pushState({ type: "tab", tabId: "results" }, "");
+      }, 100);
+    });
 
     setTimeout(() => {
       arResults = fnEvaluation();
@@ -321,6 +333,37 @@ function fnShowQuestionNumber(questionNumber) {
     }, 0);
   }
 }
+
+// Change the classical behaviour of the browsers' "Go back" button
+// Throughout the process of using the tool, states are pushed to the history so that backtracking is possible
+window.addEventListener("popstate", (event) => {
+  if (
+    event.state?.type === "welcomeScreen" ||
+    event.state?.type === "filterAtStart"
+  ) {
+    // They are either on a card to select a filter at the start or they just got to the first question. Actually going to the previous state (including the animation) would be difficult, because this transition is not implemented. The tool therefore just reloads to get back to the welcome screen, (almost) no input is lost.
+    document.querySelector("#restart").click();
+  }
+  if (
+    event.state?.type === "question" &&
+    document.querySelector("#sectionShowQuestions")
+  ) {
+    // They are on a regular question card and they had a regular question card before, which they simply go back to
+    fnShowQuestionNumber(event.state.questionNumber - 1);
+  } else if (
+    event.state?.type === "question" &&
+    !document.querySelector("#sectionShowQuestions")
+  ) {
+    // They just got to the results and haven't changed the tab yet. The tool is not designed to allow going back to the questions.
+    // TODO: Show popup (explaining that they can change their answers in the finetuning tab) or actually allow going back to the questions
+    // Until then, the beforeunload -> preventDefault mechanism at least asks the user if they really want to leave the page
+    document.querySelector("#restart").click();
+  } else if (event.state?.type === "tab") {
+    // They are on a tab of the results section and they have been on another tab before, which they simply go back to
+
+    document.querySelector(`#${event.state.tabId}TabBtn`).click();
+  }
+});
 
 // 02/2015 BenKob
 function fnChangeVotingDouble() {
@@ -1089,6 +1132,9 @@ function generateSectionResults(arResults) {
         document
           .querySelector(`#navigationBar .${tab.icon}`)
           .parentNode.classList.add("activeTabBtn");
+
+        if (history.state?.tabId !== tab.id)
+          history.pushState({ type: "tab", tabId: tab.id }, "");
       });
       navigationBar.appendChild(tabBtnContainer);
     });

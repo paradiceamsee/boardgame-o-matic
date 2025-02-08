@@ -74,7 +74,7 @@ const TEXT_ANSWER_DOUBLE = "Frage ist doppelt gewichtet";
 
 const TEXT_VOTING_DOUBLE_MODAL_HEADING = "Fragen doppelt gewichten";
 const TEXT_VOTING_DOUBLE_MODAL_BODY =
-  "<p>Nutze diese Funktion, wenn das Thema der Frage besonders wichtig für dich ist. Aktiviere die Checkbox (sofern sie nicht schon standardmäßig aktiviert ist) und wähle dann deine Antwort.</p>";
+  "<p>Nutze diese Funktion, wenn das Thema der Frage besonders wichtig für dich ist. Aktiviere die Checkbox und wähle dann deine Antwort.</p>";
 
 const HEADING_MODAL_RESULT_DETAILS_FINETUNING = "Brettspiel-Details";
 const TEXT_BTN_CLOSE_MODAL_RESULT_DETAILS_FINETUNING = "Schließen";

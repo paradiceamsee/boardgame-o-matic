@@ -209,13 +209,6 @@ function copyPermalinkAndShowExplanation(type) {
         text: MESSAGE_SHARE_VIA_WEB_SHARE_API,
         url: permalinkUrl,
       });
-      // (async () => {
-      //   await navigator.share({
-      //     title: descriptionHeading1,
-      //     text: MESSAGE_SHARE_VIA_WEB_SHARE_API,
-      //     url: permalinkUrl,
-      //   });
-      // })();
     } catch {
       permalinkDescription.innerHTML = DESCRIPTION_PERMALINK_SHARE;
       navigator.clipboard.writeText(permalinkUrl).catch((error) => {

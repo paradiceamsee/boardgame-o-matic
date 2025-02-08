@@ -720,8 +720,11 @@ function setFiltersAtStart() {
           element.classList.remove("d-none");
         });
       }
+      history.pushState({ type: "question", questionNumber: 0 }, "");
       return;
     }
+
+    history.replaceState({ type: "filterAtStart" }, "");
 
     const filter = arFiltersToSetAtStart[index];
     if (filter.type !== "dropdown") return; // So far, only dropdown filters are supported; other filters can be added in the future if needed
@@ -751,29 +754,27 @@ function setFiltersAtStart() {
                       </div>`;
 
     cardToSetFilter.innerHTML = divContent;
-    addCardToSetFilterToDOM(cardToSetFilter, filter, index);
 
-    function addCardToSetFilterToDOM(cardToSetFilter, filter, index) {
-      if (animateQuestionsCard) {
-        setTimeout(() => {
-          sectionShowQuestions.parentNode.insertBefore(
-            cardToSetFilter,
-            sectionShowQuestions
-          );
-          cardToSetFilter.classList.add("flyInRight");
-        }, 400);
-        setTimeout(() => {
-          cardToSetFilter.classList.remove("flyInRight");
-          addEventListenersToButtons(filter, index);
-        }, 800);
-      } else {
+    if (animateQuestionsCard) {
+      setTimeout(() => {
         sectionShowQuestions.parentNode.insertBefore(
           cardToSetFilter,
           sectionShowQuestions
         );
+        cardToSetFilter.classList.add("flyInRight");
+      }, 400);
+      setTimeout(() => {
+        cardToSetFilter.classList.remove("flyInRight");
         addEventListenersToButtons(filter, index);
-      }
+      }, 800);
+    } else {
+      sectionShowQuestions.parentNode.insertBefore(
+        cardToSetFilter,
+        sectionShowQuestions
+      );
+      addEventListenersToButtons(filter, index);
     }
+
     function addEventListenersToButtons(filter, index) {
       const buttonsSetFilter = document.querySelectorAll(
         `#card-to-set-filter-${filter.internalName} .btn-set-filter-${filter.internalName}`

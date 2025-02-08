@@ -238,7 +238,7 @@ if (isActivated("addon_custom_voting_buttons.js")) {
         "Für Expert:innen",
       ],
       arPositionValues: [2, 1, 0, -1, -2],
-      votingDoubleByDefault: true,
+      votingDoubleByDefault: false,
       hideVotingDouble: false,
     },
     {
@@ -279,7 +279,7 @@ if (isActivated("addon_custom_voting_buttons.js")) {
         ">&nbsp;180&prime;",
       ],
       arPositionValues: [2, 1, 0, -1, -2],
-      votingDoubleByDefault: true,
+      votingDoubleByDefault: false,
       hideVotingDouble: false,
     },
     {
