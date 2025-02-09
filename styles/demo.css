@@ -761,7 +761,6 @@ details[open] .disclosure-chevron::before {
   background: var(--secondary-color);
   padding: 5px 10px;
   border-radius: var(--border-radius);
-  font-weight: bold;
 }
 
 .filter-description {

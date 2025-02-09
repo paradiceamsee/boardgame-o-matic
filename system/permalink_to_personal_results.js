@@ -38,6 +38,8 @@ function processPermalink(urlParams) {
   const votingDoubleFromUrl = decodeURIComponent(urlParams.get("double"));
   arVotingDouble = votingDoubleFromUrl.split(",").map((element) => !!+element); // Convert Ones and Zeros to boolean values
 
+  const typeFromUrl = decodeURIComponent(urlParams.get("type"));
+
   if (statsRecord) {
     // The stats modal shall not be shown
     // This is hard to achieve. Toggling it, simulating a click on the No-button or setting display:none don't work (partly due to timing)
@@ -53,12 +55,25 @@ function processPermalink(urlParams) {
     document.body.append(fakeElement);
   }
   document.querySelector("#sectionDescription")?.classList.add("d-none");
+  // Jump to results or to last questions. Without timeout, not everything would be ready
   setTimeout(() => {
-    // Jump to results. Without timeout, not everything would be ready
-    fnShowQuestionNumber(intQuestions);
-    handleTypeFromPermalink(urlParams);
-    if (isActivated("addon_filter_results.js"))
-      handleFiltersFromPermalink(urlParams);
+    if (typeFromUrl === "back-to-questions") {
+      fnShowQuestionNumber(intQuestions - 2);
+
+      FILTERS.forEach((filter) => {
+        const urlValue = decodeURIComponent(urlParams.get(filter.internalName));
+        if (urlValue === "null") return;
+        window[`setFilter${filter.internalName}`] = urlValue;
+        for (let i = 0; i < intQuestions; i++) {
+          history.pushState({ type: "question", questionNumber: i }, "");
+        }
+      });
+    } else {
+      fnShowQuestionNumber(intQuestions);
+      handleTypeFromPermalink(typeFromUrl);
+      if (isActivated("addon_filter_results.js"))
+        handleFiltersFromPermalink(urlParams);
+    }
   }, 500);
 
   setTimeout(() => {
@@ -80,46 +95,27 @@ function handleFiltersFromPermalink(urlParams) {
         // Change event must be actively triggered; otherwise, the dropdown would show the right filter value, but filter would not be applied
         nodeFilter.dispatchEvent(new Event("change", { bubbles: true }));
       } else if (filter.type === "checkbox-list") {
-        const arExludedOptions = urlValue.split(",");
+        const arCheckedOptions = urlValue.split(",");
         document
           .querySelectorAll(`#container-${filter.internalName} input`)
           .forEach((checkbox) => {
             const initialState = checkbox.checked;
-            if (
-              (arExludedOptions.includes(checkbox.value) &&
-                filter.checkedMeansExcluded) ||
-              (!arExludedOptions.includes(checkbox.value) &&
-                !filter.checkedMeansExcluded)
-            )
+            if (arCheckedOptions.includes(checkbox.value))
               checkbox.checked = true;
             else checkbox.checked = false;
             // Change event must be actively triggered; otherwise, visual changes to label (icon and line-trough) would not be applied
             if (initialState !== checkbox.checked)
               checkbox.dispatchEvent(new Event("change", { bubbles: true }));
           });
-        const btnApplyFilter = filter.displayInSharedModal
-          ? "#shared-filter-modal-confirm"
-          : filter.displayInIndividualModal?.isWanted
-          ? `#individual-filter-modal-confirm-${filter.internalName}`
-          : `#submit-filter-${filter.internalName}`;
-        document.querySelector(btnApplyFilter).click();
+        document
+          .querySelector("#resultsTabBtn")
+          .dispatchEvent(new Event("click"));
       }
     }, 300);
   });
-  // const filterFromUrl = decodeURIComponent(urlParams.get("fil"));
-  // if (!filterFromUrl) return;
-  // setTimeout(() => {
-  //   // Without timeout, element would not be found
-  //   document.querySelector("#textfilter-dropdown").value = filterFromUrl;
-  //   // Change event must be actively triggered; otherwise, the dropdown would show the right filter value, but filter would not be applied
-  //   document
-  //     .querySelector("#textfilter-dropdown")
-  //     .dispatchEvent(new Event("change", { bubbles: true }));
-  // }, 300);
 }
 
-function handleTypeFromPermalink(urlParams) {
-  const type = decodeURIComponent(urlParams.get("type"));
+function handleTypeFromPermalink(type) {
   const nodeWelcome = document.createElement("div");
   nodeWelcome.setAttribute("id", "welcome-message-after-permalink");
   nodeWelcome.innerHTML =
@@ -146,16 +142,14 @@ function generateLinkWithCurrentUserAnswers(type) {
         if (selectedOption === "show-all") return;
         link += `&${filter.internalName}=${selectedOption}`;
       } else if (filter.type === "checkbox-list") {
-        const arExludedOptions = Array.from(
+        const arCheckedOptions = Array.from(
           document.querySelectorAll(
-            `#container-${filter.internalName} input${
-              filter.checkedMeansExcluded ? ":checked" : ":not(:checked)"
-            }`
+            `#container-${filter.internalName} input:checked`
           )
         ).map((node) => node.value);
-        if (arExludedOptions.length === 0) return;
+        if (arCheckedOptions.length === 0) return;
         link += `&${filter.internalName}=${encodeURIComponent(
-          arExludedOptions.join(",")
+          arCheckedOptions.join(",")
         )}`;
       }
     });

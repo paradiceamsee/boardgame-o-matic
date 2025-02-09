@@ -371,7 +371,7 @@ if (isActivated("addon_custom_voting_buttons.js")) {
       // arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
       arButtonLabels: ["Kooperativ", "Team-basiert", "Kompetitiv"],
       arButtonAltTexts: ["Kooperativ", "Team-basiert", "Kompetitiv"],
-      arPositionIcons: ["Koop", "Team-basiert", "Kompe&shy;titiv"],
+      arPositionIcons: ["Kooperativ", "Team-basiert", "Kompe&shy;titiv"],
     },
     {
       questionNr: 6,

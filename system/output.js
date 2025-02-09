@@ -285,17 +285,6 @@ function fnShowQuestionNumber(questionNumber) {
     document.body.appendChild(loadingAnimation);
 
     history.pushState({ type: "tab", tabId: "results" }, "");
-
-    // Warn user before leaving the page and ask for confirmation
-    window.addEventListener("beforeunload", function (event) {
-      event.preventDefault(); // Required in some browsers
-      event.returnValue = "dummy"; // A non-empty string is often ignored
-      setTimeout(() => {
-        // The user decided to stay, so we add the current tab to the history again
-        history.pushState({ type: "tab", tabId: "results" }, "");
-      }, 100);
-    });
-
     setTimeout(() => {
       arResults = fnEvaluation();
 
@@ -355,12 +344,12 @@ window.addEventListener("popstate", (event) => {
     !document.querySelector("#sectionShowQuestions")
   ) {
     // They just got to the results and haven't changed the tab yet. The tool is not designed to allow going back to the questions.
-    // TODO: Show popup (explaining that they can change their answers in the finetuning tab) or actually allow going back to the questions
-    // Until then, the beforeunload -> preventDefault mechanism at least asks the user if they really want to leave the page
-    document.querySelector("#restart").click();
+    // Therefore, we reload the tool, but it goes directly to the last question and all input (answers, double weightings, preset filters) are preserved
+    const urlBackToQuestions =
+      generateLinkWithCurrentUserAnswers("back-to-questions");
+    window.open(urlBackToQuestions, "_self");
   } else if (event.state?.type === "tab") {
     // They are on a tab of the results section and they have been on another tab before, which they simply go back to
-
     document.querySelector(`#${event.state.tabId}TabBtn`).click();
   }
 });

@@ -46,14 +46,14 @@ const TEXT_LINK_TO_EXTERNAL_PAGE =
 const TEXT_FINETUNING_HEADING = "Finetuning";
 const TEXT_FINETUNING_SUBHEADING =
   "<ul style='text-align: left; font-size: 80%;'><li>Ändere deine Antworten und Gewichtungen</li><li>Schau dir die Werte deiner Brettspiel-Matches zu den Fragen an</li></ul>";
-const TEXT_SHOW_PARTY_DESCRIPTION = `<i class='bx bx-plus bx-sm' ></i> Details zeigen`;
-const TEXT_HIDE_PARTY_DESCRIPTION = `<i class='bx bx-minus bx-sm' ></i> Details verstecken`;
-const TEXT_SHOW_PARTY_ANSWERS = `<i class='bx bx-plus bx-sm' ></i> Antworten zeigen`;
-const TEXT_HIDE_PARTY_ANSWERS = `<i class='bx bx-minus bx-sm' ></i> Antworten verstecken`;
+const TEXT_SHOW_PARTY_DESCRIPTION = `<i class='bx bx-chevron-right bx-sm' ></i> Details`;
+const TEXT_HIDE_PARTY_DESCRIPTION = `<i class='bx bx-chevron-down bx-sm' ></i> Details`;
+const TEXT_SHOW_PARTY_ANSWERS = `<i class='bx bx-chevron-right bx-sm' ></i> Antworten`;
+const TEXT_HIDE_PARTY_ANSWERS = `<i class='bx bx-chevron-down bx-sm' ></i> Antworten`;
 const TEXT_SHOW_THESIS_ANSWERS =
-  "<i class='bx bx-plus bx-sm' ></i> Werte der Brettspiele anzeigen";
+  "<i class='bx bx-chevron-right bx-sm' ></i> Werte der Brettspiele";
 const TEXT_HIDE_THESIS_ANSWERS =
-  "<i class='bx bx-minus bx-sm' ></i> Werte der Brettspiele verstecken";
+  "<i class='bx bx-chevron-down bx-sm' ></i> Werte der Brettspiele";
 
 const TEXT_SHARE_AND_SAVE_HEADING = "Teile oder speichere deine Ergebnisse";
 const TEXT_SHARE_AND_SAVE_SUBHEADING =
