@@ -1262,6 +1262,12 @@ function showOrHighlightBtnRefresh() {
             .appendChild(table.querySelector(`.result${num}`));
         });
       });
+    if (
+      isActivated("addon_filter_results.js") &&
+      DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS?.showMatchWithPersonalAnswer
+    ) {
+      updateMatchTags();
+    }
     sendMessageToLimitResultsAddon();
     document.querySelector("#resultsTabBtn").classList.remove("reload-results");
   });

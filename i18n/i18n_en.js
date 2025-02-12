@@ -113,3 +113,8 @@ const TOOLTIP_SHARE_AND_SAVE = "Share & Save";
 const TOOLTIP_INFO = "About";
 const TOOLTIP_FILTER = "Filter";
 const PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH = "Change filters";
+
+const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_SKIPPED = `You answered this question with &quot;${TEXT_SKIPPED}&quot; / you skipped it.`;
+
+const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED =
+  "The match with your answer %%%placeholder%%% is";

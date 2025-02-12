@@ -59,8 +59,12 @@
   --text-on-secondary: #000;
   --success: #7fb800; /* For ranking bar and answer buttons. Ideally dark enough to read white text on it */
   --text-on-success: #000;
+  --mix-success-warning: #bfb600; /* For ranking bar and answer buttons. Ideally dark enough to read white text on it */
+  --text-on-mix-success-warning: #000;
   --warning: #ffb400;
   --text-on-warning: #000;
+  --mix-warning-danger: #fb830f; /* For ranking bar and answer buttons. Ideally dark enough to read white text on it */
+  --text-on-mix-warning-danger: #000;
   --danger: #f6511d;
   --text-on-danger: #000;
   --passive-button-color: #eee; /* Could be grey */
@@ -422,6 +426,15 @@ i.bx-sm {
   max-width: 100%;
 }
 
+.row-answer-in-result-details {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 7px;
+  max-width: 100%;
+  width: max-content;
+}
+
 #navigationBar i {
   vertical-align: middle;
 }
@@ -573,7 +586,7 @@ i.bx-sm {
     font-size: 1rem;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
     pointer-events: none;
     border: 2px solid #000;
   }
@@ -581,7 +594,6 @@ i.bx-sm {
   .title-on-hover:hover::before {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -776,4 +788,85 @@ details[open] .disclosure-chevron::before {
 
 #buttonsAboveResultsShort button {
   font-size: 90%;
+}
+
+.match-tag-in-result-details {
+  font-size: 0.75em;
+  line-height: 18px;
+  border-radius: 0.25em;
+  padding: 0.1em 0.4em;
+  color: #666;
+  border: 2px solid;
+  position: relative;
+  cursor: default;
+}
+
+.match-tag-in-result-details::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -50%;
+  font-size: 0.85rem;
+  z-index: 1;
+  white-space: pre-wrap;
+  min-width: 300px;
+  color: #666;
+  border: 2px solid;
+  background-color: #ffffff;
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  left: 120%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.match-tag-in-result-details:hover::before,
+.match-tag-in-result-details.tooltip-active-mobile::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.match-100,
+.match-100::before {
+  border-color: var(--success);
+}
+
+.match-75,
+.match-75::before {
+  border-color: var(--mix-success-warning);
+}
+
+.match-50,
+.match-50::before {
+  border-color: var(--warning);
+}
+
+.match-25,
+.match-25::before {
+  border-color: var(--mix-warning-danger);
+}
+
+.match-0,
+.match-0::before {
+  border-color: var(--danger);
+}
+
+.match-skipped {
+  border-color: #666;
+  border-width: 1px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .match-tag-in-result-details::before {
+    transform: translateX(-100%);
+    top: 120%;
+  }
+  .row-answer-in-result-details {
+    width: unset;
+  }
+  .text-answer-in-result-details {
+    flex-grow: 1;
+  }
 }

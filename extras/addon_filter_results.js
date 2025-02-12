@@ -191,6 +191,43 @@ function toggleStylesOfLabel(element, strikethroughOptionsThatGetHidden) {
   }
 }
 
+function getPositionVerbal(positionValue, question) {
+  let positionVerbal;
+  if (
+    isActivated("addon_custom_voting_buttons.js") &&
+    question.isCustomQuestion
+  ) {
+    positionVerbal =
+      window.lookupTableForCustomQuestions[question.questionNr][positionValue];
+  } else {
+    positionVerbal =
+      arIcons[positionValue === 1 ? "0" : positionValue === 0 ? "1" : "2"];
+  }
+  return positionVerbal;
+}
+
+function showMatchTagTooltipOnMobile(clickedElement, event) {
+  if (window.screen.width >= 1024) return;
+  document.querySelectorAll(".tooltip-active-mobile").forEach((el) => {
+    if (el !== clickedElement) el.classList.remove("tooltip-active-mobile");
+  });
+  clickedElement.classList.toggle("tooltip-active-mobile");
+  event.stopPropagation();
+  setTimeout(() => {
+    document.addEventListener(
+      "click",
+      () => {
+        clickedElement.classList.remove("tooltip-active-mobile");
+      },
+      { once: true }
+    );
+  }, 0);
+
+  setTimeout(() => {
+    clickedElement.classList.remove("tooltip-active-mobile");
+  }, 3000);
+}
+
 function displayFilterValuesInResultDetails() {
   function createLookupTableForAnswersToCustomQuestionsResultDetails() {
     window.lookupTableForCustomQuestions = {};
@@ -222,27 +259,49 @@ function displayFilterValuesInResultDetails() {
       (question) => {
         const answerIndex = resultNr * intQuestions + (question.questionNr - 1);
         const answerValue = +arPartyPositions[answerIndex];
-        let answerText = "";
-        if (answerValue === 99) answerText = TEXT_NO_DATA;
-        else {
-          if (
-            isActivated("addon_custom_voting_buttons.js") &&
-            question.isCustomQuestion
-          )
-            answerText =
-              window.lookupTableForCustomQuestions[question.questionNr][
-                answerValue
-              ];
-          else
-            answerText =
-              arIcons[answerValue === 1 ? "0" : answerValue === 0 ? "1" : "2"];
-        }
-        divContent += `<li class="flex-center"><i class="bx ${
+        let answerText =
+          answerValue === 99
+            ? TEXT_NO_DATA
+            : getPositionVerbal(answerValue, question);
+        divContent += `<li class="row-answer-in-result-details"><i class="bx ${
           arQuestionsIcon[question.questionNr - 1]
-        }"></i>`;
+        }"></i><span class="text-answer-in-result-details">`;
         if (question.displayQuestionHeading)
           divContent += `${arQuestionsShort[question.questionNr - 1]}: `;
         divContent += answerText;
+        divContent += "</span>";
+        if (
+          DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS.showMatchWithPersonalAnswer
+        ) {
+          const personalPosition = arPersonalPositions[question.questionNr - 1];
+          let displayedValue;
+          let elementClass;
+          let tooltip;
+          if (personalPosition === 99) {
+            displayedValue = TEXT_SKIPPED;
+            elementClass = "skipped";
+            tooltip = TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_SKIPPED;
+          } else {
+            const matchValue = calculateMatchValue(
+              personalPosition,
+              answerValue,
+              question.questionNr
+            );
+            const personalPositionVerbal = getPositionVerbal(
+              personalPosition,
+              question
+            );
+            displayedValue = `${matchValue * 100}${
+              language === "de" ? "&nbsp;" : ""
+            }%`;
+            elementClass = matchValue * 100;
+            tooltip = `${TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED.replace(
+              " %%%placeholder%%% ",
+              matchValue === 1 ? " " : ` &quot;${personalPositionVerbal}&quot; `
+            )} ${displayedValue}.`;
+          }
+          divContent += `<span class="match-tag-in-result-details match-${elementClass}" data-tooltip="${tooltip}" onclick="showMatchTagTooltipOnMobile(this, event)">${displayedValue}</span>`;
+        }
         divContent += "</li>";
       }
     );
@@ -312,6 +371,16 @@ function displayFilterValuesInResultDetails() {
         description.querySelector("#internet-below-description")
       );
     });
+}
+
+function updateMatchTags() {
+  // Updating the match tags would require quite a lot of code. Until refactoring, we just delete the the entire section and create it anew
+  document
+    .querySelectorAll(".list-answers-and-filter-values-in-result-details")
+    .forEach((node) => {
+      node.parentElement.remove();
+    });
+  displayFilterValuesInResultDetails();
 }
 
 function showHelpModalExplainingFilterOption(heading, body) {

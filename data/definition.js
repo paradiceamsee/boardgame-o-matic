@@ -702,6 +702,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
     "Keines unserer Spiele entspricht allen gesetzten Filtern. Bitte ändere deine Filter und versuche es erneut.";
   DISPLAY_ANSWERS_TO_QUESTIONS_IN_RESULT_DETAILS = {
     isWanted: true,
+    showMatchWithPersonalAnswer: true,
     questionsToBeDisplayed: [
       { questionNr: 1, displayQuestionHeading: true, isCustomQuestion: true },
       { questionNr: 2, displayQuestionHeading: true, isCustomQuestion: true },
