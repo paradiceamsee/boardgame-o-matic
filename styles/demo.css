@@ -801,7 +801,8 @@ details[open] .disclosure-chevron::before {
   cursor: default;
 }
 
-.match-tag-in-result-details::before {
+.match-tag-in-result-details::before,
+.voting-double-tag-in-result-details::before {
   content: attr(data-tooltip);
   position: absolute;
   top: -50%;
@@ -823,7 +824,8 @@ details[open] .disclosure-chevron::before {
 }
 
 .match-tag-in-result-details:hover::before,
-.match-tag-in-result-details.tooltip-active-mobile::before {
+.voting-double-tag-in-result-details:hover::before,
+.tooltip-active-mobile::before {
   opacity: 1;
   visibility: visible;
 }
@@ -853,13 +855,15 @@ details[open] .disclosure-chevron::before {
   border-color: var(--danger);
 }
 
-.match-skipped {
-  border-color: #666;
-  border-width: 1px;
+.match-skipped,
+.match-skipped::before,
+.voting-double-tag-in-result-details::before {
+  border-color: #bbb;
 }
 
 @media only screen and (max-width: 1024px) {
-  .match-tag-in-result-details::before {
+  .match-tag-in-result-details::before,
+  .voting-double-tag-in-result-details::before {
     transform: translateX(-100%);
     top: 120%;
   }
@@ -869,4 +873,17 @@ details[open] .disclosure-chevron::before {
   .text-answer-in-result-details {
     flex-grow: 1;
   }
+}
+
+.voting-double-tag-in-result-details {
+  font-size: 0.75em;
+  color: #666;
+  font-weight: 600;
+  text-decoration: underline;
+  position: relative;
+  cursor: default;
+}
+
+.voting-double-tag-in-result-details::before {
+  font-weight: 400;
 }

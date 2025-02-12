@@ -118,3 +118,5 @@ const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_SKIPPED = `You answered this quest
 
 const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED =
   "The match with your answer %%%placeholder%%% is";
+const TOOLTIP_FOR_DOUBLE_WEIGHTED_TAG_IN_RESULT_DETAILS =
+  "You have given this question double weight.";

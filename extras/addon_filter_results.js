@@ -206,7 +206,7 @@ function getPositionVerbal(positionValue, question) {
   return positionVerbal;
 }
 
-function showMatchTagTooltipOnMobile(clickedElement, event) {
+function showTagTooltipOnMobile(clickedElement, event) {
   if (window.screen.width >= 1024) return;
   document.querySelectorAll(".tooltip-active-mobile").forEach((el) => {
     if (el !== clickedElement) el.classList.remove("tooltip-active-mobile");
@@ -225,7 +225,7 @@ function showMatchTagTooltipOnMobile(clickedElement, event) {
 
   setTimeout(() => {
     clickedElement.classList.remove("tooltip-active-mobile");
-  }, 3000);
+  }, 4000);
 }
 
 function displayFilterValuesInResultDetails() {
@@ -300,7 +300,13 @@ function displayFilterValuesInResultDetails() {
               matchValue === 1 ? " " : ` &quot;${personalPositionVerbal}&quot; `
             )} ${displayedValue}.`;
           }
-          divContent += `<span class="match-tag-in-result-details match-${elementClass}" data-tooltip="${tooltip}" onclick="showMatchTagTooltipOnMobile(this, event)">${displayedValue}</span>`;
+          divContent += `<span class="match-tag-in-result-details match-${elementClass}" data-tooltip="${tooltip}" onclick="showTagTooltipOnMobile(this, event)">${displayedValue}</span>`;
+          if (
+            personalPosition !== 99 &&
+            arVotingDouble[question.questionNr - 1]
+          ) {
+            divContent += `<span class="voting-double-tag-in-result-details" data-tooltip="${TOOLTIP_FOR_DOUBLE_WEIGHTED_TAG_IN_RESULT_DETAILS}" onclick="showTagTooltipOnMobile(this, event)">x2</span>`;
+          }
         }
         divContent += "</li>";
       }
@@ -514,48 +520,6 @@ function checkIfCheckboxChangeValid(
     }, 3000);
   }
 }
-
-// function validateFilter(filter) {
-//   if (filter.type === "dropdown" || filter.type === "single-checkbox")
-//     return true;
-//   const nodeErrorMessage = document.querySelector(
-//     `#error-message-filter-${filter.type}-${filter.internalName}`
-//   );
-//   nodeErrorMessage.innerHTML = "";
-//   if (filter.type === "input-datalist") {
-//     const inputValue = document.querySelector(
-//       `#filter-input-${filter.internalName}`
-//     ).value;
-//     // If the input is empty, the validation succeeds (no filter is applied)
-//     if (inputValue && !filter.datalist.includes(inputValue)) {
-//       nodeErrorMessage.innerHTML = filter.errorMessage;
-//       return false;
-//     } else return true;
-//   } else if (filter.type === "distance") {
-//     const inputValueLocation = document.querySelector(
-//       `#filter-distance-location-${filter.internalName}`
-//     ).value;
-//     const inputValueDistance = document.querySelector(
-//       `#filter-distance-distance-${filter.internalName}`
-//     ).value;
-//     // If both inputs are empty, the validation succeeds (no filter is applied)
-//     if (!inputValueLocation && !inputValueDistance) return true;
-//     // If one of the inputs is empty and the other one is not, the validation fails
-//     if (!inputValueLocation) {
-//       nodeErrorMessage.innerHTML = filter.errorMessageNoLocation;
-//       return false;
-//     } else if (
-//       !filter.datalist.some((item) => item.text === inputValueLocation)
-//     ) {
-//       nodeErrorMessage.innerHTML = filter.errorMessageWrongLocation;
-//       return false;
-//     } else if (!inputValueDistance) {
-//       // Since the input has "type='number'", any non-numerical input resolves to ""  (empty string)
-//       nodeErrorMessage.innerHTML = filter.errorMessageDistance;
-//       return false;
-//     } else return true;
-//   }
-// }
 
 function hideResults(filter) {
   const nodelistAllResults = document.querySelectorAll(".row-with-one-result");

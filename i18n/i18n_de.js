@@ -122,3 +122,5 @@ const PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH = "Filter ändern";
 const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_SKIPPED = `Du hast diese Frage mit &quot;${TEXT_SKIPPED}&quot; beantwortet bzw. sie übersprungen.`;
 const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED =
   "Die Übereinstimmung mit deiner Antwort %%%placeholder%%% beträgt";
+const TOOLTIP_FOR_DOUBLE_WEIGHTED_TAG_IN_RESULT_DETAILS =
+  "Du hast diese Frage doppelt gewichtet.";
