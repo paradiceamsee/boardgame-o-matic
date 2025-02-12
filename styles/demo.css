@@ -97,10 +97,6 @@ i.bx-sm {
   font-size: 1.25rem !important;
 }
 
-.container-checkbox-list input {
-  display: none;
-}
-
 .color-success {
   color: var(--success);
 }
@@ -601,10 +597,6 @@ i.bx-sm {
   padding: 0 calc(15px + 0.2em);
 }
 
-[id^="voting-double-container"] input {
-  display: none;
-}
-
 [id^="voting-double-container"] i.bx-check {
   padding: 0;
   border-color: var(--text-on-primary);
@@ -886,4 +878,16 @@ details[open] .disclosure-chevron::before {
 
 .voting-double-tag-in-result-details::before {
   font-weight: 400;
+}
+
+.hidden-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.hidden-checkbox:focus-visible + label i {
+  outline: 2px solid #007bff; /* Blue focus ring */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Soft glow effect */
 }

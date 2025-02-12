@@ -787,7 +787,7 @@ function addContentToFinetuningTab() {
 
                     <div id='resultsByThesisQuestion${i}PersonalPosition'>
                     <div id="voting-double-container-question${i}">
-                      <input type="checkbox" id="checkbox-voting-double-question${i}" onchange="fnToggleDouble(${i})" ${
+                      <input type="checkbox" id="checkbox-voting-double-question${i}" class="hidden-checkbox" onchange="fnToggleDouble(${i})" ${
       arVotingDouble[i] ? "checked" : ""
     }>
                       <label for="checkbox-voting-double-question${i}" class="flex-center"

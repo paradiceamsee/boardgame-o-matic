@@ -125,7 +125,7 @@ function createFilterHtml(filter) {
       const isChecked =
         filter.allCheckedByDefault || filter.options[i].checkedByDefault;
       divContent += `<div class="checkbox-container flex-center">
-      <input type="checkbox" id="filter-checkbox-list-${
+      <input type="checkbox" class="hidden-checkbox" id="filter-checkbox-list-${
         filter.internalName
       }-option${i}" ${isChecked ? "checked" : ""} value="${
         filter.options[i].value
