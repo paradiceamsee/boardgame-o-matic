@@ -19,6 +19,11 @@ Other functions:
 window.addEventListener("load", setupFilters);
 
 function setupFilters() {
+  for (let i = 0; i < FILTERS.length; i++) {
+    if (FILTERS[i].sortOptionsAlphabetically) {
+      FILTERS[i].options.sort((a, b) => a.label.localeCompare(b.label));
+    }
+  }
   setFiltersAtStart();
   const filtersTab = document.createElement("div");
   filtersTab.setAttribute("id", "filters");
@@ -39,6 +44,7 @@ function setupFilters() {
       const nodeFilter = createFilterHtml(filter);
       addFilterNodeToDOM(nodeFilter, filter);
     });
+    addEventListenerToApplyFilters();
     if (
       FILTERS.some(
         (filter) => filter.displayFilterValuesInResultDetails?.isWanted
@@ -131,9 +137,7 @@ function createFilterHtml(filter) {
         filter.options[i].value
       }" onchange="toggleStylesOfLabel(this, ${
         filter.strikethroughOptionsThatGetHidden && filter.checkedMeansExcluded
-      }); checkIfCheckboxChangeValid('${filter.internalName}', ${
-        filter.checkedMeansExcluded
-      }, this, '${filter.errorMessage}'); showBtnGoToUpdatedResults()">
+      }); showBtnGoToUpdatedResults()">
       <label class="checkbox-list-label" for="filter-checkbox-list-${
         filter.internalName
       }-option${i}">
@@ -177,7 +181,7 @@ function addFilterNodeToDOM(nodeFilter, filter) {
   if (filter.displayInCollapsibleSection?.isWanted)
     createAndAppendCollapsibleSection(nodeFilter, filter);
   else document.querySelector("#filtersContainer").appendChild(nodeFilter);
-  addEventListenerToFilter(filter);
+  // addEventListenerToFilter(filter);
   if (filter.setAtStart?.isWanted) setPreselectedFilter(filter);
 }
 
@@ -441,22 +445,23 @@ function showHelpModalExplainingFilterOption(heading, body) {
   }
 }
 
-function addEventListenerToFilter(filter) {
+function addEventListenerToApplyFilters() {
   document
     .querySelectorAll("#resultsTabBtn, #finetuningTabBtn")
     .forEach((btn) => {
       btn.addEventListener("click", () => {
-        // const isFilterValid = validateFilter(filter);
-        // if (!isFilterValid) {
-        //   return;
-        // }
-        hideResults(filter);
+        hideResults();
         checkIfAnyResultsLeft();
         sendMessageToLimitResultsAddon();
       });
     });
 
-  if (filter.type === "single-checkbox" || filter.type === "checkbox-list") {
+  if (
+    FILTERS.some(
+      (filter) =>
+        filter.type === "single-checkbox" || filter.type === "checkbox-list"
+    )
+  ) {
     // In case filters are set by default, a first check must be done upfront
     document.querySelector("#resultsTabBtn").dispatchEvent(new Event("click"));
   }
@@ -490,176 +495,151 @@ function showBtnGoToUpdatedResults() {
   });
 }
 
-function checkIfCheckboxChangeValid(
-  internalName,
-  checkedMeansExcluded,
-  element,
-  errorMessage
-) {
-  const arAllCheckboxes = Array.from(
-    document.querySelectorAll(`#container-${internalName} input`)
-  );
-  if (
-    (checkedMeansExcluded &&
-      arAllCheckboxes.every((box) => box.checked === true)) ||
-    (!checkedMeansExcluded &&
-      arAllCheckboxes.every((box) => box.checked === false))
-  ) {
-    element.click();
-    if (document.querySelector(`#container-${internalName} .error-message`))
-      return;
-    const nodeErrorMessage = document.createElement("p");
-    nodeErrorMessage.classList.add("error-message");
-    nodeErrorMessage.textContent = errorMessage;
-    element.parentNode.parentNode.insertBefore(
-      nodeErrorMessage,
-      element.parentNode.nextElementSibling
-    );
-    setTimeout(() => {
-      nodeErrorMessage.remove();
-    }, 3000);
-  }
-}
-
-function hideResults(filter) {
+function hideResults() {
   const nodelistAllResults = document.querySelectorAll(".row-with-one-result");
-  if (filter.type === "dropdown") {
-    const selectedOption = document.querySelector(
-      `#filter-dropdown-${filter.internalName}`
-    ).value;
-    nodelistAllResults.forEach((nodeResult) => {
-      nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
-      const arCorrespondingFilterValues = nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}`)
-        ?.split(" ");
 
-      if (
-        selectedOption !== "show-all" &&
-        (!arCorrespondingFilterValues ||
-          !arCorrespondingFilterValues.includes(selectedOption))
-      )
-        nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
-    });
-  } else if (filter.type === "input-datalist") {
-    const inputValue = document.querySelector(
-      `#filter-input-${filter.internalName}`
-    ).value;
-    nodelistAllResults.forEach((nodeResult) => {
-      nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
-      const arCorrespondingFilterValues = nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}`)
-        ?.split(" ");
+  FILTERS.forEach((filter) => {
+    if (filter.type === "dropdown") {
+      const selectedOption = document.querySelector(
+        `#filter-dropdown-${filter.internalName}`
+      ).value;
+      nodelistAllResults.forEach((nodeResult) => {
+        nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
+        const arCorrespondingFilterValues = nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}`)
+          ?.split(" ");
 
-      if (
-        inputValue &&
-        (!arCorrespondingFilterValues ||
-          !arCorrespondingFilterValues.includes(inputValue))
-      )
-        nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
-    });
-  } else if (filter.type === "distance") {
-    const inputValueLocation = document.querySelector(
-      `#filter-distance-location-${filter.internalName}`
-    ).value;
+        if (
+          selectedOption !== "show-all" &&
+          (!arCorrespondingFilterValues ||
+            !arCorrespondingFilterValues.includes(selectedOption))
+        )
+          nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+      });
+    } else if (filter.type === "input-datalist") {
+      const inputValue = document.querySelector(
+        `#filter-input-${filter.internalName}`
+      ).value;
+      nodelistAllResults.forEach((nodeResult) => {
+        nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
+        const arCorrespondingFilterValues = nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}`)
+          ?.split(" ");
 
-    const inputValueDistance = +document.querySelector(
-      `#filter-distance-distance-${filter.internalName}`
-    ).value;
-    // If both are empty, the validation succeeded, but no filter shall be applied
-    if (!inputValueLocation && !inputValueDistance) return;
+        if (
+          inputValue &&
+          (!arCorrespondingFilterValues ||
+            !arCorrespondingFilterValues.includes(inputValue))
+        )
+          nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+      });
+    } else if (filter.type === "distance") {
+      const inputValueLocation = document.querySelector(
+        `#filter-distance-location-${filter.internalName}`
+      ).value;
 
-    const correspondingDatalistItem = filter.datalist.filter(
-      (item) => item.text === inputValueLocation
-    )[0];
-    const latUser = +correspondingDatalistItem.lat;
-    const lonUser = +correspondingDatalistItem.lon;
+      const inputValueDistance = +document.querySelector(
+        `#filter-distance-distance-${filter.internalName}`
+      ).value;
+      // If both are empty, the validation succeeded, but no filter shall be applied
+      if (!inputValueLocation && !inputValueDistance) return;
 
-    nodelistAllResults.forEach((nodeResult) => {
-      nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
-      const latResult = +nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}-lat`);
-      const lonResult = +nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}-lon`);
+      const correspondingDatalistItem = filter.datalist.filter(
+        (item) => item.text === inputValueLocation
+      )[0];
+      const latUser = +correspondingDatalistItem.lat;
+      const lonUser = +correspondingDatalistItem.lon;
 
-      if (
-        !latResult ||
-        !lonResult ||
-        +haversineDistance(latUser, lonUser, latResult, lonResult) >
-          inputValueDistance
-      )
-        nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+      nodelistAllResults.forEach((nodeResult) => {
+        nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
+        const latResult = +nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}-lat`);
+        const lonResult = +nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}-lon`);
 
-      function haversineDistance(latUser, lonUser, latParty, lonParty) {
-        // Radius of the Earth in kilometers
-        const R = 6371;
-        // Convert latitude and longitude from degrees to radians
-        const dLat = ((latParty - latUser) * Math.PI) / 180;
-        const dLon = ((lonParty - lonUser) * Math.PI) / 180;
-        // Haversine formula
-        const a =
-          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-          Math.cos((latUser * Math.PI) / 180) *
-            Math.cos((latParty * Math.PI) / 180) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        // Distance in kilometers
-        const distance = R * c;
-        return distance;
+        if (
+          !latResult ||
+          !lonResult ||
+          +haversineDistance(latUser, lonUser, latResult, lonResult) >
+            inputValueDistance
+        )
+          nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+
+        function haversineDistance(latUser, lonUser, latParty, lonParty) {
+          // Radius of the Earth in kilometers
+          const R = 6371;
+          // Convert latitude and longitude from degrees to radians
+          const dLat = ((latParty - latUser) * Math.PI) / 180;
+          const dLon = ((lonParty - lonUser) * Math.PI) / 180;
+          // Haversine formula
+          const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos((latUser * Math.PI) / 180) *
+              Math.cos((latParty * Math.PI) / 180) *
+              Math.sin(dLon / 2) *
+              Math.sin(dLon / 2);
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+          // Distance in kilometers
+          const distance = R * c;
+          return distance;
+        }
+      });
+    } else if (filter.type === "checkbox-list") {
+      const selectedOptions = [];
+      for (let i = 0; i < filter.options.length; i++) {
+        if (
+          document.querySelector(
+            `#filter-checkbox-list-${filter.internalName}-option${i}`
+          ).checked
+        )
+          selectedOptions.push(filter.options[i].value);
       }
-    });
-  } else if (filter.type === "checkbox-list") {
-    const selectedOptions = [];
-    for (let i = 0; i < filter.options.length; i++) {
-      if (
-        document.querySelector(
-          `#filter-checkbox-list-${filter.internalName}-option${i}`
-        ).checked
-      )
-        selectedOptions.push(filter.options[i].value);
+
+      nodelistAllResults.forEach((nodeResult) => {
+        nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
+        if (selectedOptions.length === 0) return;
+        const arCorrespondingFilterValues = nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}`)
+          ?.split(" ");
+        const doFiltersValuesIncludeSelectedOption = selectedOptions.some(
+          (item) => arCorrespondingFilterValues.includes(item)
+        );
+
+        if (
+          !arCorrespondingFilterValues ||
+          (filter.checkedMeansExcluded &&
+            doFiltersValuesIncludeSelectedOption) ||
+          (!filter.checkedMeansExcluded &&
+            !doFiltersValuesIncludeSelectedOption)
+        )
+          nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+      });
+    } else if (filter.type === "single-checkbox") {
+      const isChecked = document.querySelector(
+        `#filter-single-checkbox-${filter.internalName}`
+      ).checked;
+      nodelistAllResults.forEach((nodeResult) => {
+        nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
+        const correspondingFilterValue = nodeResult
+          .querySelector(".filter-values")
+          ?.getAttribute(`data-${filter.internalName}`);
+        // If checkedMeansExcluded is false, all results are shown when the box is checked. If the box is unchecked, those results with the corresponding value are hidden
+        // If checkedMeansExcluded is true, vice versa (results with the value are hidden when box is checked)
+        // if correspondingFilterValue is undefined, the result is not hidden; therefore, the attribute is only required on results to be hidden by this filter
+        if (
+          correspondingFilterValue === filter.value &&
+          ((!filter.checkedMeansExcluded && !isChecked) ||
+            (filter.checkedMeansExcluded && isChecked))
+        )
+          nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
+      });
     }
-
-    nodelistAllResults.forEach((nodeResult) => {
-      nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
-      const arCorrespondingFilterValues = nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}`)
-        ?.split(" ");
-      const doFiltersValuesIncludeSelectedOption = selectedOptions.some(
-        (item) => arCorrespondingFilterValues.includes(item)
-      );
-
-      if (
-        !arCorrespondingFilterValues ||
-        (filter.checkedMeansExcluded && doFiltersValuesIncludeSelectedOption) ||
-        (!filter.checkedMeansExcluded && !doFiltersValuesIncludeSelectedOption)
-      )
-        nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
-    });
-  } else if (filter.type === "single-checkbox") {
-    const isChecked = document.querySelector(
-      `#filter-single-checkbox-${filter.internalName}`
-    ).checked;
-    nodelistAllResults.forEach((nodeResult) => {
-      nodeResult.classList.remove(`hidden-by-filter-${filter.internalName}`);
-      const correspondingFilterValue = nodeResult
-        .querySelector(".filter-values")
-        ?.getAttribute(`data-${filter.internalName}`);
-      // If checkedMeansExcluded is false, all results are shown when the box is checked. If the box is unchecked, those results with the corresponding value are hidden
-      // If checkedMeansExcluded is true, vice versa (results with the value are hidden when box is checked)
-      // if correspondingFilterValue is undefined, the result is not hidden; therefore, the attribute is only required on results to be hidden by this filter
-      if (
-        correspondingFilterValue === filter.value &&
-        ((!filter.checkedMeansExcluded && !isChecked) ||
-          (filter.checkedMeansExcluded && isChecked))
-      )
-        nodeResult.classList.add(`hidden-by-filter-${filter.internalName}`);
-    });
-  }
+  });
 }
 
 function checkIfAnyResultsLeft() {

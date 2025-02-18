@@ -14,7 +14,7 @@ const fileQuestions = `demo-questions-${language}.csv`;
 const intQuestions = 6;
 
 // Name of the CSV file with the board games in the /data directory
-const fileAnswers = `demo-games-${language}.csv`;
+const fileAnswers = `demo-games-${language}-new-filters.csv`;
 
 // File paths to system and CSS files
 // If you have several instances of this tool running, you can use absolute references to global files (therefore, these are not hardcoded)=
@@ -536,7 +536,7 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         { label: "6", value: "6" },
         { label: "≥ 7", value: "7" },
       ],
-      allCheckedByDefault: true,
+      allCheckedByDefault: false,
       checkedMeansExcluded: false,
       displayInCollapsibleSection: {
         isWanted: true,
@@ -559,115 +559,77 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       errorMessage: "Du musst mindestens eine Spieler:innenanzahl erlauben.",
     },
     {
-      internalName: "mechanics",
-      type: "checkbox-list",
-      icon: "bx-cog",
-      // heading:
-      //   "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
-      description:
-        "Wähle die Mechaniken aus, auf die du <strong>keine</strong> Lust hast. Alle Spiele, die eine der ausgewählten Mechaniken enthalten, werden ausgeschlossen.",
-      options: [
-        { label: "Area control", value: "areaControl", help: "Dummy text" },
-        {
-          label: "Worker Placement",
-          value: "workerPlacement",
-          help: "Dummy text",
-        },
-        {
-          label: "Roll & Write / Flip & Write",
-          value: "rollAndWrite",
-          help: "Dummy text",
-        },
-        { label: "Deck Building", value: "deckBuilding", help: "Dummy text" },
-        { label: "Drafting", value: "drafting", help: "Dummy text" },
-        // { label: "Deduction", value: "deduction", help: "Dummy text" },
-        { label: "Deduktion", value: "deduction", help: "Dummy text" },
-        { label: "Push your luck", value: "pushYourLuck", help: "Dummy text" },
-        // { label: "Tile Placement", value: "tilePlacement", help: "Dummy text" },
-        {
-          label: "Plättchen legen",
-          value: "tilePlacement",
-          help: "Dummy text",
-        },
-        {
-          // label: "Action / Speed / Dexterity",
-          label: "Action / Schnelligkeit / Geschicklichkeit",
-          value: "action",
-          help: "Dummy text",
-        },
-        // { label: "Drawing / Acting", value: "drawing", help: "Dummy text" },
-        {
-          label: "Malen / Schauspielern",
-          value: "drawing",
-          help: "Dummy text",
-        },
-
-        // { label: "Party Game", value: "party", help: "Dummy text" },
-        { label: "Party-Spiele", value: "party", help: "Dummy text" },
-        // { label: "Auction / Bidding", value: "auction", help: "Dummy text" },
-        { label: "Auktionen / Gebote", value: "auction", help: "Dummy text" },
-        {
-          // label: "Trading / Negotiating",
-          label: "Handeln & Verhandeln",
-          value: "trading",
-          help: "Dummy text",
-        },
-        // { label: "Trick-taking", value: "trickTaking", help: "Dummy text" },
-        { label: "Stich-Spiele", value: "trickTaking", help: "Dummy text" },
-      ],
-      allCheckedByDefault: false,
-      checkedMeansExcluded: true,
-      strikethroughOptionsThatGetHidden: true,
-      displayInCollapsibleSection: {
-        isWanted: true,
-        heading: "Mechaniken",
-      },
-      displayFilterValuesInResultDetails: {
-        isWanted: true,
-        // label: "Mechanics",
-        label: "Mechaniken",
-        bulletList: true,
-      },
-      // errorMessage: "You must allow at least one mechanic.",
-      errorMessage: "Du musst mindestens eine Mechanik erlauben.",
-    },
-    {
       internalName: "themes",
       type: "checkbox-list",
       icon: "bx-landscape",
       description:
         // "All board games, which have at least one of the themes you disallow, are excluded from your results.",
-        "Wähle die Themen aus, auf die du <strong>keine</strong> Lust hast. Alle Spiele, die eins der ausgewählten Themen enthalten, werden ausgeschlossen.",
+        "Alle Spiele, die keins der ausgewählten Themen enthalten, werden ausgeschlossen.",
       options: [
-        // { label: "Adventure", value: "adventure" },
-        { label: "Abenteuer", value: "adventure" },
-        // { label: "Wild West", value: "wildWest" },
-        { label: "Wilder Westen", value: "wildWest" },
-        // { label: "Ancient Times", value: "ancient" },
-        { label: "Antike", value: "ancient" },
-        // { label: "Prehistorical", value: "prehistoric" },
-        { label: "Prähistorisch", value: "prehistoric" },
-        // { label: "Animals & Environment", value: "animals" },
-        { label: "Tiere & Umwelt", value: "animals" },
-        // { label: "Cities & Infrastructure", value: "cities" },
-        { label: "Städte & Infrastruktur", value: "cities" },
-        // { label: "Fantasy & Mythology", value: "fantasy" },
-        { label: "Fantasy & Mythologie", value: "fantasy" },
-        // { label: "Agriculture", value: "farming" },
-        { label: "Landwirtschaft", value: "farming" },
-        { label: "Horror & Zombies", value: "horror" },
-        // { label: "Medieval & Renaissance", value: "medieval" },
-        { label: "Mittelalter & Renaissance", value: "medieval" },
-        // { label: "Ships & Pirates", value: "nautical" },
-        { label: "Schiffe & Piraten", value: "nautical" },
-        // { label: "Cars & Racing", value: "racing" },
-        { label: "Autos & Rennen", value: "racing" },
-        { label: "Science Fiction", value: "scifi" },
-        // { label: "War", value: "war" },
-        { label: "Krieg", value: "war" },
+        {
+          value: "adventure",
+          label: "Abenteuer & Erkundung",
+        },
+        {
+          value: "oldHistory",
+          label: "Antike & Mittelalter",
+        },
+        {
+          value: "animals",
+          label: "Tiere, Umwelt & Landwirtschaft",
+        },
+        {
+          value: "arts",
+          label: "Kunst & Handwerk",
+        },
+        {
+          value: "economy-infrastructure",
+          label: "Wirtschaft & Infrastruktur",
+        },
+        {
+          value: "fantasy",
+          label: "Fantasy & Mythologie",
+        },
+        {
+          value: "horror",
+          label: "Horror & Zombies",
+        },
+        {
+          value: "murder",
+          label: "Mord & Mysterien",
+        },
+        {
+          value: "politics",
+          label: "Politik & Spionage",
+        },
+        {
+          value: "newHistory",
+          label: "Neuzeitliche Geschichte",
+        },
+        {
+          value: "science",
+          label: "Wissenschaft & Forschung",
+        },
+        {
+          value: "scifi",
+          label: "Science Fiction",
+        },
+        {
+          value: "nautical",
+          label: "Schiffe & Piraten",
+        },
+        {
+          value: "trains",
+          label: "Züge, Autos, Flugzeuge & Rennen",
+        },
+        {
+          value: "war",
+          label: "Krieg & Kampf",
+        },
       ],
       allCheckedByDefault: false,
-      checkedMeansExcluded: true,
+      checkedMeansExcluded: false,
+      sortOptionsAlphabetically: true,
       strikethroughOptionsThatGetHidden: true,
       displayInCollapsibleSection: {
         isWanted: true,
@@ -681,6 +643,113 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
       },
       // errorMessage: "You must allow at least one theme.",
       errorMessage: "Du musst mindestens ein Thema erlauben.",
+    },
+    {
+      internalName: "mechanics",
+      type: "checkbox-list",
+      icon: "bx-cog",
+      // heading:
+      //   "All board games, which have at least one of the mechanics you disallow, are excluded from your results.",
+      description:
+        "Alle Spiele, die keine der ausgewählten Mechaniken enthalten, werden ausgeschlossen.",
+      options: [
+        {
+          value: "action",
+          label: "Action, Schnelligkeit & Geschicklichkeit",
+          help: "Dummy text",
+        },
+        {
+          value: "areaControl",
+          label: "Area Control",
+          help: "Dummy text",
+        },
+        {
+          value: "auction",
+          label: "Auktionen & Gebote",
+          help: "Dummy text",
+        },
+        {
+          value: "cards",
+          label: "Kartenspiele",
+          help: "Dummy text",
+        },
+        {
+          value: "deckBuilding",
+          label: "Deck Building",
+          help: "Dummy text",
+        },
+        {
+          value: "deduction",
+          label: "Deduktion",
+          help: "Dummy text",
+        },
+        {
+          value: "drafting",
+          label: "Drafting",
+          help: "Dummy text",
+        },
+        {
+          value: "dungeonCrawler",
+          label: "Dungeon Crawler",
+          help: "Dummy text",
+        },
+        {
+          value: "networks",
+          label: "Netzwerke & Verbindungen",
+          help: "Dummy text",
+        },
+        {
+          value: "party",
+          label: "Partyspiele",
+          help: "Dummy text",
+        },
+        {
+          value: "rollAndWrite",
+          label: "Roll & Write / Flip & Write",
+          help: "Dummy text",
+        },
+        {
+          value: "storytelling",
+          label: "Storytelling & Role Playing",
+          help: "Dummy text",
+        },
+        {
+          value: "tilePlacement",
+          label: "Plättchen legen",
+          help: "Dummy text",
+        },
+        {
+          value: "trading",
+          label: "Handeln & Verhandeln",
+          help: "Dummy text",
+        },
+        {
+          value: "words",
+          label: "Wörter & Sprache",
+          help: "Dummy text",
+        },
+        {
+          value: "workerPlacement",
+          label: "Worker Placement",
+          help: "Dummy text",
+        },
+      ],
+      allCheckedByDefault: false,
+      checkedMeansExcluded: false,
+      sortOptionsAlphabetically: true,
+      strikethroughOptionsThatGetHidden: true,
+      displayInCollapsibleSection: {
+        isWanted: true,
+        heading: "Mechaniken",
+      },
+      displayFilterValuesInResultDetails: {
+        isWanted: true,
+        // label: "Mechanics",
+        label: "Mechaniken",
+        bulletList: true,
+      },
+      // errorMessage: "You must allow at least one mechanic.",
+      errorMessage: "Du musst mindestens eine Mechanik erlauben.",
     },
   ];
   /* 
