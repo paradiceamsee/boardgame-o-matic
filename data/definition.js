@@ -284,6 +284,54 @@ if (isActivated("addon_custom_voting_buttons.js")) {
     },
     {
       questionNr: 3,
+      arPositionValues: [1, 0, -1],
+      // arButtonLabels: ["Cooperative", "Team-based", "Competitive"],
+      // arButtonAltTexts: ["Cooperative", "Team-based", "Competitive"],
+      // arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
+      arButtonLabels: [
+        "Kooperativ<br><small>(Alle zusammen gegen das Spiel)</small>",
+        "Team-basiert / semi-kooperativ<br><small>(Team vs. Team oder eine:r vs. alle)</small>",
+        "Kompetitiv<br><small>(Alle gegen alle)</small>",
+      ],
+      arButtonAltTexts: ["Kooperativ", "Team-basiert", "Kompetitiv"],
+      arPositionIcons: ["Kooperativ", "Team-basiert", "Kompe&shy;titiv"],
+    },
+    {
+      questionNr: 4,
+      arPositionValues: [1, 0, -1],
+      // arButtonLabels: [
+      //   "Low conflict level",
+      //   "Moderate conflict level",
+      //   "High conflict level",
+      // ],
+      arButtonLabels: [
+        "Geringes Konflikt-Level",
+        "Moderates Konflikt-Level",
+        "Hohes Konflikt-Level",
+      ],
+      // arButtonAltTexts: [
+      //   "Low conflict level",
+      //   "Moderate conflict level",
+      //   "High conflict level",
+      // ],
+      arButtonAltTexts: [
+        "Geringes Konflikt-Level",
+        "Moderates Konflikt-Level",
+        "Hohes Konflikt-Level",
+      ],
+      // arPositionIcons: ["Little conflict", "Medium conflict", "High conflict"],
+      arPositionIcons: [
+        "Wenig Konflikt",
+        "Moderater Konflikt",
+        "Hoher Konflikt",
+      ],
+      // Disclaimer is only displayed it answer to previous question was "Cooperative"
+      disclaimer:
+        "Du hast angegeben, dass du kooperative Spiele bevorzugst. Bitte beantworte (oder überspringe) dennoch diese Frage hinsichtlich kompetitiver und team-basierter Spiele.",
+      // "You just indicated that you prefer cooperative games. Nevertheless, please answer (or skip) this question with regards to competitive and team-based games.",
+    },
+    {
+      questionNr: 5,
       arPositionValues: [2, 1, 0, -1, -2],
       // arButtonLabels: [
       //   "No text",
@@ -332,46 +380,6 @@ if (isActivated("addon_custom_voting_buttons.js")) {
       // buttonTextAndIconLabelForDontCare: "No matter",
       buttonTextAndIconLabelForYes: "Ja, möglichst wenig Text",
       buttonTextAndIconLabelForDontCare: "Egal",
-    },
-    {
-      questionNr: 4,
-      arPositionValues: [1, 0, -1],
-      // arButtonLabels: [
-      //   "Low conflict level",
-      //   "Moderate conflict level",
-      //   "High conflict level",
-      // ],
-      arButtonLabels: [
-        "Geringes Konflikt-Level",
-        "Moderates Konflikt-Level",
-        "Hohes Konflikt-Level",
-      ],
-      // arButtonAltTexts: [
-      //   "Low conflict level",
-      //   "Moderate conflict level",
-      //   "High conflict level",
-      // ],
-      arButtonAltTexts: [
-        "Geringes Konflikt-Level",
-        "Moderates Konflikt-Level",
-        "Hohes Konflikt-Level",
-      ],
-      // arPositionIcons: ["Little conflict", "Medium conflict", "High conflict"],
-      arPositionIcons: [
-        "Wenig Konflikt",
-        "Moderater Konflikt",
-        "Hoher Konflikt",
-      ],
-    },
-    {
-      questionNr: 5,
-      arPositionValues: [1, 0, -1],
-      // arButtonLabels: ["Cooperative", "Team-based", "Competitive"],
-      // arButtonAltTexts: ["Cooperative", "Team-based", "Competitive"],
-      // arPositionIcons: ["Coop", "Team-based", "Compe&shy;titive"],
-      arButtonLabels: ["Kooperativ", "Team-basiert", "Kompetitiv"],
-      arButtonAltTexts: ["Kooperativ", "Team-basiert", "Kompetitiv"],
-      arPositionIcons: ["Kooperativ", "Team-basiert", "Kompe&shy;titiv"],
     },
     {
       questionNr: 6,

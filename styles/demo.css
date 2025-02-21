@@ -891,3 +891,27 @@ details[open] .disclosure-chevron::before {
   outline: 2px solid #007bff; /* Blue focus ring */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Soft glow effect */
 }
+
+#resultsByThesisTable .row-with-one-result {
+  flex-wrap: nowrap;
+  margin: 15px 0;
+  max-width: 350px;
+}
+
+.finetuningTableResultName {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+[class*="partyPositionToQuestion"] {
+  white-space: nowrap;
+  font-size: 80%;
+}
+
+#disclaimer {
+  background: #fff;
+  color: #000;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  margin-bottom: 15px;
+}

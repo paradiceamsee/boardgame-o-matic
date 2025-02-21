@@ -1,6 +1,6 @@
 "Difficulty";"How challenging should the game be?";"bx-dumbbell"
 "Length";"How long should the game last?";"bx-time-five"
-"Language requirements";"Should the game have only little text, so that it is playable for non-native speakers?";"bx-file"
-"Conflict";"How conflictual should the interaction between the players be? Peaceful togetherness or direct confrontation?";"bx-bolt-circle"
 "Cooperative vs. competitive";"What kind of game do you prefer?<br><ul><li><em>Cooperative</em>: All together against the game</li><li><em>Semi-cooperative / team-based</em>: In teams against each other or 1 vs all</li><li><em>Competitive</em>: All against all</li></ul>";"bx-horizontal-center"
+"Conflict";"How conflictual should the interaction between the players be? Peaceful togetherness or direct confrontation?";"bx-bolt-circle"
+"Language requirements";"Should the game have only little text, so that it is playable for non-native speakers?";"bx-file"
 "Recency";"Would you prefer to play a game that came out recently rather than an older game?";"bx-calendar"

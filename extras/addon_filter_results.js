@@ -247,7 +247,7 @@ function displayFilterValuesInResultDetails() {
           (obj) => obj.questionNr === question.questionNr
         );
         objCustomQuestion.arPositionValues.forEach((value, index) => {
-          lookupTableEntry[value] = objCustomQuestion.arButtonLabels[index];
+          lookupTableEntry[value] = objCustomQuestion.arButtonAltTexts[index];
         });
         window.lookupTableForCustomQuestions[question.questionNr] =
           lookupTableEntry;
@@ -263,10 +263,8 @@ function displayFilterValuesInResultDetails() {
       (question) => {
         const answerIndex = resultNr * intQuestions + (question.questionNr - 1);
         const answerValue = +arPartyPositions[answerIndex];
-        let answerText =
-          answerValue === 99
-            ? TEXT_NO_DATA
-            : getPositionVerbal(answerValue, question);
+        if (answerValue === 99) return;
+        let answerText = getPositionVerbal(answerValue, question);
         divContent += `<li class="row-answer-in-result-details"><i class="bx ${
           arQuestionsIcon[question.questionNr - 1]
         }"></i><span class="text-answer-in-result-details">`;
@@ -299,10 +297,13 @@ function displayFilterValuesInResultDetails() {
               language === "de" ? "&nbsp;" : ""
             }%`;
             elementClass = matchValue * 100;
-            tooltip = `${TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED.replace(
-              " %%%placeholder%%% ",
-              matchValue === 1 ? " " : ` &quot;${personalPositionVerbal}&quot; `
-            )} ${displayedValue}.`;
+            tooltip =
+              matchValue === 1
+                ? TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_100_PERCENT
+                : `${TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED.replace(
+                    "%%%placeholder%%%",
+                    `&quot;${personalPositionVerbal}&quot;`
+                  )} ${displayedValue}.`;
           }
           divContent += `<span class="match-tag-in-result-details match-${elementClass}" data-tooltip="${tooltip}" onclick="showTagTooltipOnMobile(this, event)">${displayedValue}</span>`;
           if (
@@ -828,12 +829,12 @@ function setFiltersAtStart() {
       if (animateQuestionsCard) {
         cardToSetFilter.classList.add("flyOutLeft");
         setTimeout(() => {
-          cardToSetFilter.classList.add("d-none");
           showNextCardToSetFilter(index + 1);
+          cardToSetFilter.remove();
         }, 400);
       } else {
-        cardToSetFilter.classList.add("d-none");
         showNextCardToSetFilter(index + 1);
+        cardToSetFilter.remove();
       }
     }
   }

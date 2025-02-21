@@ -12,8 +12,8 @@ const TEXT_VOTING_SKIP =
 const TEXT_VOTING_DOUBLE = "Doppelt gewichten";
 const ICON_SKIPPED = "Egal";
 const TEXT_SKIPPED = "Egal";
-const ICON_NO_DATA = "Keine Daten";
-const TEXT_NO_DATA = "Keine Daten";
+const ICON_NO_DATA = "&ndash;";
+const TEXT_NO_DATA = "&ndash;";
 
 // Statistic
 const TEXT_ALLOW_STATISTIC_TITLE = "Before you see your results...";
@@ -122,5 +122,7 @@ const PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH = "Filter ändern";
 const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_SKIPPED = `Du hast diese Frage mit &quot;${TEXT_SKIPPED}&quot; beantwortet bzw. sie übersprungen.`;
 const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_NOT_SKIPPED =
   "Die Übereinstimmung mit deiner Antwort %%%placeholder%%% beträgt";
+const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_100_PERCENT =
+  "Du hast diese Frage genauso beantwortet.";
 const TOOLTIP_FOR_DOUBLE_WEIGHTED_TAG_IN_RESULT_DETAILS =
   "Du hast diese Frage doppelt gewichtet.";

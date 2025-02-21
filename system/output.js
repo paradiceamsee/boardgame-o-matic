@@ -836,28 +836,49 @@ function addContentToFinetuningTab() {
       );
 
       // Inhalt der Zelle
+      // tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
+
+      //                   <div class='w-50 d-flex align-items-center' role='cell'>
+      //                   <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>
+      //                   <small><strong>${arPartyNamesLong[partyNum].replace(
+      //                     / <small>.*?<\/small>/,
+      //                     ""
+      //                   )}</strong></small>
+      //                   <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
+      //                       <span style='visibility:hidden; display:none;' aria-hidden='true'>${
+      //                         arPartyDescription[partyNum]
+      //                       }</span>
+      //                   </div>
+      //                   <div class='w-50 d-flex align-items-center' role='cell'>
+      //                       <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
+      //   arPartyPositions[partyPositionsRow]
+      // }"
+      //                               alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
+      //                           ${positionIcon}
+      //                       </button>
+      //                   </div>
+      //               </div>`;
+
       tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
 
-                        <div class='w-50 d-flex align-items-center' role='cell'>
-                        <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>
-                        <small><strong>${arPartyNamesLong[partyNum].replace(
-                          / <small>.*?<\/small>/,
-                          ""
-                        )}</strong></small>
-                        <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
-                            <span style='visibility:hidden; display:none;' aria-hidden='true'>${
-                              arPartyDescription[partyNum]
-                            }</span> 
-                        </div>
-                        <div class='w-50 d-flex align-items-center' role='cell'>
-                            <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
+      <div class='d-flex align-items-center finetuningTableResultName' role='cell'>
+      <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>
+      <small><strong>${arPartyNamesLong[partyNum].replace(
+        / <small>.*?<\/small>/,
+        ""
+      )}</strong></small>
+      <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
+          <span style='visibility:hidden; display:none;' aria-hidden='true'>${
+            arPartyDescription[partyNum]
+          }</span> 
+      </div>
+      <div class='${positionButton} partyPositionToQuestion${i}' data-value="${
         arPartyPositions[partyPositionsRow]
       }"
-                                    alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
-                                ${positionIcon}
-                            </button>
-                        </div>
-                    </div>`;
+                              alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
+                          ${positionIcon}
+                      </div>
+  </div>`;
     }
     tableContentResultsByThesis += `</div> <!-- col (Partei-Antworten) -->
             </div> <!-- row (Partei-Antworten) -->

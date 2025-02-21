@@ -37,6 +37,26 @@ function createCustomVotingButtons() {
       btn.parentNode.classList.add("d-none")
     );
 
+    if (
+      correspondingCustomQuestion.questionNr === 4 &&
+      arPersonalPositions[2] === 1
+    ) {
+      // User wants cooperative game, but is nevertheless asked about the conflict level
+      const disclaimer = document.createElement("div");
+      disclaimer.setAttribute("id", "disclaimer");
+      disclaimer.innerHTML = correspondingCustomQuestion.disclaimer;
+      console.log(document.querySelector(".card-body"));
+      console.log(document.querySelector("#showQuestionsQuestion"));
+      document
+        .querySelector(".card-body")
+        .insertBefore(
+          disclaimer,
+          document.querySelector("#showQuestionsQuestion")
+        );
+    } else {
+      document.querySelector("#disclaimer")?.remove();
+    }
+
     for (
       let i = 0;
       i < correspondingCustomQuestion.arButtonLabels.length;
@@ -104,37 +124,34 @@ function createInitialCustomPositionButtons() {
       dropdown.value = arPersonalPositions[i];
     });
 
-    document.querySelectorAll(`.partyPositionToQuestion${i}`).forEach((btn) => {
-      btn.classList.remove(
-        "btn-success",
-        "btn-warning",
-        "btn-danger",
-        "btn-default"
-      );
-      const partyPosition = +btn.getAttribute("data-value");
-      const positionIndex = obj.arPositionValues.indexOf(partyPosition);
-      let btnTitleAndAltText = "";
-      if (positionIndex === -1) {
-        btn.style.cssText = "background-color: transparent; color: #000";
-        btn.innerHTML = ICON_NO_DATA;
-        btnTitleAndAltText = TEXT_NO_DATA;
-      } else {
-        btn.innerHTML = obj.arPositionIcons[positionIndex];
-        btn.style.cssText = `background-color: ${
-          obj.arBackgroundColor?.[positionIndex] ||
-          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.backgroundColor
-        }; color: ${
-          obj.arTextColor?.[positionIndex] ||
-          CUSTOM_POSITION_BUTTONS_DEFAULT_VALUES.textColor
-        }`;
-        btnTitleAndAltText = obj.arButtonAltTexts[positionIndex];
-        btn.setAttribute("alt", `${TEXT_ANSWER_PARTY}: ${btnTitleAndAltText}`);
-        btn.setAttribute(
-          "title",
-          `${TEXT_ANSWER_PARTY}: ${btnTitleAndAltText}`
+    document
+      .querySelectorAll(`.partyPositionToQuestion${i}`)
+      .forEach((node) => {
+        node.classList.remove(
+          "btn-success",
+          "btn-warning",
+          "btn-danger",
+          "btn-default"
         );
-      }
-    });
+        const partyPosition = +node.getAttribute("data-value");
+        const positionIndex = obj.arPositionValues.indexOf(partyPosition);
+        let nodeTitleAndAltText = "";
+        if (positionIndex === -1) {
+          node.innerHTML = ICON_NO_DATA;
+          nodeTitleAndAltText = TEXT_NO_DATA;
+        } else {
+          node.innerHTML = obj.arPositionIcons[positionIndex];
+          nodeTitleAndAltText = obj.arButtonAltTexts[positionIndex];
+          node.setAttribute(
+            "alt",
+            `${TEXT_ANSWER_PARTY}: ${nodeTitleAndAltText}`
+          );
+          node.setAttribute(
+            "title",
+            `${TEXT_ANSWER_PARTY}: ${nodeTitleAndAltText}`
+          );
+        }
+      });
   });
 }
 
