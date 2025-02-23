@@ -835,30 +835,6 @@ function addContentToFinetuningTab() {
         "party"
       );
 
-      // Inhalt der Zelle
-      // tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
-
-      //                   <div class='w-50 d-flex align-items-center' role='cell'>
-      //                   <button class="bx bx-info-circle icon-help" onclick="showModalResultDetails(${partyNum})"></button>
-      //                   <small><strong>${arPartyNamesLong[partyNum].replace(
-      //                     / <small>.*?<\/small>/,
-      //                     ""
-      //                   )}</strong></small>
-      //                   <!-- die Beschreibung der Partei in einem VERSTECKTEN DIV -> ein Workaround für das Addon "Textfilter" (siehe /EXTRAS) :( -->
-      //                       <span style='visibility:hidden; display:none;' aria-hidden='true'>${
-      //                         arPartyDescription[partyNum]
-      //                       }</span>
-      //                   </div>
-      //                   <div class='w-50 d-flex align-items-center' role='cell'>
-      //                       <button type='button' class='btn ${positionButton} partyPositionToQuestion${i} btn-sm' disabled data-value="${
-      //   arPartyPositions[partyPositionsRow]
-      // }"
-      //                               alt='${TEXT_ANSWER_PARTY} : ${positionText}' title='${TEXT_ANSWER_PARTY} : ${positionText}'>
-      //                           ${positionIcon}
-      //                       </button>
-      //                   </div>
-      //               </div>`;
-
       tableContentResultsByThesis += `<div class='row mow-row-striped row-with-one-result result${partyNum}' role='row'>
 
       <div class='d-flex align-items-center finetuningTableResultName' role='cell'>
@@ -1106,7 +1082,9 @@ function generateSectionResults(arResults) {
       {
         icon: "bx-share-alt",
         id: "shareAndSave",
-        tooltip: TOOLTIP_SHARE_AND_SAVE,
+        tooltip: TOOLTIP_SHARE,
+        iconSecondary: "bx-save",
+        tooltipSecondary: TOOLTIP_SAVE,
       },
       {
         icon: "bx-info-circle",
@@ -1124,12 +1102,15 @@ function generateSectionResults(arResults) {
     arTabsNavigationBar.forEach((tab) => {
       const tabBtnContainer = document.createElement("div");
       tabBtnContainer.setAttribute("id", `${tab.id}TabBtnContainer`);
+      tabBtnContainer.classList.add("tabBtnContainer");
       tabBtnContainer.innerHTML = `
       <button
         id='${tab.id}TabBtn'
-        class="title-on-hover ${tab.id === "results" ? "activeTabBtn" : ""}"
+        class="tabBtn ${tab.id === "results" ? "activeTabBtn" : ""}"
         type="button" data-tooltip="${tab.tooltip}"
-      ><i class='bx ${tab.icon}'></i></button>`;
+      ><i class='bx ${tab.icon}'></i><span class="labelBtnNavbar">${
+        tab.tooltip
+      }</span></button>`;
 
       tabBtnContainer.addEventListener("click", () => {
         const oldActiveTab = document.querySelector(".activeTab");
@@ -1167,7 +1148,52 @@ function generateSectionResults(arResults) {
         .classList.add("highlightedTabBtn");
     }
     document.querySelector("#sectionResults").appendChild(navigationBar);
-    circulateSharingAndSavingIcon();
+
+    (function circulateSharingAndSavingIcon() {
+      const objTab = arTabsNavigationBar.find(
+        (tab) => tab.id === "shareAndSave"
+      );
+      const initialIcon = document.querySelector("#shareAndSaveTabBtn i");
+      const newIcon = initialIcon.cloneNode();
+      const btn = initialIcon.parentNode;
+      initialIcon.classList.add("currentIcon");
+      btn.style.position = "relative";
+      newIcon.classList.replace(objTab.icon, objTab.iconSecondary);
+      newIcon.style.position = "absolute";
+      newIcon.classList.add("invisible");
+      btn.appendChild(newIcon);
+
+      function swapIcons() {
+        const rectInitialIcon = initialIcon.getBoundingClientRect();
+        const rectBtn = btn.getBoundingClientRect();
+        newIcon.style.left = `${rectInitialIcon.left - rectBtn.left}px`;
+        newIcon.style.top = `${rectInitialIcon.top - rectBtn.top}px`;
+        const currentIcon = document.querySelector(".currentIcon");
+        const otherIcon = document.querySelector(
+          "#shareAndSaveTabBtn i:not(.currentIcon)"
+        );
+        const direction = currentIcon.classList.contains(objTab.icon)
+          ? "Top"
+          : "Bottom";
+        currentIcon.classList.replace("currentIcon", `fadeOut${direction}`);
+        otherIcon.classList.replace("invisible", `fadeIn${direction}`);
+
+        setTimeout(() => {
+          const label = document.querySelector(
+            "#shareAndSaveTabBtn .labelBtnNavbar"
+          );
+          if (label.textContent === objTab.tooltip)
+            label.textContent = objTab.tooltipSecondary;
+          else label.textContent = objTab.tooltip;
+        }, 175);
+        setTimeout(() => {
+          currentIcon.classList.replace(`fadeOut${direction}`, "invisible");
+          otherIcon.classList.replace(`fadeIn${direction}`, "currentIcon");
+        }, 350);
+      }
+
+      setInterval(swapIcons, 8000);
+    })();
   }
   document.querySelector("#sectionShowQuestions").remove();
   createNavigationBar();
@@ -1185,40 +1211,6 @@ function generateSectionResults(arResults) {
   addContentToInfoTab();
 
   document.querySelector("#sectionResults").style.display = "block";
-}
-
-function circulateSharingAndSavingIcon() {
-  const initialIcon = document.querySelector("#shareAndSaveTabBtn i");
-  const newIcon = initialIcon.cloneNode();
-  const btn = initialIcon.parentNode;
-  initialIcon.classList.add("currentIcon");
-  btn.style.position = "relative";
-  newIcon.classList.replace("bx-share-alt", "bx-save");
-  newIcon.style.position = "absolute";
-  newIcon.classList.add("invisible");
-  btn.appendChild(newIcon);
-
-  function swapIcons() {
-    const rectInitialIcon = initialIcon.getBoundingClientRect();
-    const rectBtn = btn.getBoundingClientRect();
-    newIcon.style.left = `${rectInitialIcon.left - rectBtn.left}px`;
-    newIcon.style.top = `${rectInitialIcon.top - rectBtn.top}px`;
-    const currentIcon = document.querySelector(".currentIcon");
-    const otherIcon = document.querySelector(
-      "#shareAndSaveTabBtn i:not(.currentIcon)"
-    );
-    const direction = currentIcon.classList.contains("bx-share-alt")
-      ? "Top"
-      : "Bottom";
-    currentIcon.classList.replace("currentIcon", `fadeOut${direction}`);
-    otherIcon.classList.replace("invisible", `fadeIn${direction}`);
-    setTimeout(() => {
-      currentIcon.classList.replace(`fadeOut${direction}`, "invisible");
-      otherIcon.classList.replace(`fadeIn${direction}`, "currentIcon");
-    }, 350);
-  }
-
-  setInterval(swapIcons, 8000);
 }
 
 // Anzeige der Ergebnisse - detailliert, Fragen und Antworten der Parteien

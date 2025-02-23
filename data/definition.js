@@ -59,7 +59,7 @@ const animateQuestionsCard = true;
 
 // If true, the #resultsTabBtn is bigger than the others
 // Only works if addon_filter_results.js is active, because only then there are 5 buttons with the results button in the middle (only then it makes sense to highlight it)
-const highlightResultsTabBtnOfNavigationBar = true;
+const highlightResultsTabBtnOfNavigationBar = false;
 
 // Show "Current question number/total question number" (e. g. "3/15") before title of question
 // Not recommended if addon_make_questions_optional.js is active
@@ -102,6 +102,7 @@ const addons = [
   "extras/addon_filter_results.js",
   "extras/addon_custom_voting_buttons.js",
   "extras/addon_show_first_results.js",
+  "extras/addon_tooltips.js",
 ];
 
 // Addon-specific variables are set in this configuration file as well
@@ -155,13 +156,16 @@ if (isActivated("addon_limit_results.js")) {
 if (isActivated("addon_tooltips.js")) {
   // If a tooltip should not be shown, give the variable a falsy value
   // Text of the tooltip explaining the Voting Double button
-  TOOLTIP_VOTING_DOUBLE =
-    "If a question is particularly important to you, click on &quot;Double weight&quot; <strong>before</strong> you select your answer.";
+  TOOLTIP_VOTING_DOUBLE = false;
+  // "If a question is particularly important to you, click on &quot;Double weight&quot; <strong>before</strong> you select your answer.";
   // Text of the tooltip explaining the buttons in the Results Short Table, with which you can change your answer
-  TOOLTIP_RESULTS_SHORT = "Click on the icon to change your answer.";
+  TOOLTIP_RESULTS_SHORT = false;
+  // "Click on the icon to change your answer.";
   // Text of the tooltip explaining the buttons in the Results By Thesis Table, with which you can change or double your answer
-  TOOLTIP_RESULTS_BY_THESIS =
-    "Click on the buttons to change or double-weight your answer.";
+  TOOLTIP_RESULTS_BY_THESIS = false;
+  // "Click on the buttons to change or double-weight your answer.";
+
+  TOOLTIP_FILTER_TAB = "Setze Filter, um bessere Vorschläge zu erhalten.";
 
   // Number of the question where the TOOLTIP_RESULTS_BY_THESIS is displayed
   // This is relevant, if the first question(s) are custom questions (see addon_custom_voting_buttons.js) where hideVotingDouble is true

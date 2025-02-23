@@ -114,7 +114,8 @@ const TEXT_BUTTON_CLOSE_FULLSCREEN_EVENT_DETAILS =
 
 const TOOLTIP_FINETUNING = "Finetuning";
 const TOOLTIP_RESULTS = "Ergebnisse";
-const TOOLTIP_SHARE_AND_SAVE = "Teilen & speichern";
+const TOOLTIP_SHARE = "Teilen";
+const TOOLTIP_SAVE = "Speichern";
 const TOOLTIP_INFO = "Info";
 const TOOLTIP_FILTER = "Filter";
 const PROMPT_CHANGE_FILTERS_IF_NO_RESULTS_MATCH = "Filter ändern";

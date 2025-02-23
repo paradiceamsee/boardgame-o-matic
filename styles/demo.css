@@ -132,26 +132,33 @@ i.bx-sm {
   background-color: var(--primary-color);
   border-top: 2px solid #fff;
 }
-#navigationBar div {
-  flex: 1 0 auto;
+#navigationBar .tabBtnContainer {
   display: flex;
+  flex: 1;
   justify-content: center;
   background-color: var(--primary-color);
   height: 100%;
-  font-size: 30px;
+  font-size: 25px;
+  min-width: 0; /* Enforces same width of children */
+  position: relative;
 }
 
 #sectionResults {
   overflow: hidden;
 }
 
-#navigationBar button {
+#navigationBar .tabBtn {
   width: min(70px, 100%);
   margin: 8px 5px;
   background-color: transparent;
   border: none;
   border-radius: 10px;
   padding-bottom: 100px;
+  opacity: 0.5;
+}
+
+#navigationBar .tabBtn.activeTabBtn {
+  opacity: 1;
 }
 
 #navigationBar i {
@@ -494,7 +501,7 @@ i.bx-sm {
   #navigationBar div:last-child {
     border-radius: 0 10px 0 0;
   }
-  #navigationBar div:first-child {
+  #navigationBar .tabBtnContainer:first-child {
     border-radius: 10px 0 0 0;
   }
 
@@ -565,32 +572,6 @@ i.bx-sm {
 [id^="help-modal"] .modal-content {
   width: 90%;
   margin: 0 auto;
-}
-
-@media only screen and (min-width: 1024px) {
-  .title-on-hover::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--secondary-color);
-    color: var(--text-on-secondary);
-    padding: 5px 10px;
-    border-radius: var(--border-radius);
-    white-space: nowrap;
-    font-size: 1rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease;
-    pointer-events: none;
-    border: 2px solid #000;
-  }
-
-  .title-on-hover:hover::before {
-    opacity: 1;
-    visibility: visible;
-  }
 }
 
 #voting-double-container-card {
@@ -914,4 +895,65 @@ details[open] .disclosure-chevron::before {
   padding: 8px 12px;
   border-radius: var(--border-radius);
   margin-bottom: 15px;
+}
+
+.labelBtnNavbar {
+  font-size: 0.7rem;
+  display: block;
+  color: var(--text-on-primary);
+}
+
+.activeTabBtn .labelBtnNavbar {
+  color: #000;
+}
+
+.closeTooltipFilterTab {
+  font-size: 1.8rem;
+  margin: 5px 0 0 0;
+}
+
+.tooltipFilterTab {
+  bottom: 75px;
+  font-size: 0.9rem;
+  width: 225px;
+  background: var(--secondary-color);
+  max-width: 55vw;
+  margin: 0;
+  z-index: 1051;
+}
+
+.tooltipFilterTab::after {
+  bottom: -20px;
+  border-top-color: var(--secondary-color);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltipFilterTab::before {
+  border-top-color: #000;
+  bottom: -21px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#backdropTooltipFilterTab {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1050; /* Above most elements */
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+#backdropTooltipFilterTab.active {
+  opacity: 1;
+}
+
+#filtersTabBtn.tooltipped {
+  z-index: 1051;
+  background: var(--primary-color);
+  opacity: 1;
 }

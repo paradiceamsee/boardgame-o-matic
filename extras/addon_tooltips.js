@@ -69,14 +69,11 @@ if (TOOLTIP_VOTING_DOUBLE) {
   });
 }
 
-if (TOOLTIP_RESULTS_SHORT || TOOLTIP_RESULTS_BY_THESIS) {
+if (TOOLTIP_RESULTS_SHORT || TOOLTIP_RESULTS_BY_THESIS || TOOLTIP_FILTER_TAB) {
   // eslint-disable-next-line no-inner-declarations
   function fnTooltipsInResults() {
     if (!document.querySelector("#resultsHeading").textContent) return;
-    if (
-      TOOLTIP_RESULTS_SHORT &&
-      document.querySelector("#resultsHeading").textContent
-    ) {
+    if (TOOLTIP_RESULTS_SHORT) {
       let isTooltipResultsShortAlreadyShowing = false;
       // Wenn in der resultsShortTable ein Button "Antworten anzeigen" geklickt wird: prüfe, ob das das erste Mal war.
       // Wenn ja, Tooltip erstellen und hinter dem ersten selfPosition-Button einfügen
@@ -130,11 +127,78 @@ if (TOOLTIP_RESULTS_SHORT || TOOLTIP_RESULTS_BY_THESIS) {
       document
         .querySelector(".closeTooltipResultsByThesis")
         .addEventListener("click", () => {
-          // Verstecke den Tooltip
           document
             .querySelector(".tooltipResultsByThesis")
             .classList.add("d-none");
         });
+    }
+    if (TOOLTIP_FILTER_TAB) {
+      const tooltipFilterTab = document.createElement("div");
+      tooltipFilterTab.classList.add("tooltipFilterTab", "d-none", "invisible");
+      tooltipFilterTab.innerHTML = `
+      <span>${TOOLTIP_FILTER_TAB}</span>
+      <button class="closeTooltipFilterTab">&times;</button>`;
+      tooltipFilterTab.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+      document
+        .querySelector("#filtersTabBtnContainer")
+        .prepend(tooltipFilterTab);
+
+      const backdrop = document.createElement("div");
+      backdrop.classList.add("d-none");
+      backdrop.setAttribute("id", "backdropTooltipFilterTab");
+      document.querySelector("#navigationBar").appendChild(backdrop); // It must be in the fixed navbar in element for the stacking context to work
+
+      let hasTriggered = false;
+      const triggerPoint = 800;
+      window.addEventListener("scroll", () => {
+        requestAnimationFrame(() => {
+          if (
+            !hasTriggered &&
+            window.scrollY >= triggerPoint &&
+            document.querySelector("#resultsTabBtn.activeTabBtn")
+          ) {
+            hasTriggered = true;
+            tooltipFilterTab.classList.remove("d-none");
+            backdrop.classList.remove("d-none");
+            document
+              .querySelector("#filtersTabBtn")
+              .classList.add("tooltipped");
+            document.body.style.overflow = "hidden"; // Prevent scrolling
+
+            setTimeout(() => {
+              tooltipFilterTab.classList.replace("invisible", "fadeInTop");
+              backdrop.classList.add("active");
+            }, 0);
+            setTimeout(() => {
+              tooltipFilterTab.classList.remove("fadeInTop");
+            }, 400);
+
+            document
+              .querySelectorAll(
+                ".closeTooltipFilterTab, #filtersTabBtn, #backdropTooltipFilterTab"
+              )
+              .forEach((btn) => {
+                btn.addEventListener("click", () => {
+                  tooltipFilterTab.classList.add("fadeOutBottom");
+                  backdrop.classList.remove("active");
+                  document
+                    .querySelector("#filtersTabBtn")
+                    .classList.remove("tooltipped");
+                  document.body.style.overflow = ""; // Restore scrolling
+                  setTimeout(() => {
+                    tooltipFilterTab.remove();
+                    backdrop.remove();
+                  }, 350);
+                });
+              });
+          }
+        });
+      });
+      document.querySelector("#filtersTabBtn").addEventListener("click", () => {
+        hasTriggered = true;
+      });
     }
   }
 
