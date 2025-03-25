@@ -156,7 +156,7 @@ function createFilterHtml(filter) {
       </label>`;
       if (filter.options[i].help) {
         divContent += `<button class="bx bx-help-circle icon-help" id="icon-help-${filter.internalName}-option${i}" onclick='showHelpModalExplainingFilterOption("${filter.options[i].label}",
-          "${filter.options[i].help}")'></button>`;
+          "${filter.options[i].help}", "${filter.options[i].examples}")'></button>`;
       }
       divContent += `</div>`;
     }
@@ -350,7 +350,7 @@ function displayFilterValuesInResultDetails() {
               option
             )}" onclick='showHelpModalExplainingFilterOption(
               "${option[filter.type === "dropdown" ? "text" : "label"]}",
-              "${option.help}")'></button>`;
+              "${option.help}", "${option.examples}")'></button>`;
           }
           divContent += `</li>`;
         });
@@ -394,7 +394,7 @@ function updateMatchTags() {
   displayFilterValuesInResultDetails();
 }
 
-function showHelpModalExplainingFilterOption(heading, body) {
+function showHelpModalExplainingFilterOption(heading, body, examples) {
   let helpModal = document.querySelector("#help-modal-filter-option");
   if (helpModal) {
     helpModal.querySelector(".modal-header h2").innerHTML = heading;
@@ -414,9 +414,12 @@ function showHelpModalExplainingFilterOption(heading, body) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">${body}</div>
-            </div>
-        </div>`;
+                <div class="modal-body">`;
+    divContent += `<p>${body}</p>`;
+    if (examples !== "undefined") {
+      divContent += `<p class="examples-help-modal-filter-option">${PREFIX_EXAMPLES_HELP_MODAL_FILTER_OPTION} ${examples}</p>`;
+    }
+    divContent += "</div></div></div>";
     helpModal.innerHTML = divContent;
     document.body.append(helpModal);
 

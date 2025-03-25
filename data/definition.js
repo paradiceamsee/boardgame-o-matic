@@ -500,38 +500,6 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
     * checkedByDefault::bool (optional; default: false)
     * checkedMeansExcluded::bool (optional; default: false)
       */
-    // {
-    //   internalName: "player-number",
-    //   type: "dropdown",
-    //   icon: "bx-group",
-    //   // label: "Number of players: ",
-    //   label: "Spieler:innenanzahl: ",
-    //   options: [
-    //     { text: "Solo", value: "1" },
-    //     { text: "2", value: "2" },
-    //     { text: "3", value: "3" },
-    //     { text: "4", value: "4" },
-    //     { text: "5", value: "5" },
-    //     { text: "6", value: "6" },
-    //     { text: "≥ 7", value: "7" },
-    //   ],
-    //   // textOfOptionToShowAll: "Show all",
-    //   textOfOptionToShowAll: "Alle anzeigen",
-    //   displayInSharedModal: false,
-    //   displayFilterValuesInResultDetails: {
-    //     isWanted: true,
-    //     // label: "Player number",
-    //     label: "Spieler:innenanzahl",
-    //     bulletList: false,
-    //   },
-    //   setAtStart: {
-    //     isWanted: true,
-    //     // cardHeading: "Number of players",
-    //     cardHeading: "Spieler:innenanzahl",
-    //     // cardBody: "With how many players do you want to play?",
-    //     cardBody: "Zu wievielt wollt ihr spielen?",
-    //   },
-    // },
     {
       internalName: "player-number",
       type: "checkbox-list",
@@ -668,82 +636,109 @@ if (addons.some((item) => item.includes("extras/addon_filter_results.js"))) {
         {
           value: "action",
           label: "Action, Schnelligkeit & Geschicklichkeit",
-          help: "Dummy text",
+          help: "Schnelle Reaktionen, physisches Geschick oder Echtzeit-Entscheidungen sind erforderlich.",
+          examples:
+            "Jenga, Captain Sonar, KLASK, Galaxy Trucker, Pitch Car, Crokinole",
         },
         {
           value: "areaControl",
           label: "Area Control",
-          help: "Dummy text",
+          help: "Ziel ist die Vorherrschaft über bestimmte Gebiete (durch Mehrheiten, Einfluss oder direkte Eroberung), um strategische Vorteile zu sichern.",
+          examples:
+            "Risiko, El Grande, Scythe, Small World, Blood Rage, Root, Eclipse",
         },
         {
           value: "auction",
           label: "Auktionen & Gebote",
-          help: "Dummy text",
+          help: "Ressourcen, Aktionen oder Einfluss werden versteigert. Schätze den Wert richtig ein und überbiete deine Mitspieler:innen im richtigen Moment.",
+          examples: "Funkenschlag, Modern Art, Ra, Keyflower, Furnace, QE",
         },
         {
           value: "cards",
           label: "Kartenspiele",
-          help: "Dummy text",
+          help: "Karten sind die zentrale oder sogar die einzige Komponenente des Spiels.",
+          examples:
+            "Dominion, 7 Wonders, Flügelschlag, Die Crew, Splendor, Codenames",
         },
         {
           value: "deckBuilding",
           label: "Deck Building",
-          help: "Dummy text",
+          help: "Baue dir dein eigenes Deck aus passenden Karten zusammen, um Synergien zu schaffen und deine Strategie zu optimieren. Anstelle eines Kartendecks z.&nbsp;T. auch mit Plättchen-Beutel oder Ressourcenpool.",
+          examples:
+            "Dominion, Orleans, Die Quacksalber von Quedlinburg, Dune: Imperium, Klong!, Star Realms",
         },
         {
           value: "deduction",
           label: "Deduktion",
-          help: "Dummy text",
+          help: "Nutze Hinweise und Muster, um versteckte Informationen aufzudecken. Kombiniere logisches Denken und Beobachtungsgabe, um die richtigen Schlussfolgerungen zu ziehen.",
+          examples:
+            "Cluedo, Codenames, Hanabi, Die Werwölfe von Düsterwald, Secret Hitler, Mysterium",
         },
         {
           value: "drafting",
           label: "Drafting",
-          help: "Dummy text",
+          help: "Wähle nacheinander Karten, Würfel oder andere Elemente aus einem begrenzten Angebot. Achte auf deine Strategie und passe dich an die Entscheidungen deiner Mitspieler:innen an.",
+          examples:
+            "7 Wonders, Azul, Sushi Go!, Die Burgen von Burgund, Cascadia, Kingdomino",
         },
         {
           value: "dungeonCrawler",
           label: "Dungeon Crawler",
-          help: "Dummy text",
+          help: "Erkunde gefährliche Verliese, besiege Gegner und sammle Schätze. Meistere Herausforderungen, um deinen Charakter zu verbessern.",
+          examples: "Gloomhaven, HeroQuest, Klong!, Maus und Mystik, Zombicide",
         },
         {
           value: "networks",
           label: "Netzwerke & Verbindungen",
-          help: "Dummy text",
+          help: "Baue ein Netzwerk aus Routen und Verbindungen, um Orte zu erreichen oder Boni freizuschalten. Plane strategisch, um dein Netz effizient zu erweitern und Vorteile zu sichern.",
+          examples:
+            "Zug um Zug, Siedler von Catan, Funkenschlag, Terra Mystica, Concordia, Brass: Birmingham, Thurn und Taxis",
         },
         {
           value: "party",
           label: "Partyspiele",
-          help: "Dummy text",
+          help: "Einfache Regeln, schneller Spielspaß und viel Interaktion: Perfekt für Gruppen, bei denen der Spaß und das gemeinsame Erlebnis im Vordergrund stehen.",
+          examples:
+            "Codenames, Just One, Tabu, Cards Against Humaniy, Werwölfe von Düsterwald, Stille Post Extrem, Nobody Is Perfect",
         },
         {
           value: "rollAndWrite",
-          label: "Roll & Write / Flip & Write",
-          help: "Dummy text",
+          label: "Roll&Write / Flip&Write",
+          help: "Würfle oder decke Karten auf und trage die Werte in dein Spielblatt ein. Plane geschickt, um Muster zu optimieren, Boni zu nutzen und das beste Ergebnis zu erzielen.",
+          examples:
+            "Kniffel, Qwixx, Ganz Schön Clever, Noch mal!, Der Kartograph",
         },
         {
           value: "storytelling",
           label: "Storytelling & Role Playing",
-          help: "Dummy text",
+          help: "Erschaffe oder erlebe Geschichten durch Erzählungen, Entscheidungen und Charakterentwicklung. Tauche in narrative Abenteuer ein und gestalte den Verlauf der Geschichte mit.",
+          examples:
+            "Gloomhaven, Once Upon A Time, Too Many Bones, Winter der Toten, Dixit",
         },
         {
           value: "tilePlacement",
-          label: "Plättchen legen",
-          help: "Dummy text",
+          label: "Plättchen legen & Muster bilden",
+          help: "Platziere Plättchen geschickt, um Muster zu bilden, Gebiete zu vervollständigen oder Räume optimal zu füllen. Achte auf Positionierung und Synergien, um Punkte zu maximieren oder Aktionen auszulösen.",
+          examples:
+            "Carcassone, Azul, Cascadia, Kingdomino, Patchwork, Ubungo, Die Burgen von Burgund",
         },
         {
           value: "trading",
           label: "Handeln & Verhandeln",
-          help: "Dummy text",
+          help: "Tausche Ressourcen oder verhandle mit Mitspieler:innen, um Vorteile zu erlangen. Knüpfe Deals, schmiede Allianzen oder bluffe, um deine Position zu stärken.",
+          examples: "Siedler von Catan, Monopoly, Bohnanza, ",
         },
         {
           value: "words",
           label: "Wörter & Sprache",
-          help: "Dummy text",
+          help: "Sei kreativ beim Erraten, Bilden oder Interpretieren von Wörtern. Clevere Assoziationen und geschickte Kommunikation führen zum Erfolg.",
+          examples: "",
         },
         {
           value: "workerPlacement",
           label: "Worker Placement",
-          help: "Dummy text",
+          help: "Setze deine Spielfiguren auf verschiedene Aktionensfelder, um Ressourcen zu sammeln, Aufgaben zu erfüllen und Vorteile zu sichern &ndash; oder um deinen Mitspieler:innen das Feld zu versperren.",
+          examples: "",
         },
       ],
       allCheckedByDefault: false,

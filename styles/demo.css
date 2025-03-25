@@ -942,7 +942,7 @@ details[open] .disclosure-chevron::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.75);
   z-index: 1050; /* Above most elements */
   opacity: 0;
   transition: opacity 0.4s;
@@ -956,4 +956,13 @@ details[open] .disclosure-chevron::before {
   z-index: 1051;
   background: var(--primary-color);
   opacity: 1;
+}
+
+.modal-header h2 {
+  width: 100%;
+}
+
+.examples-help-modal-filter-option {
+  color: #666;
+  font-size: 80%;
 }

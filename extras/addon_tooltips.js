@@ -173,26 +173,26 @@ if (TOOLTIP_RESULTS_SHORT || TOOLTIP_RESULTS_BY_THESIS || TOOLTIP_FILTER_TAB) {
             }, 0);
             setTimeout(() => {
               tooltipFilterTab.classList.remove("fadeInTop");
-            }, 400);
 
-            document
-              .querySelectorAll(
-                ".closeTooltipFilterTab, #filtersTabBtn, #backdropTooltipFilterTab"
-              )
-              .forEach((btn) => {
-                btn.addEventListener("click", () => {
-                  tooltipFilterTab.classList.add("fadeOutBottom");
-                  backdrop.classList.remove("active");
-                  document
-                    .querySelector("#filtersTabBtn")
-                    .classList.remove("tooltipped");
-                  document.body.style.overflow = ""; // Restore scrolling
-                  setTimeout(() => {
-                    tooltipFilterTab.remove();
-                    backdrop.remove();
-                  }, 350);
+              document
+                .querySelectorAll(
+                  ".closeTooltipFilterTab, #filtersTabBtn, #backdropTooltipFilterTab"
+                )
+                .forEach((btn) => {
+                  btn.addEventListener("click", () => {
+                    tooltipFilterTab.classList.add("fadeOutBottom");
+                    backdrop.classList.remove("active");
+                    document
+                      .querySelector("#filtersTabBtn")
+                      .classList.remove("tooltipped");
+                    document.body.style.overflow = ""; // Restore scrolling
+                    setTimeout(() => {
+                      tooltipFilterTab.remove();
+                      backdrop.remove();
+                    }, 350);
+                  });
                 });
-              });
+            }, 400);
           }
         });
       });

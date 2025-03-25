@@ -127,3 +127,5 @@ const TOOLTIP_FOR_MATCH_TAG_IN_RESULT_DETAILS_100_PERCENT =
   "Du hast diese Frage genauso beantwortet.";
 const TOOLTIP_FOR_DOUBLE_WEIGHTED_TAG_IN_RESULT_DETAILS =
   "Du hast diese Frage doppelt gewichtet.";
+
+const PREFIX_EXAMPLES_HELP_MODAL_FILTER_OPTION = "Z. B.";
