@@ -252,7 +252,7 @@ function parseKeyValueCsvAsArray(csvString, separator = ",") {
 // v.0.3 NEU
 // CSV-Daten in Array einlesen (aus fnShowQuestions() und fnReadPositions())
 function fnTransformCsvToArray(csvData, modus) {
-  arZeilen = parseKeyValueCsv(csvData, separator);
+  arZeilen = parseKeyValueCsvAsArray(csvData, separator);
 
   //	console.log(arZeilen.length+ " Part "+intParties+" quest: "+intQuestions )
 
