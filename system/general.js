@@ -224,35 +224,11 @@ function fnPercentage(value, max) {
   return percent;
 }
 
-function parseKeyValueCsvAsArray(csvString, separator = ",") {
-  const lines = csvString.trim().split("\n");
-  const result = [];
-
-  for (const line of lines) {
-    // Пропустити порожні або коментарні рядки
-    if (!line.trim() || line.startsWith("#####")) continue;
-
-    const splitIndex = line.indexOf(separator);
-    if (splitIndex === -1) continue;
-
-    let key = line.slice(0, splitIndex).trim();
-    let value = line.slice(splitIndex + 1).trim();
-
-    // Прибрати лапки навколо значення
-    if (value.startsWith('"') && value.endsWith('"')) {
-      value = value.slice(1, -1);
-    }
-
-    result.push([key, value]);
-  }
-
-  return result;
-}
-
 // v.0.3 NEU
 // CSV-Daten in Array einlesen (aus fnShowQuestions() und fnReadPositions())
 function fnTransformCsvToArray(csvData, modus) {
-  arZeilen = parseKeyValueCsvAsArray(csvData, separator);
+  // benutzt externe jquery-csv-Bibliothek
+  arZeilen = $.csv.toArrays(csvData, { separator });
 
   //	console.log(arZeilen.length+ " Part "+intParties+" quest: "+intQuestions )
 
