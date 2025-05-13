@@ -52,7 +52,7 @@ const mainLogoTitle = "Demo Logo"; // This is just used for the title attribute 
 const descriptionShowOnStart = true;
 // The title of the page, which is displayed in the browser tab, must be changed directly in the index.html (<title> and meta property "og:title")
 // const descriptionHeading1 = "Demo BoardGame-O-Matic";
-const descriptionHeading1 = "Demo Brettspiel-O-Mat";
+const descriptionHeading1 = "Paradice Brettspiel-O-Mat";
 // const descriptionHeading2 = "Playfully find your matching board game";
 const descriptionHeading2 = "Spielerisch das passende Brettspiel finden";
 const descriptionExplanation =
