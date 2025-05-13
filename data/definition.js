@@ -1,11 +1,20 @@
 // Defines which i18n/i18n_xx.js file is used
 const language = "de";
 
+let locationName = `Paradice`;
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get("location")) {
+  locationName = urlParams.get("location");
+}
+
 // This is the central configuration file of the Boardgame-O-Matic
 // If possible, all adjustments should be made through variables in this file
 
 // Separator used in CSV files
-const separator = ";";
+let separator = ",";
+if (locationName === 'Paradice am See') {
+  separator = ";";
+}
 
 // Name of the CSV file with the questions in the /data directory
 const fileQuestions = `demo-questions-${language}.csv`;
@@ -15,9 +24,7 @@ const intQuestions = 6;
 
 // Name of the CSV file with the board games in the /data directory
 let fileAnswers = `Paradice-games.csv`;
-const urlParams = new URLSearchParams(window.location.search);
-const locationName = urlParams.get("location");
-if (locationName === 'paradiceamsee') {
+if (locationName === 'Paradice am See') {
   fileAnswers = `ParadiceamSee-games.csv`;
 }
 
@@ -52,7 +59,7 @@ const mainLogoTitle = "Demo Logo"; // This is just used for the title attribute 
 const descriptionShowOnStart = true;
 // The title of the page, which is displayed in the browser tab, must be changed directly in the index.html (<title> and meta property "og:title")
 // const descriptionHeading1 = "Demo BoardGame-O-Matic";
-const descriptionHeading1 = "Paradice Brettspiel-O-Mat";
+const descriptionHeading1 = `${locationName} Brettspiel-O-Mat`;
 // const descriptionHeading2 = "Playfully find your matching board game";
 const descriptionHeading2 = "Spielerisch das passende Brettspiel finden";
 const descriptionExplanation =
