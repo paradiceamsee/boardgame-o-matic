@@ -11,10 +11,7 @@ if (urlParams.get("location")) {
 // If possible, all adjustments should be made through variables in this file
 
 // Separator used in CSV files
-let separator = ",";
-if (locationName === 'Paradice am See') {
-  separator = ";";
-}
+const separator = ";";
 
 // Name of the CSV file with the questions in the /data directory
 const fileQuestions = `demo-questions-${language}.csv`;
