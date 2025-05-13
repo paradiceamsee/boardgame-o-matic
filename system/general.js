@@ -224,29 +224,30 @@ function fnPercentage(value, max) {
   return percent;
 }
 
-function parseKeyValueCsv(csvString, separator = ",") {
+function parseKeyValueCsvAsArray(csvString, separator = ",") {
   const lines = csvString.trim().split("\n");
-  const result = {};
+  const result = [];
 
   for (const line of lines) {
+    // Пропустити порожні або коментарні рядки
     if (!line.trim() || line.startsWith("#####")) continue;
 
     const splitIndex = line.indexOf(separator);
     if (splitIndex === -1) continue;
 
-    const key = line.slice(0, splitIndex).trim();
+    let key = line.slice(0, splitIndex).trim();
     let value = line.slice(splitIndex + 1).trim();
 
+    // Прибрати лапки навколо значення
     if (value.startsWith('"') && value.endsWith('"')) {
       value = value.slice(1, -1);
     }
 
-    result[key] = value;
+    result.push([key, value]);
   }
 
   return result;
 }
-
 
 // v.0.3 NEU
 // CSV-Daten in Array einlesen (aus fnShowQuestions() und fnReadPositions())
